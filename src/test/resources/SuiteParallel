@@ -1,0 +1,38 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="SuiteParallel" parallel="methods" thread-count="4">
+
+    <test name="test1">
+        <classes>
+            <class name="testng.DivTest">
+                <methods>
+                    <exclude name="sixDivideTwoLong"/>
+                    <exclude name="sixDivideTwoDouble"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="test2">
+        <classes>
+            <class name="testng.MultTest">
+            </class>
+        </classes>
+    </test>
+
+    <test name="test3">
+        <classes>
+            <class name="testng.SumTest">
+            </class>
+        </classes>
+    </test>
+
+    <test name="test4">
+        <classes>
+            <class name="testng.SubTest">
+            </class>
+        </classes>
+    </test>
+
+</suite>
