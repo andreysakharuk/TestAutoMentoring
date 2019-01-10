@@ -1,23 +1,29 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="SuiteWithGroups">
+<suite name="SuiteWithGroup">
 
     <test name="subTestsGroup">
         <groups>
             <run>
-                <include name="subTest"/>
+                <include name="subTestLong"/>
+                <exclude name="subTestDouble"/>
             </run>
         </groups>
         <classes>
-            <class name="testng.SubTest">
+            <class name="com.epam.cdp.testng.SubTest">
             </class>
         </classes>
     </test>
 
     <test name="sumTestsGroup">
+        <groups>
+            <run>
+                <exclude name="sumTestDouble"/>
+            </run>
+        </groups>
         <classes>
-            <class name="testng.SumTest">
+            <class name="com.epam.cdp.testng.SumTest">
             </class>
         </classes>
     </test>

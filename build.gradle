@@ -1,3 +1,5 @@
+import com.sun.javafx.runtime.SystemProperties
+
 plugins {
     id 'java'
 }
@@ -12,12 +14,20 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    testCompile group: 'org.testng', name: 'testng', version:'6.9.10'
+    testCompile group: 'org.testng', name: 'testng', version: '6.9.10'
     compile fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 task testng(type: Test) {
     useTestNG() {
+        suites 'src/test/resources/SuiteWithGroup.xml'
         suites 'src/test/resources/SuiteParallel.xml'
+        suites 'src/test/resources/SuiteParametrized.xml'
+    }
+}
+
+task testgroup(type: Test) {
+    useTestNG() {
+        suites 'src/test/resources/SuiteWithGroup.xml'
     }
 }

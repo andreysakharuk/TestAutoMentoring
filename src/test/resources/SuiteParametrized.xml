@@ -5,7 +5,7 @@
 
     <test name="test1">
         <classes>
-            <class name="testng.DivTest">
+            <class name="com.epam.cdp.testng.DivTest">
                 <methods>
                     <parameter name="a" value="4"/>
                     <parameter name="b" value="2"/>
@@ -17,7 +17,7 @@
 
     <test name="test2">
         <classes>
-            <class name="testng.DivTest">
+            <class name="com.epam.cdp.testng.DivTest">
                 <methods>
                     <parameter name="a" value="6.4"/>
                     <parameter name="b" value="3.2"/>

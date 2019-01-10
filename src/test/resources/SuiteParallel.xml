@@ -5,7 +5,7 @@
 
     <test name="test1">
         <classes>
-            <class name="testng.DivTest">
+            <class name="com.epam.cdp.testng.DivTest">
                 <methods>
                     <exclude name="sixDivideTwoLong"/>
                     <exclude name="sixDivideTwoDouble"/>
@@ -16,21 +16,21 @@
 
     <test name="test2">
         <classes>
-            <class name="testng.MultTest">
+            <class name="com.epam.cdp.testng.MultTest">
             </class>
         </classes>
     </test>
 
     <test name="test3">
         <classes>
-            <class name="testng.SumTest">
+            <class name="com.epam.cdp.testng.SumTest">
             </class>
         </classes>
     </test>
 
     <test name="test4">
         <classes>
-            <class name="testng.SubTest">
+            <class name="com.epam.cdp.testng.SubTest">
             </class>
         </classes>
     </test>
