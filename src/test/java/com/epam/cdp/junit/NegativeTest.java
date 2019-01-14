@@ -3,10 +3,12 @@ package com.epam.cdp.junit;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+
 public class NegativeTest extends BaseTest {
 
     @Test
-    public void negativeMinusOneLong() {
+    public void negativeMinusOneLong() throws IOException {
         boolean result = calc.isNegative(-1);
         Assert.assertTrue(result);
     }

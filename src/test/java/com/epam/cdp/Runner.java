@@ -14,7 +14,7 @@ public class Runner {
 
 // Create List of suites and  define needed path to suites
         List<String> suites = new ArrayList<>();
-        suites.add("./src/test/resources/SuiteParametrized.xml");
+        suites.add("./src/test/resources/SuiteParallel.xml");
 
 // Add needed suite to testng object
         testNG.setTestSuites(suites);
