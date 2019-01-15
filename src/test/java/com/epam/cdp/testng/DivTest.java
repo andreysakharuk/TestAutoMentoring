@@ -22,7 +22,7 @@ public class DivTest extends BaseTest {
 
     @Test(expectedExceptions = ArithmeticException.class)
     public void sixDivideZeroLong(){
-            calc.div(6, 2);
+            calc.div(6, 0);
     }
 
     @Test

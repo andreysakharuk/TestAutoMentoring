@@ -8,7 +8,7 @@ public class CtgTest extends BaseTest {
 
     @Test
     public void ctqFromFortyFive() {
-        double result = calc.ctg(45);
-        Assert.assertEquals(1.0, result, 0.01);
+        double result = calc.ctg(1.57);
+        Assert.assertEquals(0.0, result, 0.01);
     }
 }

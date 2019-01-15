@@ -7,7 +7,7 @@ public class CosTest extends BaseTest {
 
     @Test
     public void cosFromNinety() {
-        double result = calc.cos(90);
+        double result = calc.cos(1.57);
         Assert.assertEquals(0.0, result, 0.01);
     }
 }
