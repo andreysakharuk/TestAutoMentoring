@@ -12,7 +12,7 @@ public class SeleniumTest {
         System.setProperty("webdriver.chrome.driver", "libs/chromedriver_win32/chromedriver.exe");
         WebDriver driver = new ChromeDriver();
         driver.get("https://www.consumerreports.org/cro/index.htm");
-        Assert.assertTrue(true);
         driver.quit();
+        Assert.assertTrue(true);
     }
 }
