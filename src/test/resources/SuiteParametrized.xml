@@ -1,0 +1,32 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="SuiteParametrized" parallel="methods" thread-count="2">
+    <listeners>
+        <listener class-name="com.epam.cdp.Listener"/>
+    </listeners>
+    <test name="test1">
+        <classes>
+            <class name="com.epam.cdp.testng.DivTest">
+                <methods>
+                    <parameter name="a" value="4"/>
+                    <parameter name="b" value="2"/>
+                    <include name="sixDivideTwoLong"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="test2">
+        <classes>
+            <class name="com.epam.cdp.testng.DivTest">
+                <methods>
+                    <parameter name="a" value="6.4"/>
+                    <parameter name="b" value="3.2"/>
+                    <include name="sixDivideTwoDouble"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite>

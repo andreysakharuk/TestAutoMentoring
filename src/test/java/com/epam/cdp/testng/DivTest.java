@@ -1,4 +1,4 @@
-package testng;
+package com.epam.cdp.testng;
 
 import org.testng.Assert;
 import org.testng.annotations.Parameters;
@@ -20,25 +20,14 @@ public class DivTest extends BaseTest {
         Assert.assertEquals(result, 2.0, 0.01);
     }
 
-    @Test
-    public void sixDivideZeroLong() {
-        try {
+    @Test(expectedExceptions = ArithmeticException.class)
+    public void sixDivideZeroLong(){
             calc.div(6, 0);
-        } catch (NumberFormatException e) {
-            Assert.assertTrue(true);
-            return;
-        }
-        Assert.fail();
     }
 
     @Test
     public void sixDivideZeroDouble() {
-        try {
-            calc.div(6.0, 0.0);
-        } catch (NumberFormatException e) {
-            Assert.assertTrue(true);
-            return;
-        }
-        Assert.fail();
+          double result = calc.div(6.0, 0.0);
+          Assert.assertEquals(result,Double.POSITIVE_INFINITY);
     }
 }
