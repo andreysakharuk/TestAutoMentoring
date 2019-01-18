@@ -80,14 +80,20 @@ public class SeleniumTest {
         driver.findElement(By.name(USERNAME_INPUT)).sendKeys(USERNAME);
         driver.findElement(By.name(PASSWORD_INPUT)).sendKeys(PASSWORD);
         driver.findElement(By.xpath(SIGN_IN_BUTTON_POPUP)).click();
+        /*
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(SIGN_IN_FORM)));
+                */
+        Thread.sleep(2000);
         Assert.assertEquals(driver.findElement(By.cssSelector(ACCOUNT_INFO_SECTION)).getText(),
                 USERNAME_ACCOUNT);
 // 3 step
         driver.findElement(By.xpath(SEARCH_FIELD)).sendKeys(MIELE_MODEL_NAME);
+        Thread.sleep(2000);
+        /*
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.attributeContains(By.xpath(SEARCH_FIELD),"value", MIELE_MODEL_NAME));
+                */
         driver.findElement(By.cssSelector(SEARCH_BUTTON)).click();
         /*
         new WebDriverWait(driver, 5)
