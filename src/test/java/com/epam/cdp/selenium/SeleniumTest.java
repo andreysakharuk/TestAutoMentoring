@@ -115,11 +115,16 @@ public void testConsumer34() {
     public void testConsumer5() {
 // 5 step
         driver.findElements(By.xpath(SWITCHER_ICONS)).get(1).click();
-        driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
+        System.out.println("ivon");
+      driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
+        System.out.println("close");
         driver.navigate().refresh();
+        System.out.println("refresh");
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(RATINGS_TITLE)));
+        System.out.println("wait");
         Assert.assertTrue(driver.findElement(By.cssSelector(RATINGS_LIST)).isDisplayed());
+        System.out.println("assert");
     }
     @Test(priority = 6)
     public void testConsumer6() {
