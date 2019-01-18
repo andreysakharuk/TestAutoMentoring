@@ -71,16 +71,14 @@ public class SeleniumTest {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    @Test(priority = 1)
-    public void testConsumer1() {
-// 1 step
+    @Test(priority = 1, description = "Step 1: Navigate to Home page and check Main Articles section appears")
+    public void mainArticlesSectionAppearsOnHomePage() {
         driver.get(HOME_PAGE_URL);
         Assert.assertTrue(driver.findElement(By.cssSelector(MAIN_ARTICLES_SECTION)).isDisplayed());
     }
 
-    // 2 step
-    @Test(priority = 2)
-    public void testConsumer2() {
+    @Test(priority = 2, description = "Step 2: Login on Home page and check user name in Account section")
+    public void userLoginOnHomePage() {
         driver.findElement(By.className(SIGN_IN_BUTTON_GLOBAL_NAV)).click();
         driver.findElement(By.name(USERNAME_INPUT)).sendKeys(USERNAME);
         driver.findElement(By.name(PASSWORD_INPUT)).sendKeys(PASSWORD);
@@ -91,9 +89,8 @@ public class SeleniumTest {
                 USERNAME_ACCOUNT);
     }
 
-    // 3 step
-    @Test(priority = 3)
-    public void testConsumer34() {
+    @Test(priority = 3, description = "Step 3 and Step 4: Search for Model and click on it on Search result page")
+    public void searchResultIsCorrectAndModelPageIsOpenedOnClick() {
         driver.findElement(By.xpath(SEARCH_FIELD)).sendKeys(MIELE_MODEL_NAME);
 
         new WebDriverWait(driver, 10)
@@ -107,73 +104,56 @@ public class SeleniumTest {
         for (WebElement element : listOfBrands) {
             assertThat(element.getText(), startsWith(MIELE_BRAND));
         }
-
-// 4 step
         listOfBrands.get(0).click();
         assertThat(driver.findElement(By.cssSelector(MODEL_TITLE)).getText(),
                 is(equalTo(MIELE_MODEL_NAME)));
     }
 
-    @Test(priority = 5)
-    public void testConsumer5() {
-// 5 step
+    @Test(priority = 4, description = "Step 5: Click on Compact icon and check Ratings list view appears")
+    public void ratingsListAppearsOnCompactIconClick() {
         driver.findElements(By.xpath(SWITCHER_ICONS)).get(1).click();
-        System.out.println("icon");
-        System.out.println("ico");
-        LOGGER.debug("icon3");
         try {
             driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
         } catch (ElementNotInteractableException e) {
-            System.out.println("exception");
+            System.out.println("Product bug");
         }
-        System.out.println("close");
-        driver.navigate().refresh();
-        System.out.println("refresh");
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(RATINGS_TITLE)));
-        System.out.println("wait");
         Assert.assertTrue(driver.findElement(By.cssSelector(RATINGS_LIST)).isDisplayed());
-        System.out.println("assert");
     }
 
-    @Test(priority = 6)
-    public void testConsumer6() {
-// 6 step
+    @Test(priority = 5, description = "Step 6: Add Model to compare and check that count is updated")
+    public void modelIsAddedToCompareOnCompactView() {
         driver.findElements(By.cssSelector(COMPARE_BUTTONS)).get(1).click();
         assertThat(driver.findElement(By.xpath(COMPARE_CIRCLE_NUMBER))
                 .getText(), is(equalTo("1")));
     }
 
-    @Test(priority = 7)
-    public void testConsumer7() {
-//7 step
+    @Test(priority = 6, description = "Step 7:  Click on Full icon and check Ratings full view appears")
+    public void ratingsFullIsOpenedOnFullIconClick() {
         driver.findElements(By.xpath(SWITCHER_ICONS)).get(0).click();
         Assert.assertTrue(driver.findElement(By.cssSelector(RATINGS_FULL)).isDisplayed());
     }
 
-    @Test(priority = 8)
-    public void testConsumer8() {
-// 8 step
+    @Test(priority = 7, description = "Step 8: Add Model to compare and check that count is updated")
+    public void modelIsAddedToCompareOnFullView() {
         driver.findElements(By.cssSelector(COMPARE_BUTTONS)).get(0).click();
         assertThat(driver.findElement(By.xpath(COMPARE_CIRCLE_NUMBER))
                 .getText(), is(equalTo("2")));
     }
 
-    @Test(priority = 9)
-    public void atestConsumerA() {
-// 9 step
+    @Test(priority = 8, description = "Step 9: Compare page with 2 models appear on View Compare click")
+    public void comparePageIsOpenedWithProperModels() {
         driver.findElement(By.xpath(COMPARE_BUCKET)).click();
         driver.findElement(By.xpath(VIEW_COMPARE_BUTTON)).click();
-
         List<WebElement> listOfModels = driver.findElements(By.cssSelector(MODELS_ON_COMPARE));
         assertThat(listOfModels, hasSize(2));
         assertThat(listOfModels.get(0).getText(), is(equalTo(MIELE_MODEL_NAME)));
         assertThat(listOfModels.get(1).getText(), is(equalTo(KENMORE_MODEL_NAME)));
     }
 
-    @Test(priority = 9)
-    public void btestConsumerB() {
-//10 step
+    @Test(priority = 9, description = "Step 10: empty Compare page is opened after clicking Remove buttons")
+    public void comparePageIsEmptyAfterRemovingModels() {
         driver.findElement(By.xpath(REMOVE_BUTTON_ON_COMPARE)).click();
         driver.findElement(By.xpath(REMOVE_BUTTON_ON_COMPARE)).click();
         assertThat(driver.findElement(By.cssSelector(EMPTY_PAGE_LABEL)).getText(),
