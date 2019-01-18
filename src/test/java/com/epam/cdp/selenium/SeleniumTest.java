@@ -1,6 +1,7 @@
 package com.epam.cdp.selenium;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -120,10 +121,11 @@ public class SeleniumTest {
         System.out.println("icon");
         System.out.println("ico");
         LOGGER.debug("icon3");
-        if (!driver.findElement(By.className(CLOSE_BUTTON_TOUR)).isDisplayed()) {
+        try {
             driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
+        } catch (ElementNotInteractableException e) {
+            System.out.println("exception");
         }
-        driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
         System.out.println("close");
         driver.navigate().refresh();
         System.out.println("refresh");
