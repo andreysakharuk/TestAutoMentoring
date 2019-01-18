@@ -120,6 +120,9 @@ public class SeleniumTest {
         System.out.println("icon");
         System.out.println("ico");
         LOGGER.debug("icon3");
+        if (!driver.findElement(By.className(CLOSE_BUTTON_TOUR)).isDisplayed()) {
+            driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
+        }
         driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
         System.out.println("close");
         driver.navigate().refresh();
