@@ -86,13 +86,14 @@ public class SeleniumTest {
                 USERNAME_ACCOUNT);
 // 3 step
         driver.findElement(By.xpath(SEARCH_FIELD)).sendKeys(MIELE_MODEL_NAME);
-        Thread.sleep(3000);
         new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.attributeContains(By.xpath(SEARCH_FIELD),"value", MIELE_MODEL_NAME));
         driver.findElement(By.cssSelector(SEARCH_BUTTON)).click();
+        /*
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.textToBePresentInElementLocated(By.id(SEARCH_RESULT_LABEL),
                         SEARCH_RESULT_TEXT));
+                        */
         List<WebElement> listOfBrands = driver.findElements(By.cssSelector(MODELS_BRAND_));
         assertThat(listOfBrands, hasSize(5));
         for (WebElement element : listOfBrands) {
