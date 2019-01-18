@@ -42,7 +42,7 @@ public class SeleniumTest {
     private static final String SWITCHER_ICONS = "//*[@alt='view']";
     private static final String CLOSE_BUTTON_TOUR = "list__tour__close__label";
     private static final String RATINGS_TITLE = "h1.crux-page-title";
-    private static final String RATINGS_LIST = "div.list";
+    private static final String RATINGS_LIST = "div.clearfix.subscriber-list";
     private static final String COMPARE_BUTTONS = ".shared-crux-tooltip .compare-icon";
     private static final String COMPARE_CIRCLE_NUMBER =
             "//*[@data-id='compare-bucket']//*[@data-q-check='shared-crux-number-score']";
