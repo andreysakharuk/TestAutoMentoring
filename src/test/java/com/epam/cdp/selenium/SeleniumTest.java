@@ -141,7 +141,7 @@ public void testConsumer34() {
                 .getText(), is(equalTo("2")));
     }
     @Test(priority = 9)
-    public void testConsumer9() {
+    public void testConsumerA() {
 // 9 step
         driver.findElement(By.xpath(COMPARE_BUCKET)).click();
         driver.findElement(By.xpath(VIEW_COMPARE_BUTTON)).click();
@@ -151,8 +151,8 @@ public void testConsumer34() {
         assertThat(listOfModels.get(0).getText(), is(equalTo(MIELE_MODEL_NAME)));
         assertThat(listOfModels.get(1).getText(), is(equalTo(KENMORE_MODEL_NAME)));
     }
-    @Test(priority = 10)
-    public void testConsumer10() {
+    @Test(priority = 9)
+    public void testConsumerB() {
 //10 step
         driver.findElement(By.xpath(REMOVE_BUTTON_ON_COMPARE)).click();
         driver.findElement(By.xpath(REMOVE_BUTTON_ON_COMPARE)).click();
