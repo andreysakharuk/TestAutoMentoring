@@ -70,62 +70,78 @@ public class SeleniumTest {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
-    @Test
-    public void testConsumer() throws InterruptedException {
+    @Test(priority = 1)
+    public void testConsumer() {
 // 1 step
         driver.get(HOME_PAGE_URL);
         Assert.assertTrue(driver.findElement(By.cssSelector(MAIN_ARTICLES_SECTION)).isDisplayed());
+    }
 // 2 step
-        driver.findElement(By.className(SIGN_IN_BUTTON_GLOBAL_NAV)).click();
-        driver.findElement(By.name(USERNAME_INPUT)).sendKeys(USERNAME);
-        driver.findElement(By.name(PASSWORD_INPUT)).sendKeys(PASSWORD);
-        driver.findElement(By.xpath(SIGN_IN_BUTTON_POPUP)).click();
-        /*
+@Test(priority = 2)
+public void testConsumer2() {
+    driver.findElement(By.className(SIGN_IN_BUTTON_GLOBAL_NAV)).click();
+    driver.findElement(By.name(USERNAME_INPUT)).sendKeys(USERNAME);
+    driver.findElement(By.name(PASSWORD_INPUT)).sendKeys(PASSWORD);
+    driver.findElement(By.xpath(SIGN_IN_BUTTON_POPUP)).click();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(SIGN_IN_FORM)));
-                */
-        Thread.sleep(2000);
-        Assert.assertEquals(driver.findElement(By.cssSelector(ACCOUNT_INFO_SECTION)).getText(),
-                USERNAME_ACCOUNT);
+    Assert.assertEquals(driver.findElement(By.cssSelector(ACCOUNT_INFO_SECTION)).getText(),
+            USERNAME_ACCOUNT);
+}
 // 3 step
-        driver.findElement(By.xpath(SEARCH_FIELD)).sendKeys(MIELE_MODEL_NAME);
-        Thread.sleep(2000);
-        /*
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.attributeContains(By.xpath(SEARCH_FIELD),"value", MIELE_MODEL_NAME));
-                */
-        driver.findElement(By.cssSelector(SEARCH_BUTTON)).click();
-        /*
-        new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.textToBePresentInElementLocated(By.id(SEARCH_RESULT_LABEL),
-                        SEARCH_RESULT_TEXT));
-                        */
-        List<WebElement> listOfBrands = driver.findElements(By.cssSelector(MODELS_BRAND_));
-        assertThat(listOfBrands, hasSize(5));
-        for (WebElement element : listOfBrands) {
-            assertThat(element.getText(), startsWith(MIELE_BRAND));
-        }
+@Test(priority = 3)
+public void testConsumer34() {
+    driver.findElement(By.xpath(SEARCH_FIELD)).sendKeys(MIELE_MODEL_NAME);
+
+    new WebDriverWait(driver, 10)
+            .until(ExpectedConditions.attributeContains(By.xpath(SEARCH_FIELD), "value", MIELE_MODEL_NAME));
+    driver.findElement(By.cssSelector(SEARCH_BUTTON)).click();
+    new WebDriverWait(driver, 5)
+            .until(ExpectedConditions.textToBePresentInElementLocated(By.id(SEARCH_RESULT_LABEL),
+                    SEARCH_RESULT_TEXT));
+    List<WebElement> listOfBrands = driver.findElements(By.cssSelector(MODELS_BRAND_));
+    assertThat(listOfBrands, hasSize(5));
+    for (WebElement element : listOfBrands) {
+        assertThat(element.getText(), startsWith(MIELE_BRAND));
+    }
+
 // 4 step
-        listOfBrands.get(0).click();
-        assertThat(driver.findElement(By.cssSelector(MODEL_TITLE)).getText(),
-                is(equalTo(MIELE_MODEL_NAME)));
+    listOfBrands.get(0).click();
+    assertThat(driver.findElement(By.cssSelector(MODEL_TITLE)).getText(),
+            is(equalTo(MIELE_MODEL_NAME)));
+}
+
+    @Test(priority = 5)
+    public void testConsumer5() {
 // 5 step
         driver.findElements(By.xpath(SWITCHER_ICONS)).get(1).click();
         driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(RATINGS_TITLE)));
         Assert.assertTrue(driver.findElement(By.cssSelector(RATINGS_LIST)).isDisplayed());
+    }
+    @Test(priority = 6)
+    public void testConsumer6() {
 // 6 step
         driver.findElements(By.cssSelector(COMPARE_BUTTONS)).get(1).click();
         assertThat(driver.findElement(By.xpath(COMPARE_CIRCLE_NUMBER))
                 .getText(), is(equalTo("1")));
+    }
+    @Test(priority = 7)
+    public void testConsumer7() {
 //7 step
         driver.findElements(By.xpath(SWITCHER_ICONS)).get(0).click();
         Assert.assertTrue(driver.findElement(By.cssSelector(RATINGS_FULL)).isDisplayed());
+    }
+    @Test(priority = 8)
+    public void testConsumer8() {
 // 8 step
         driver.findElements(By.cssSelector(COMPARE_BUTTONS)).get(0).click();
         assertThat(driver.findElement(By.xpath(COMPARE_CIRCLE_NUMBER))
                 .getText(), is(equalTo("2")));
+    }
+    @Test(priority = 9)
+    public void testConsumer9() {
 // 9 step
         driver.findElement(By.xpath(COMPARE_BUCKET)).click();
         driver.findElement(By.xpath(VIEW_COMPARE_BUTTON)).click();
@@ -134,7 +150,9 @@ public class SeleniumTest {
         assertThat(listOfModels, hasSize(2));
         assertThat(listOfModels.get(0).getText(), is(equalTo(MIELE_MODEL_NAME)));
         assertThat(listOfModels.get(1).getText(), is(equalTo(KENMORE_MODEL_NAME)));
-
+    }
+    @Test(priority = 10)
+    public void testConsumer10() {
 //10 step
         driver.findElement(By.xpath(REMOVE_BUTTON_ON_COMPARE)).click();
         driver.findElement(By.xpath(REMOVE_BUTTON_ON_COMPARE)).click();
