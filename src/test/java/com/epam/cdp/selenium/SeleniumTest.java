@@ -12,7 +12,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import org.testng.log4testng.Logger;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -59,7 +58,6 @@ public class SeleniumTest {
     private static final String EMPTY_PAGE_LABEL = ".crux-call-to-action";
     private static final String EMPTY_PAGE_LABEL_TEXT = "Your Compare Chart is Empty!";
 
-    private static final Logger LOGGER = Logger.getLogger(SeleniumTest.class);
     private WebDriver driver;
 
     @BeforeClass
