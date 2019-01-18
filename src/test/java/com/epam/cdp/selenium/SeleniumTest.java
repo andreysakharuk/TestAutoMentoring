@@ -71,7 +71,7 @@ public class SeleniumTest {
     }
 
     @Test
-    public void testConsumer() {
+    public void testConsumer() throws InterruptedException {
 // 1 step
         driver.get(HOME_PAGE_URL);
         Assert.assertTrue(driver.findElement(By.cssSelector(MAIN_ARTICLES_SECTION)).isDisplayed());
@@ -86,7 +86,8 @@ public class SeleniumTest {
                 USERNAME_ACCOUNT);
 // 3 step
         driver.findElement(By.xpath(SEARCH_FIELD)).sendKeys(MIELE_MODEL_NAME);
-        new WebDriverWait(driver, 5)
+        Thread.sleep(3000);
+        new WebDriverWait(driver, 10)
                 .until(ExpectedConditions.attributeContains(By.xpath(SEARCH_FIELD),"value", MIELE_MODEL_NAME));
         driver.findElement(By.cssSelector(SEARCH_BUTTON)).click();
         new WebDriverWait(driver, 5)
