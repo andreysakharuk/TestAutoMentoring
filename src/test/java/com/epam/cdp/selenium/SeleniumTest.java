@@ -86,6 +86,8 @@ public class SeleniumTest {
                 USERNAME_ACCOUNT);
 // 3 step
         driver.findElement(By.xpath(SEARCH_FIELD)).sendKeys(MIELE_MODEL_NAME);
+        new WebDriverWait(driver, 5)
+                .until(ExpectedConditions.attributeContains(By.xpath(SEARCH_FIELD),"value", MIELE_MODEL_NAME));
         driver.findElement(By.cssSelector(SEARCH_BUTTON)).click();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.textToBePresentInElementLocated(By.id(SEARCH_RESULT_LABEL),
