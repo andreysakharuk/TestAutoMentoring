@@ -116,6 +116,7 @@ public void testConsumer34() {
 // 5 step
         driver.findElements(By.xpath(SWITCHER_ICONS)).get(1).click();
         driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
+        driver.navigate().refresh();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(RATINGS_TITLE)));
         Assert.assertTrue(driver.findElement(By.cssSelector(RATINGS_LIST)).isDisplayed());
