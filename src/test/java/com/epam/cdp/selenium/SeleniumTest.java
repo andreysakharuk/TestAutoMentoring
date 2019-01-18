@@ -41,7 +41,7 @@ public class SeleniumTest {
     private static final String MIELE_BRAND = "Miele";
     private static final String MODEL_TITLE = "span.crux-page-title";
     private static final String SWITCHER_ICONS = "//*[@alt='view']";
-    private static final String CLOSE_BUTTON_TOUR = "list__tour__close__label";
+    private static final String CLOSE_BUTTON_TOUR = "list__tour__skip";
     private static final String RATINGS_TITLE = "h1.crux-page-title";
     private static final String RATINGS_LIST = "div.clearfix.subscriber-list";
     private static final String COMPARE_BUTTONS = ".shared-crux-tooltip .compare-icon";
