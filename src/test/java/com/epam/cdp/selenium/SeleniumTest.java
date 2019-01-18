@@ -66,7 +66,6 @@ public class SeleniumTest {
         System.setProperty("webdriver.chrome.driver", "libs/chromedriver_win32/chromedriver.exe");
         ChromeOptions options = new ChromeOptions();
         options.addArguments("start-maximized");
-        options.addArguments("--incognito");
         driver = new ChromeDriver(options);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
@@ -121,7 +120,7 @@ public class SeleniumTest {
         System.out.println("icon");
         System.out.println("ico");
         LOGGER.debug("icon3");
-     //   driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
+        driver.findElement(By.className(CLOSE_BUTTON_TOUR)).click();
         System.out.println("close");
         driver.navigate().refresh();
         System.out.println("refresh");
