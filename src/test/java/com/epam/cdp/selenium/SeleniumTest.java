@@ -21,7 +21,7 @@ import static org.hamcrest.Matchers.*;
 public class SeleniumTest {
 
     private static final String HOME_PAGE_URL = "https://www.consumerreports.org/cro/index.htm";
-    private static final String MAIN_ARTICLES_SECTION = ".main-articles__main-article--desktop";
+    private static final String MAIN_ARTICLES_SECTION = ".description";
     private static final String SIGN_IN_BUTTON_GLOBAL_NAV = "gnav-sign-in";
     private static final String USERNAME_INPUT = "userName";
     private static final String USERNAME = "pwitest";
@@ -71,7 +71,7 @@ public class SeleniumTest {
     }
 
     @Test(priority = 1)
-    public void testConsumer() {
+    public void testConsumer1() {
 // 1 step
         driver.get(HOME_PAGE_URL);
         Assert.assertTrue(driver.findElement(By.cssSelector(MAIN_ARTICLES_SECTION)).isDisplayed());
