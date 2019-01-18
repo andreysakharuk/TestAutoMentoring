@@ -87,7 +87,7 @@ public class SeleniumTest {
                 USERNAME_ACCOUNT);
     }
 
-    @Test(priority = 3, description = "Step 3 and Step 4: Search for Model and click on it on Search result page")
+    @Test(priority = 3, description = "Step 3 and Step 4: Search for Model and click on it on Search Result page")
     public void searchResultIsCorrectAndModelPageIsOpenedOnClick() {
         driver.findElement(By.xpath(SEARCH_FIELD)).sendKeys(MIELE_MODEL_NAME);
 
