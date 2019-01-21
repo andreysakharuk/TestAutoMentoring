@@ -28,7 +28,7 @@ public class SeleniumTest {
     private static final String USERNAME = "pwitest";
     private static final String PASSWORD_INPUT = "password";
     private static final String PASSWORD = "Password1";
-    private static final String SIGN_IN_BUTTON_POPUP = "//input[@value='Sign In']";
+    private static final String SIGN_IN_BUTTON_POPUP = "div.gnav-sign-in__form__submit input";
     private static final String SIGN_IN_FORM = ".gnav-sign-in__form__title";
     private static final String ACCOUNT_INFO_SECTION = ".account-info";
     private static final String USERNAME_ACCOUNT = "resault1";
@@ -80,7 +80,7 @@ public class SeleniumTest {
         driver.findElement(By.className(SIGN_IN_BUTTON_GLOBAL_NAV)).click();
         driver.findElement(By.name(USERNAME_INPUT)).sendKeys(USERNAME);
         driver.findElement(By.name(PASSWORD_INPUT)).sendKeys(PASSWORD);
-        driver.findElement(By.xpath(SIGN_IN_BUTTON_POPUP)).click();
+        driver.findElement(By.cssSelector(SIGN_IN_BUTTON_POPUP)).click();
         new WebDriverWait(driver, 5)
                 .until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(SIGN_IN_FORM)));
         Assert.assertEquals(driver.findElement(By.cssSelector(ACCOUNT_INFO_SECTION)).getText(),
