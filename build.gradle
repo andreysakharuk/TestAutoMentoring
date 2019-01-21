@@ -22,7 +22,6 @@ dependencies {
 task testng(type: Test) {
     useTestNG() {
         suites 'src/test/resources/SuiteParallel.xml'
-        suites 'src/test/resources/SuiteParametrized.xml'
     }
 }
 
