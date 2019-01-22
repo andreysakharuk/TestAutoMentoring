@@ -34,7 +34,7 @@ public class HamcrestTest extends BaseTest {
     @Test
     public void positiveOneLong() {
         Map<String, Long> map = new HashMap<>();
-        map.put("Результат умножени 2 и 3 ", calc.mult(2L, 3L));
+        map.put("Result of multiplying 2 and 3 ", calc.mult(2L, 3L));
         assertThat(map, hasValue(6L));
     }
 
