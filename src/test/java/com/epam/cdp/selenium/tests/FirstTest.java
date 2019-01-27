@@ -23,6 +23,7 @@ public class FirstTest {
     private static final String PASSWORD = "Password1";
     private static final String CTA_BANNER_RATINGS = "Get Ratings & Reviews for the Products You Want";
     private static final String CTA_BANNER_OVERVIEW = "Clear through the clutter when choosing the best vacuums.";
+    private static final String MIELE_MODEL = "Miele Dynamic U1 Cat & Dog";
 
     @BeforeMethod
     public void setUp() {
@@ -34,7 +35,7 @@ public class FirstTest {
     }
 
     @Test()
-    public void ctaBannerAppearsOnRatingsFullPage(){
+    public void scenario1() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         String actualTextOfCtaBanner = ratingsFullPage.open().getCtaBannerRatingsFullPage();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
@@ -74,7 +75,7 @@ public class FirstTest {
     }
 
     @Test
-    public void scenario2() {
+    public void scenario2() throws InterruptedException {
         OverviewPage overviewPage = new OverviewPage(driver);
         String heroSectionText = overviewPage.open().getHeroSectionText();
         assertThat(heroSectionText, containsString(CTA_BANNER_OVERVIEW));
@@ -92,8 +93,8 @@ public class FirstTest {
         ModelPage modelpage = ratingsCompactPage.clickOnShopButton();
         Assert.assertTrue(modelpage.isPriceAndShopTitleDisplayed());
 
-        String url = modelpage.clickOnAmazonButtonAndGetUrl();
-        assertThat(url, containsString("amazon.com"));
+        AmazonPage amazonPage  = modelpage.clickOnAmazonButton();
+        assertThat(amazonPage.getUrl(), containsString("amazon.com"));
 
         ModelPage modelPage2 = new ModelPage(driver);
         overviewPage = modelPage2.open().clickOnUprightVacuumsLinkInBreadcrumbs();
@@ -111,11 +112,39 @@ public class FirstTest {
     }
 
     @Test
-    public void scenario3(){
-        HomePage homePage = new HomePage(driver);
+    public void scenario3() {
+        HomePage homePage = new HomePage(driver).open();
+        Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
+        LoginPage loginPage = homePage.clickOnSignInButtonInGlobalNav();
+        homePage = loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButtonInLoginFormHomePage();
+        Assert.assertEquals(homePage.getAccountInfoSection(), "resault1");
 
+        SearchResultPage searchResultPage = homePage.enterValueInSearchField(MIELE_MODEL).clickOnSearchButon();
+        assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
 
+        ModelPage modelPage = searchResultPage.clickOnFirstResult();
+        assertThat(modelPage.getTitle(), equalTo(MIELE_MODEL));
+
+        RatingsCompactPage ratingsCompactPage = modelPage.clickOnRatingsCompactIcon();
+        ratingsCompactPage.clickOnCloseTourButton();
+        Assert.assertTrue(ratingsCompactPage.isRatingsListViewDisplayed());
+
+        ratingsCompactPage.clickOnAddToCompareButton();
+        assertThat(ratingsCompactPage.getCompareCircleNumber(), equalTo("1"));
+
+        RatingsFullPage ratingsFullPage = ratingsCompactPage.clickOnFullViewIcon();
+        Assert.assertTrue(ratingsFullPage.isRatingsFullViewDisplayed());
+
+        ratingsFullPage.clickOnAddToCompareButton();
+        assertThat(ratingsFullPage.getCompareCircleNumber(), equalTo("2"));
+
+        ComparePage comparePage = ratingsFullPage.clickOnCompareBucket().clickOnViewCompare();
+        assertThat(comparePage.getListOfModels().get(0), equalTo(MIELE_MODEL));
+        assertThat(comparePage.getListOfModels().get(1), equalTo("Kenmore Elite Pet Friendly 31150"));
+
+        comparePage.clickOnRemoveButton().clickOnRemoveButton();
+        assertThat(comparePage.getLabelFromEmptyPage(), equalTo("Your Compare Chart is Empty!"));
     }
 
     @AfterMethod

@@ -4,15 +4,12 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class MembershipPage extends AbstractPage{
+public class MembershipPage extends AbstractPage {
 
     @FindBy(id = "main-title")
     private WebElement ctaBanner;
 
-    @FindBy(css = " ")
-    private WebElement a2;
-
-    public MembershipPage(WebDriver driver){
+    public MembershipPage(WebDriver driver) {
         super(driver);
     }
 
@@ -26,9 +23,7 @@ public class MembershipPage extends AbstractPage{
         return new MembershipPage(driver);
     }
 
-    public String getCtaBannerMembershipPage(){
+    public String getCtaBannerMembershipPage() {
         return ctaBanner.getText();
     }
-
-
 }

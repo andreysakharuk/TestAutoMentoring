@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class BuyingGuidePage extends AbstractPage{
+public class BuyingGuidePage extends AbstractPage {
 
     @FindBy(css = ".buying-hero__title")
     private WebElement labelInHeroSection;
@@ -24,14 +24,14 @@ public class BuyingGuidePage extends AbstractPage{
         return labelInHeroSection.getText();
     }
 
-    public LoginPage clickOnSignInLink(){
+    public LoginPage clickOnSignInLink() {
         waitForElementVisible(signInButton);
         signInButton.click();
         return new LoginPage(driver);
     }
 
-    public boolean isLockNearRecommendedLinkDisplayed() {
-        waitForElementVisible(labelInHeroSection);
+    public boolean isLockNearRecommendedLinkDisplayed() throws InterruptedException {
+        Thread.sleep(2000);
         return lockNearRecommendedLink.isDisplayed();
     }
 }

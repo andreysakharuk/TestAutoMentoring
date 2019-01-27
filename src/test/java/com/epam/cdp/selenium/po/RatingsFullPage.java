@@ -66,6 +66,21 @@ public class RatingsFullPage extends AbstractPage {
     @FindBy(xpath = "//*[@class='clearfix classic-view__body__item classic-view__body__item--fixed']")
     private List<WebElement> brandsAndModelsList;
 
+    @FindBy(css = "div.classic-view")
+    private WebElement ratingsFullView;
+
+    @FindBy(css = ".shared-crux-tooltip .compare-icon")
+    private List<WebElement> compareButtons;
+
+    @FindBy(xpath = "//*[@data-id='compare-bucket']//*[@data-q-check='shared-crux-number-score']")
+    private WebElement compareCircleNumber;
+
+    @FindBy(xpath = "//*[@data-id='compare-bucket']//*[@data-q-check='shared-crux-number-score']")
+    private WebElement compareBucket;
+
+    @FindBy(xpath = "//*[@data-display='true']//button[@class='crux-btn crux-btn-special--lg']")
+    private WebElement viewCompareButton;
+
     public RatingsFullPage(WebDriver driver) {
         super(driver);
     }
@@ -148,40 +163,64 @@ public class RatingsFullPage extends AbstractPage {
         return labelInRatedBestFilter.getText();
     }
 
-    public RatingsFullPage selectCheckboxInRatedBestFilter(){
+    public RatingsFullPage selectCheckboxInRatedBestFilter() {
         firstCheckBoxInRatedBestFilter.get(0).click();
         return this;
     }
 
-    public RatingsFullPage clickOnViewButtonInRatedBestFilter(){
+    public RatingsFullPage clickOnViewButtonInRatedBestFilter() {
         viewButtonInRatedBestFilter.click();
         return this;
     }
 
-    public String getColorOfRatedBestFilter(){
+    public String getColorOfRatedBestFilter() {
         return ratedBestFilter.getCssValue("background-color");
     }
 
-    public RatingsFullPage clickOnMoreFilter(){
+    public RatingsFullPage clickOnMoreFilter() {
         moreFilterButton.click();
         return this;
     }
 
-    public RatingsFullPage selectEurekaBrandCheckboxInMoreFilter(){
+    public RatingsFullPage selectEurekaBrandCheckboxInMoreFilter() {
         eurekaBrandCheckboxInMoreFilter.click();
         return this;
     }
 
-    public RatingsFullPage clickOnViewButtonInMoreFilter(){
+    public RatingsFullPage clickOnViewButtonInMoreFilter() {
         viewButtonInMoreFilter.click();
         return this;
     }
 
-    public ArrayList<String> getListOfBrandsAndModelsFromRatingsChart(){
+    public ArrayList<String> getListOfBrandsAndModelsFromRatingsChart() {
         ArrayList<String> listOfBrandsAndModels = new ArrayList<>();
-        for (WebElement brandModel : brandsAndModelsList){
+        for (WebElement brandModel : brandsAndModelsList) {
             listOfBrandsAndModels.add(brandModel.getText());
         }
         return listOfBrandsAndModels;
+    }
+
+    public boolean isRatingsFullViewDisplayed() {
+        return ratingsFullView.isDisplayed();
+    }
+
+    public RatingsFullPage clickOnAddToCompareButton() {
+        compareButtons.get(0).click();
+        return this;
+    }
+
+    public String getCompareCircleNumber() {
+        waitForElementVisible(compareCircleNumber);
+        return compareCircleNumber.getText();
+    }
+
+    public RatingsFullPage clickOnCompareBucket() {
+        compareBucket.click();
+        return new RatingsFullPage(driver);
+    }
+
+    public ComparePage clickOnViewCompare() {
+        viewCompareButton.click();
+        return new ComparePage(driver);
     }
 }

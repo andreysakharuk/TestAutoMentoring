@@ -38,7 +38,7 @@ public class SeleniumTest {
     private static final String SEARCH_RESULT_LABEL = "search-top";
     private static final String SEARCH_RESULT_TEXT = "Showing results for Miele Dynamic U1 Cat";
     private static final String MODELS_BRAND_ = ".product-brand";
-    private static final String MIELE_BRAND = "Miele";
+    private static final String MIELE_BRAND = "";
     private static final String MODEL_TITLE = "span.crux-page-title";
     private static final String SWITCHER_ICONS = "//*[@alt='view']";
     private static final String CLOSE_BUTTON_TOUR = "list__tour__skip";

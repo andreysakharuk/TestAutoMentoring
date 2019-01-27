@@ -14,11 +14,20 @@ public class ModelPage extends AbstractPage {
     @FindBy(css = ".price-and-shop__title.crux-call-to-action")
     private WebElement priceAndShopTitle;
 
-    @FindBy(xpath = "//button[@class='crux-btn crux-btn crux-btn-special--sm']")
+    @FindBy(css = "a.price-and-shop__button")
     private WebElement amazonButton;
 
-    @FindBy(css =".gnav-breadcrumbs li")
+    @FindBy(css = ".gnav-breadcrumbs li")
     private List<WebElement> breadcrumbsList;
+
+    @FindBy(css = "span.crux-page-title")
+    private WebElement title;
+
+    @FindBy(xpath = "//*[@alt='view']")
+    private List<WebElement> switcherIcons;
+
+    @FindBy(css = ".related-articles__news-header")
+    private WebElement relatedArticlesSection;
 
     public ModelPage(WebDriver driver) {
         super(driver);
@@ -34,21 +43,31 @@ public class ModelPage extends AbstractPage {
         return priceAndShopTitle.isDisplayed();
     }
 
-    public String clickOnAmazonButtonAndGetUrl() {
-        waitForElementVisible(amazonButton);
+    public AmazonPage clickOnAmazonButton() throws InterruptedException {
         new Actions(driver).moveToElement(amazonButton).perform();
+        Thread.sleep(2000);
         amazonButton.click();
-        Set<String> handles =  driver.getWindowHandles();
+        Set<String> handles = driver.getWindowHandles();
         Iterator<String> handleIt = handles.iterator();
-        while(handleIt.hasNext()) {
+        while (handleIt.hasNext()) {
             String handle = handleIt.next();
             driver.switchTo().window(handle);
         }
-        return driver.getCurrentUrl();
+        return new AmazonPage(driver);
     }
 
     public OverviewPage clickOnUprightVacuumsLinkInBreadcrumbs() {
         breadcrumbsList.get(2).click();
         return new OverviewPage(driver);
+    }
+
+    public String getTitle() {
+        waitForElementVisible(title);
+        return title.getText();
+    }
+
+    public RatingsCompactPage clickOnRatingsCompactIcon() {
+        switcherIcons.get(1).click();
+        return new RatingsCompactPage(driver);
     }
 }

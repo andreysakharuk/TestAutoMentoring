@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class OverviewPage extends AbstractPage{
+public class OverviewPage extends AbstractPage {
 
     @FindBy(css = ".text.mobile-text.crux-component-title p")
     private WebElement heroSection;
@@ -15,8 +15,7 @@ public class OverviewPage extends AbstractPage{
     @FindBy(css = ".buying-guide a")
     private WebElement buyingGuideLink;
 
-
-    public OverviewPage(WebDriver driver){
+    public OverviewPage(WebDriver driver) {
         super(driver);
     }
 
@@ -25,23 +24,19 @@ public class OverviewPage extends AbstractPage{
         return new OverviewPage(driver);
     }
 
-    public String getHeroSectionText(){
+    public String getHeroSectionText() {
         waitForElementVisible(heroSection);
         return heroSection.getText();
     }
-
 
     public RatingsCompactPage clickOnUprightLinkInTypeSection() {
         linkInTypeSection.click();
         return new RatingsCompactPage(driver);
     }
 
-
     public BuyingGuidePage clickOnBuyingGuideLink() {
         waitForElementVisible(buyingGuideLink);
         buyingGuideLink.click();
         return new BuyingGuidePage(driver);
     }
-
-
 }

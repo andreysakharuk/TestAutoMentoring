@@ -4,45 +4,48 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class LoginPage extends AbstractPage{
+public class LoginPage extends AbstractPage {
 
-    protected LoginPage(WebDriver driver){
+    @FindBy(name = "userName")
+    private WebElement usernameInput;
+
+    @FindBy(name = "password")
+    private WebElement passwordInput;
+
+    @FindBy(css = "div.gnav-sign-in__form__submit input")
+    private WebElement signInButtonInLoginForm;
+
+    protected LoginPage(WebDriver driver) {
         super(driver);
     }
 
-    @FindBy (name = "userName")
-    private WebElement usernameInput;
-
-    @FindBy (name = "password")
-    private WebElement passwordInput;
-
-    @FindBy (css = "div.gnav-sign-in__form__submit input")
-    private WebElement signInButtonInLoginForm;
-
-
-    public LoginPage enterUsername(String query){
+    public LoginPage enterUsername(String query) {
         usernameInput.sendKeys(query);
         return this;
     }
 
-    public LoginPage enterPassword(String query){
+    public LoginPage enterPassword(String query) {
         passwordInput.sendKeys(query);
         return this;
     }
 
-    public RatingsFullPage clickSignInButtonInLoginForm(){
+    public RatingsFullPage clickSignInButtonInLoginForm() {
         signInButtonInLoginForm.click();
         return new RatingsFullPage(driver);
     }
 
-    public boolean isSignInButtonDisplayed(){
+    public boolean isSignInButtonDisplayed() {
         waitForElementVisible(signInButtonInLoginForm);
         return isElementDisplayed(signInButtonInLoginForm);
     }
 
-    public BuyingGuidePage clickSignInButtonInLoginFormBuyingGuide( ){
+    public BuyingGuidePage clickSignInButtonInLoginFormBuyingGuide() {
         signInButtonInLoginForm.click();
         return new BuyingGuidePage(driver);
     }
 
+    public HomePage clickSignInButtonInLoginFormHomePage() {
+        signInButtonInLoginForm.click();
+        return new HomePage(driver);
+    }
 }

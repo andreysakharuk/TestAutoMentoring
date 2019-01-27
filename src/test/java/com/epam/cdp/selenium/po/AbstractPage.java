@@ -11,8 +11,6 @@ public abstract class AbstractPage {
 
     protected WebDriver driver;
 
-
-
     protected AbstractPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -26,8 +24,11 @@ public abstract class AbstractPage {
         }
     }
 
-    protected void waitForElementVisible(WebElement element) {
+    public void waitForElementVisible(WebElement element) {
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
     }
 
+    public void waitForElementClickable(WebElement element) {
+        new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(element));
+    }
 }
