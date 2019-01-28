@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.po;
+package com.epam.cdp.selenium.pf;
 
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebDriver;

@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.po;
+package com.epam.cdp.selenium.pf;
 
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
@@ -26,9 +26,5 @@ public abstract class AbstractPage {
 
     public void waitForElementVisible(WebElement element) {
         new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
-    }
-
-    public void waitForElementClickable(WebElement element) {
-        new WebDriverWait(driver, 5).until(ExpectedConditions.elementToBeClickable(element));
     }
 }

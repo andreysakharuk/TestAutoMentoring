@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.po;
+package com.epam.cdp.selenium.pf;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,11 +16,6 @@ public class MembershipPage extends AbstractPage {
     public RatingsCompactPage navigateBack() {
         driver.navigate().back();
         return new RatingsCompactPage(driver);
-    }
-
-    public MembershipPage open() {
-        driver.get("https://www.consumerreports.org/join?INTKEY=I82RLMS");
-        return new MembershipPage(driver);
     }
 
     public String getCtaBannerMembershipPage() {

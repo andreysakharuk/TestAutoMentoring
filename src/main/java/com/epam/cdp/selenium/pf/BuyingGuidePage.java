@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.po;
+package com.epam.cdp.selenium.pf;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -15,6 +15,9 @@ public class BuyingGuidePage extends AbstractPage {
     @FindBy(css = ".subnav-lock-icon")
     private WebElement lockNearRecommendedLink;
 
+    @FindBy(css = ".gnav-search__button")
+    private WebElement searchButton;
+
     public BuyingGuidePage(WebDriver driver) {
         super(driver);
     }
@@ -30,8 +33,10 @@ public class BuyingGuidePage extends AbstractPage {
         return new LoginPage(driver);
     }
 
-    public boolean isLockNearRecommendedLinkDisplayed() throws InterruptedException {
-        Thread.sleep(2000);
+    public boolean isLockNearRecommendedLinkDisplayed(){
+        waitForElementVisible(searchButton);
+        searchButton.click();
+        searchButton.click();
         return lockNearRecommendedLink.isDisplayed();
     }
 }

@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.po;
+package com.epam.cdp.selenium.pf;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -19,7 +19,7 @@ public class RatingsFullPage extends AbstractPage {
     private WebElement recommendedToggle;
 
     @FindBy(xpath = "//*[@class='clearfix classic-view__body__item classic-view__body__item--fixed']//*[@class='recommendation-label']")
-    private List<WebElement> lablesList;
+    private List<WebElement> labelsList;
 
     @FindBy(className = "ratings-spa-filters__clear-filters")
     private WebElement clearAllLink;
@@ -110,7 +110,7 @@ public class RatingsFullPage extends AbstractPage {
 
     public ArrayList<String> getListOfLabelsFromRatingsChart() {
         ArrayList<String> listOfLabels = new ArrayList<>();
-        for (WebElement label : lablesList) {
+        for (WebElement label : labelsList) {
             listOfLabels.add(label.getText());
         }
         return listOfLabels;

@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.po;
+package com.epam.cdp.selenium.pf;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -29,7 +29,7 @@ public class LoginPage extends AbstractPage {
         return this;
     }
 
-    public RatingsFullPage clickSignInButtonInLoginForm() {
+    public RatingsFullPage clickSignInButtonInLoginFormRatingsFullPage() {
         signInButtonInLoginForm.click();
         return new RatingsFullPage(driver);
     }

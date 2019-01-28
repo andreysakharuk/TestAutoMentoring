@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium;
+package com.epam.cdp.selenium.simple;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.ElementNotInteractableException;

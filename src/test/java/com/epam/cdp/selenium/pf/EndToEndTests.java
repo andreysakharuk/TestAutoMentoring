@@ -1,6 +1,5 @@
-package com.epam.cdp.selenium.tests;
+package com.epam.cdp.selenium.pf;
 
-import com.epam.cdp.selenium.po.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-public class FirstTest {
+public class EndToEndTests {
 
     private WebDriver driver;
 
@@ -35,7 +34,7 @@ public class FirstTest {
     }
 
     @Test()
-    public void scenario1() {
+    public void checkFiltersOnRatingsFullPage() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         String actualTextOfCtaBanner = ratingsFullPage.open().getCtaBannerRatingsFullPage();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
@@ -43,7 +42,7 @@ public class FirstTest {
         LoginPage loginPage = ratingsFullPage.open().clickOnSignInButtonInGlobalNav();
         Assert.assertTrue(loginPage.isSignInButtonDisplayed());
 
-        ratingsFullPage = loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButtonInLoginForm();
+        ratingsFullPage = loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButtonInLoginFormRatingsFullPage();
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
         ratingsFullPage.clickOnRecommendedToggle();
@@ -75,7 +74,7 @@ public class FirstTest {
     }
 
     @Test
-    public void scenario2() throws InterruptedException {
+    public void navigateFromOverviewToModelPageClickShopButtonLoginOnBuyingGuide(){
         OverviewPage overviewPage = new OverviewPage(driver);
         String heroSectionText = overviewPage.open().getHeroSectionText();
         assertThat(heroSectionText, containsString(CTA_BANNER_OVERVIEW));
@@ -112,7 +111,7 @@ public class FirstTest {
     }
 
     @Test
-    public void scenario3() {
+    public void searchForModelNavigateToRatingsAddModelsToCompare() {
         HomePage homePage = new HomePage(driver).open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
@@ -120,7 +119,7 @@ public class FirstTest {
         homePage = loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButtonInLoginFormHomePage();
         Assert.assertEquals(homePage.getAccountInfoSection(), "resault1");
 
-        SearchResultPage searchResultPage = homePage.enterValueInSearchField(MIELE_MODEL).clickOnSearchButon();
+        SearchResultPage searchResultPage = homePage.enterValueInSearchField(MIELE_MODEL).clickOnSearchButton();
         assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
 
         ModelPage modelPage = searchResultPage.clickOnFirstResult();

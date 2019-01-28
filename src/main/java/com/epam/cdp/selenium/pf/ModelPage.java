@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.po;
+package com.epam.cdp.selenium.pf;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -43,9 +43,9 @@ public class ModelPage extends AbstractPage {
         return priceAndShopTitle.isDisplayed();
     }
 
-    public AmazonPage clickOnAmazonButton() throws InterruptedException {
+    public AmazonPage clickOnAmazonButton(){
         new Actions(driver).moveToElement(amazonButton).perform();
-        Thread.sleep(2000);
+        waitForElementVisible(amazonButton);
         amazonButton.click();
         Set<String> handles = driver.getWindowHandles();
         Iterator<String> handleIt = handles.iterator();
