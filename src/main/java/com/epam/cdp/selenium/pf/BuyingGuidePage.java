@@ -22,12 +22,12 @@ public class BuyingGuidePage extends AbstractPage {
         super(driver);
     }
 
-    public String getLabelInHeroSection() {
+    public String getLabelInHeroSectionText() {
         waitForElementVisible(labelInHeroSection);
         return labelInHeroSection.getText();
     }
 
-    public LoginPage clickOnSignInLink() {
+    public LoginPage clickSignInLink() {
         waitForElementVisible(signInButton);
         signInButton.click();
         return new LoginPage(driver);

@@ -10,16 +10,16 @@ import java.util.List;
 public class RatingsCompactPage extends AbstractPage {
 
     @FindBy(xpath = "//*[@class='cta-top-content__buttons text-center']")
-    private WebElement becomeAmemberLink;
+    private WebElement becomeMemberLink;
 
     @FindBy(className = "cta-top-content__header")
-    private WebElement ctaButton;
+    private WebElement ctaBanner;
 
     @FindBy(css = ".spa-page-counter__values >span:nth-child(2)")
     private WebElement resultCount;
 
     @FindBy(css = ".list__price-and-shop a")
-    private List<WebElement> listOfShopButtons;
+    private List<WebElement> shopButtons;
 
     @FindBy(className = "list__tour__skip")
     private WebElement closeTourButton;
@@ -41,12 +41,12 @@ public class RatingsCompactPage extends AbstractPage {
         super(driver);
     }
 
-    public String getCtaBannerRatingsCompactPage() {
-        return ctaButton.getText();
+    public String getCtaBannerText() {
+        return ctaBanner.getText();
     }
 
-    public MembershipPage clickOnBecomeAMemberLink() {
-        becomeAmemberLink.click();
+    public MembershipPage clickBecomeMemberLink() {
+        becomeMemberLink.click();
         return new MembershipPage(driver);
     }
 
@@ -54,12 +54,12 @@ public class RatingsCompactPage extends AbstractPage {
         return resultCount.getText();
     }
 
-    public ModelPage clickOnShopButton() {
-        listOfShopButtons.get(0).click();
+    public ModelPage clickShopButton() {
+        shopButtons.get(0).click();
         return new ModelPage(driver);
     }
 
-    public RatingsCompactPage clickOnCloseTourButton() {
+    public RatingsCompactPage clickCloseTourButton() {
         try {
             closeTourButton.click();
         } catch (ElementNotInteractableException e) {
@@ -73,7 +73,7 @@ public class RatingsCompactPage extends AbstractPage {
         return isElementDisplayed(ratingsListView);
     }
 
-    public RatingsCompactPage clickOnAddToCompareButton() {
+    public RatingsCompactPage clickAddToCompareButton() {
         compareButtons.get(1).click();
         return this;
     }
@@ -82,7 +82,7 @@ public class RatingsCompactPage extends AbstractPage {
         return compareCircleNumber.getText();
     }
 
-    public RatingsFullPage clickOnFullViewIcon() {
+    public RatingsFullPage clickFullViewIcon() {
         switcherIcons.get(0).click();
         return new RatingsFullPage(driver);
     }

@@ -3,25 +3,26 @@ package com.epam.cdp.selenium.pf;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class HomePage extends AbstractPage {
+
+    private static final String HOME_PAGE_URL = "https://www.consumerreports.org/cro/index.htm";
 
     @FindBy(css = ".description")
     private WebElement mainArticlesSection;
 
     @FindBy(className = "gnav-sign-in")
-    private WebElement signInButtonInGlobalNav;
+    private WebElement signInButton;
 
     @FindBy(css = ".account-info")
     private WebElement accountInfoSection;
 
     @FindBy(xpath = "//input[@title='Search']")
-    private WebElement searchField;
+    private WebElement searchInput;
 
     @FindBy(css = ".gnav-typeahead__button")
     private WebElement searchButton;
+
 
     public HomePage(WebDriver driver) {
         super(driver);
@@ -32,28 +33,27 @@ public class HomePage extends AbstractPage {
     }
 
     public HomePage open() {
-        driver.get("https://www.consumerreports.org/cro/index.htm");
+        driver.get(HOME_PAGE_URL);
         return new HomePage(driver);
     }
 
-    public LoginPage clickOnSignInButtonInGlobalNav() {
-        signInButtonInGlobalNav.click();
+    public LoginPage clickSignInButton() {
+        signInButton.click();
         return new LoginPage(driver);
     }
 
-    public String getAccountInfoSection() {
+    public String getAccountInfoSectionText() {
         waitForElementVisible(accountInfoSection);
         return accountInfoSection.getText();
     }
 
-    public HomePage enterValueInSearchField(String query) {
-        searchField.sendKeys(query);
+    public HomePage enterValueInSearchInput(String attributeValue, String attributeName) {
+        searchInput.sendKeys(attributeValue);
+        waitForElementAttributeValue(searchInput, attributeName, attributeValue);
         return this;
     }
 
-    public SearchResultPage clickOnSearchButton() {
-        new WebDriverWait(driver, 10)
-                .until(ExpectedConditions.attributeContains(searchField, "value", "Miele Dynamic U1 Cat & Dog"));
+    public SearchResultPage clickSearchButton() {
         searchButton.click();
         return new SearchResultPage(driver);
     }

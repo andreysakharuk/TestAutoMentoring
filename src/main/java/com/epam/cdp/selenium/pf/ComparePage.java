@@ -4,13 +4,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ComparePage extends AbstractPage {
 
     @FindBy(css = ".compare-page__model-name")
-    private List<WebElement> listOfModels;
+    private List<WebElement> modelsList;
 
     @FindBy(css = ".shared-crux-icon.crux-icons.crux-icons-dontbuy")
     private WebElement removeCompareButton;
@@ -22,15 +22,12 @@ public class ComparePage extends AbstractPage {
         super(driver);
     }
 
-    public List<String> getListOfModels() {
-        List<String> modelsList = new ArrayList<>();
-        for (WebElement element : listOfModels) {
-            modelsList.add(element.getText());
-        }
-        return modelsList;
+    public List<String> getModelsList() {
+        List<String> modelsListFull = modelsList.stream().map(WebElement::getText).collect(Collectors.toList());
+        return modelsListFull;
     }
 
-    public ComparePage clickOnRemoveButton() {
+    public ComparePage clickRemoveButton() {
         removeCompareButton.click();
         return new ComparePage(driver);
     }

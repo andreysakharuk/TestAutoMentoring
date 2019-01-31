@@ -6,14 +6,17 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RatingsFullPage extends AbstractPage {
 
+    private static final String RATINGS_FULL_PAGE_URL = "https://www.consumerreports.org/products/vacuum-cleaners/handheld-vacuum/view1/";
+
     @FindBy(className = "cta-top-content__header")
-    private WebElement ctaButton;
+    private WebElement ctaBanner;
 
     @FindBy(className = "gnav-sign-in")
-    private WebElement signInButtonGlobalNav;
+    private WebElement signInButton;
 
     @FindBy(className = "recommended-switcher__value")
     private WebElement recommendedToggle;
@@ -34,34 +37,34 @@ public class RatingsFullPage extends AbstractPage {
     private List<WebElement> priceLabelsList;
 
     @FindBy(css = ".price-filter-popover .crux-btn.crux-btn-primary")
-    private WebElement viewButtonInPriceFilter;
+    private WebElement viewButtonInPriceFilterPopup;
 
     @FindBy(css = ".price-filter-popover .crux-input")
-    private WebElement inputInPriceFilter;
+    private WebElement inputInPriceFilterPopup;
 
     @FindBy(css = ".classic-view__price .crux-green")
     private List<WebElement> pricesList;
 
     @FindBy(xpath = "//*[@data-id='rated']//button")
-    private WebElement ratedBestFilter;
+    private WebElement ratedBestFilterButton;
 
     @FindBy(xpath = "//*[@data-id='rated']//p")
-    private WebElement labelInRatedBestFilter;
+    private WebElement labelInRatedBestFilterPopup;
 
     @FindBy(css = ".rated-filter-popover .crux-btn.crux-btn-primary")
-    private WebElement viewButtonInRatedBestFilter;
+    private WebElement viewButtonInRatedBestFilterPopup;
 
     @FindBy(css = ".shared-crux-checkbox.crux-checkbox label")
-    private List<WebElement> firstCheckBoxInRatedBestFilter;
+    private List<WebElement> checkBoxInRatedBestFilterPopup;
 
     @FindBy(xpath = "//*[@name='Eureka-checkbox']/parent::label")
-    private WebElement eurekaBrandCheckboxInMoreFilter;
+    private WebElement eurekaBrandCheckboxInMoreFilterPopup;
 
     @FindBy(xpath = "//*[@data-id='more-filters']")
     private WebElement moreFilterButton;
 
     @FindBy(css = ".more-filters-popover .crux-btn.crux-btn-primary")
-    private WebElement viewButtonInMoreFilter;
+    private WebElement viewButtonInMoreFilterPopup;
 
     @FindBy(xpath = "//*[@class='clearfix classic-view__body__item classic-view__body__item--fixed']")
     private List<WebElement> brandsAndModelsList;
@@ -76,7 +79,7 @@ public class RatingsFullPage extends AbstractPage {
     private WebElement compareCircleNumber;
 
     @FindBy(xpath = "//*[@data-id='compare-bucket']//*[@data-q-check='shared-crux-number-score']")
-    private WebElement compareBucket;
+    private WebElement compareBucketButton;
 
     @FindBy(xpath = "//*[@data-display='true']//button[@class='crux-btn crux-btn-special--lg']")
     private WebElement viewCompareButton;
@@ -85,38 +88,35 @@ public class RatingsFullPage extends AbstractPage {
         super(driver);
     }
 
-    public String getCtaBannerRatingsFullPage() {
-        return ctaButton.getText();
+    public String getCtaBannerText() {
+        return ctaBanner.getText();
     }
 
     public RatingsFullPage open() {
-        driver.get("https://www.consumerreports.org/products/vacuum-cleaners/handheld-vacuum/view1/");
+        driver.get(RATINGS_FULL_PAGE_URL);
         return new RatingsFullPage(driver);
     }
 
-    public LoginPage clickOnSignInButtonInGlobalNav() {
-        signInButtonGlobalNav.click();
+    public LoginPage clickSignInButton() {
+        signInButton.click();
         return new LoginPage(driver);
     }
 
     public boolean isCtaBannerDisplayed() {
-        return isElementDisplayed(ctaButton);
+        return isElementDisplayed(ctaBanner);
     }
 
-    public RatingsFullPage clickOnRecommendedToggle() {
+    public RatingsFullPage clickRecommendedToggle() {
         recommendedToggle.click();
         return this;
     }
 
-    public ArrayList<String> getListOfLabelsFromRatingsChart() {
-        ArrayList<String> listOfLabels = new ArrayList<>();
-        for (WebElement label : labelsList) {
-            listOfLabels.add(label.getText());
-        }
-        return listOfLabels;
+    public List<String> getListOfLabelsFromRatingsChart() {
+        List<String> labelsListFull = labelsList.stream().map(WebElement::getText).collect(Collectors.toList());
+        return labelsListFull;
     }
 
-    public RatingsFullPage clickOnClearAllLink() {
+    public RatingsFullPage clickClearAllLink() {
         clearAllLink.click();
         return this;
     }
@@ -125,27 +125,27 @@ public class RatingsFullPage extends AbstractPage {
         return resultCount.getText();
     }
 
-    public RatingsFullPage clickOnPriceFilter() {
+    public RatingsFullPage clickPriceFilter() {
         priceFilterButton.click();
         return this;
     }
 
-    public String getCancelButtonInPriceFilter() {
+    public String getCancelButtonTextInPriceFilterPopup() {
         return priceLabelsList.get(2).getText();
     }
 
     public RatingsFullPage enterValueInPriceFilter(String a) {
-        inputInPriceFilter.clear();
-        inputInPriceFilter.sendKeys(a);
+        inputInPriceFilterPopup.clear();
+        inputInPriceFilterPopup.sendKeys(a);
         return this;
     }
 
-    public RatingsFullPage clickOnViewButtonInPriceFilter() {
-        viewButtonInPriceFilter.click();
+    public RatingsFullPage clickViewButtonInPriceFilterPopup() {
+        viewButtonInPriceFilterPopup.click();
         return this;
     }
 
-    public ArrayList<Integer> getListOfPricesFromRatingsChart() {
+    public List<Integer> getListOfPricesFromRatingsChart() {
         ArrayList<Integer> listOfPrices = new ArrayList<>();
         for (WebElement price : pricesList) {
             String formattedPrice = price.getText().replace("$", "");
@@ -154,57 +154,54 @@ public class RatingsFullPage extends AbstractPage {
         return listOfPrices;
     }
 
-    public RatingsFullPage clickOnRatedBestFilter() {
-        ratedBestFilter.click();
+    public RatingsFullPage clickRatedBestFilterButton() {
+        ratedBestFilterButton.click();
         return this;
     }
 
-    public String getLabelFromRatedBestFilter() {
-        return labelInRatedBestFilter.getText();
+    public String getLabelInRatedBestFilterPopup() {
+        return labelInRatedBestFilterPopup.getText();
     }
 
-    public RatingsFullPage selectCheckboxInRatedBestFilter() {
-        firstCheckBoxInRatedBestFilter.get(0).click();
+    public RatingsFullPage selectCheckboxInRatedBestFilterPopup() {
+        checkBoxInRatedBestFilterPopup.get(0).click();
         return this;
     }
 
-    public RatingsFullPage clickOnViewButtonInRatedBestFilter() {
-        viewButtonInRatedBestFilter.click();
+    public RatingsFullPage clickViewButtonInRatedBestFilterPopup() {
+        viewButtonInRatedBestFilterPopup.click();
         return this;
     }
 
-    public String getColorOfRatedBestFilter() {
-        return ratedBestFilter.getCssValue("background-color");
+    public String getColorOfRatedBestFilterButton() {
+        return ratedBestFilterButton.getCssValue("background-color");
     }
 
-    public RatingsFullPage clickOnMoreFilter() {
+    public RatingsFullPage clickMoreFilterButton() {
         moreFilterButton.click();
         return this;
     }
 
-    public RatingsFullPage selectEurekaBrandCheckboxInMoreFilter() {
-        eurekaBrandCheckboxInMoreFilter.click();
+    public RatingsFullPage selectEurekaBrandCheckboxInMoreFilterPopup() {
+        eurekaBrandCheckboxInMoreFilterPopup.click();
         return this;
     }
 
-    public RatingsFullPage clickOnViewButtonInMoreFilter() {
-        viewButtonInMoreFilter.click();
+    public RatingsFullPage clickViewButtonInMoreFilterpopup() {
+        viewButtonInMoreFilterPopup.click();
         return this;
     }
 
-    public ArrayList<String> getListOfBrandsAndModelsFromRatingsChart() {
-        ArrayList<String> listOfBrandsAndModels = new ArrayList<>();
-        for (WebElement brandModel : brandsAndModelsList) {
-            listOfBrandsAndModels.add(brandModel.getText());
-        }
-        return listOfBrandsAndModels;
+    public List<String> getBrandsAndModelsListInRatingsChart() {
+        List<String> brandsAndModelsListFull = brandsAndModelsList.stream().map(WebElement::getText).collect(Collectors.toList());
+        return brandsAndModelsListFull;
     }
 
     public boolean isRatingsFullViewDisplayed() {
         return ratingsFullView.isDisplayed();
     }
 
-    public RatingsFullPage clickOnAddToCompareButton() {
+    public RatingsFullPage clickAddToCompareButton() {
         compareButtons.get(0).click();
         return this;
     }
@@ -214,12 +211,12 @@ public class RatingsFullPage extends AbstractPage {
         return compareCircleNumber.getText();
     }
 
-    public RatingsFullPage clickOnCompareBucket() {
-        compareBucket.click();
+    public RatingsFullPage clickCompareBucketButton() {
+        compareBucketButton.click();
         return new RatingsFullPage(driver);
     }
 
-    public ComparePage clickOnViewCompare() {
+    public ComparePage clickViewCompareButton() {
         viewCompareButton.click();
         return new ComparePage(driver);
     }

@@ -7,7 +7,7 @@ public class LoginPage extends AbstractPage {
 
     private final By usernameInputLocator = By.name("userName");
     private final By passwordInputLocator = By.name("password");
-    private final By signInButtonInLoginFormLocator = By.cssSelector("div.gnav-sign-in__form__submit input");
+    private final By signInButtonLocator = By.cssSelector("div.gnav-sign-in__form__submit input");
 
 
     protected LoginPage(WebDriver driver) {
@@ -24,13 +24,13 @@ public class LoginPage extends AbstractPage {
         return this;
     }
 
-    public RatingsFullPage clickSignInButtonInLoginForm() {
-        driver.findElement(signInButtonInLoginFormLocator).click();
+    public RatingsFullPage clickSignInButton() {
+        driver.findElement(signInButtonLocator).click();
         return new RatingsFullPage(driver);
     }
 
     public boolean isSignInButtonDisplayed() {
-        waitForElementVisible(signInButtonInLoginFormLocator);
-        return driver.findElement(signInButtonInLoginFormLocator).isDisplayed();
+        waitForElementVisible(signInButtonLocator);
+        return driver.findElement(signInButtonLocator).isDisplayed();
     }
 }

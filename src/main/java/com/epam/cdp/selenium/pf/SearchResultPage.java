@@ -15,7 +15,7 @@ public class SearchResultPage extends AbstractPage {
     private WebElement searchResultLabel;
 
     @FindBy(css = ".product-brand")
-    private List<WebElement> modelsBrand;
+    private List<WebElement> modelsBrandList;
 
     protected SearchResultPage(WebDriver driver) {
         super(driver);
@@ -26,14 +26,14 @@ public class SearchResultPage extends AbstractPage {
                 .until(ExpectedConditions.textToBePresentInElement(searchResultLabel,
                         "Showing results for Miele Dynamic U1 Cat"));
         List<String> lisOfbrands = new ArrayList<>();
-        for (WebElement element : modelsBrand) {
+        for (WebElement element : modelsBrandList) {
             lisOfbrands.add(element.getText());
         }
         return lisOfbrands;
     }
 
-    public ModelPage clickOnFirstResult() {
-        modelsBrand.get(0).click();
+    public ModelPage clickFirstResult() {
+        modelsBrandList.get(0).click();
         return new ModelPage(driver);
     }
 }

@@ -1,15 +1,17 @@
 package com.epam.cdp.selenium.pf;
 
+import com.google.common.collect.Iterables;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class ModelPage extends AbstractPage {
+
+    private static final String MODEL_PAGE_URL =
+            "https://www.consumerreports.org/products/vacuum-cleaners/upright-vacuum/bissell-cleanview-plus-rewind-1332-387595/";
 
     @FindBy(css = ".price-and-shop__title.crux-call-to-action")
     private WebElement priceAndShopTitle;
@@ -34,7 +36,7 @@ public class ModelPage extends AbstractPage {
     }
 
     public ModelPage open() {
-        driver.get("https://www.consumerreports.org/products/vacuum-cleaners/upright-vacuum/bissell-cleanview-plus-rewind-1332-387595/");
+        driver.get(MODEL_PAGE_URL);
         return new ModelPage(driver);
     }
 
@@ -43,20 +45,14 @@ public class ModelPage extends AbstractPage {
         return priceAndShopTitle.isDisplayed();
     }
 
-    public AmazonPage clickOnAmazonButton(){
-        new Actions(driver).moveToElement(amazonButton).perform();
-        waitForElementVisible(amazonButton);
-        amazonButton.click();
-        Set<String> handles = driver.getWindowHandles();
-        Iterator<String> handleIt = handles.iterator();
-        while (handleIt.hasNext()) {
-            String handle = handleIt.next();
-            driver.switchTo().window(handle);
-        }
+    public AmazonPage clickAmazonButton() {
+        new Actions(driver).moveToElement(amazonButton).click().build().perform();
+        String lastWindow = Iterables.getLast(driver.getWindowHandles());
+        driver.switchTo().window(lastWindow);
         return new AmazonPage(driver);
     }
 
-    public OverviewPage clickOnUprightVacuumsLinkInBreadcrumbs() {
+    public OverviewPage clickUprightVacuumsLinkInBreadcrumbs() {
         breadcrumbsList.get(2).click();
         return new OverviewPage(driver);
     }
@@ -66,7 +62,7 @@ public class ModelPage extends AbstractPage {
         return title.getText();
     }
 
-    public RatingsCompactPage clickOnRatingsCompactIcon() {
+    public RatingsCompactPage clickRatingsCompactIcon() {
         switcherIcons.get(1).click();
         return new RatingsCompactPage(driver);
     }

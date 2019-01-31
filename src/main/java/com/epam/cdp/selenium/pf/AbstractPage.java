@@ -25,6 +25,10 @@ public abstract class AbstractPage {
     }
 
     public void waitForElementVisible(WebElement element) {
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOf(element));
+        new WebDriverWait(driver, 10).until(ExpectedConditions.visibilityOf(element));
+    }
+
+    public void waitForElementAttributeValue(WebElement element, String attributeName, String attributeValue) {
+        new WebDriverWait(driver, 10).until(ExpectedConditions.attributeContains(element, attributeName, attributeValue));
     }
 }

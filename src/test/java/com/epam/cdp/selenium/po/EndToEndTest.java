@@ -8,7 +8,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -34,41 +33,48 @@ public class EndToEndTest {
     @Test()
     public void checkFiltersOnRatingsFullPage() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
-        String actualTextOfCtaBanner = ratingsFullPage.open().getCtaBannerRatingsFullPage();
+        String actualTextOfCtaBanner = ratingsFullPage.open()
+                .getCtaBannerText();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
-        LoginPage loginPage = ratingsFullPage.open().clickOnSignInButtonInGlobalNav();
+        LoginPage loginPage = ratingsFullPage.clickSignInButton();
         Assert.assertTrue(loginPage.isSignInButtonDisplayed());
 
-        ratingsFullPage = loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButtonInLoginForm();
+        ratingsFullPage = loginPage.enterUsername(USERNAME)
+                .enterPassword(PASSWORD)
+                .clickSignInButton();
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
-        ratingsFullPage.clickOnRecommendedToggle();
-        ArrayList<String> listOfLabels = ratingsFullPage.getListOfLabelsFromRatingsChart();
-        for (String label : listOfLabels) {
+        ratingsFullPage.clickRecommendedToggle();
+        ratingsFullPage.getLabelsListInRatingsChart().forEach(label -> {
             assertThat(label, either(containsString("RECOMMENDED")).or(containsString("BEST BUY")));
-        }
+        });
 
-        String resultCount = ratingsFullPage.clickOnClearAllLink().getResultCount();
+        String resultCount = ratingsFullPage.clickClearAllLink()
+                .getResultCount();
         Assert.assertEquals(resultCount, "12");
 
-        String isCancelButtonDisplayed = ratingsFullPage.clickOnPriceFilter().getCancelButtonInPriceFilter();
+        String isCancelButtonDisplayed = ratingsFullPage.clickPriceFilterButton()
+                .getCancelButtonTextInPriceFilterPopup();
         Assert.assertEquals(isCancelButtonDisplayed, "CANCEL");
 
-        ratingsFullPage.enterValueInPriceFilter("100").clickOnViewButtonInPriceFilter();
-        ArrayList<Integer> listOfPrices = ratingsFullPage.getListOfPricesFromRatingsChart();
-        assertThat(listOfPrices, everyItem(lessThanOrEqualTo(100)));
+        ratingsFullPage.enterValueInPriceFilterPopup("100")
+                .clickViewButtonInPriceFilterPopup();
+        assertThat(ratingsFullPage.getPricesListInRatingsChart(), everyItem(lessThanOrEqualTo(100)));
 
-        String actualLabelFromRatedBestFilter = ratingsFullPage.clickOnRatedBestFilter().getLabelFromRatedBestFilter();
+        String actualLabelFromRatedBestFilter = ratingsFullPage.clickRatedBestFilterButton()
+                .getLabelFromRatedBestFilterPopup();
         Assert.assertEquals(actualLabelFromRatedBestFilter, "Select One or More Filters:");
 
-        ratingsFullPage.selectCheckboxInRatedBestFilter().clickOnViewButtonInRatedBestFilter();
-        Assert.assertEquals(ratingsFullPage.getColorOfRatedBestFilter(), "rgba(0, 174, 77, 1)");
+        ratingsFullPage.selectCheckboxInRatedBestFilterPopup()
+                .clickViewButtonInRatedBestFilterPopup();
+        Assert.assertEquals(ratingsFullPage.getColorOfRatedBestFilterButton(), "rgba(0, 174, 77, 1)");
 
-        ratingsFullPage.clickOnMoreFilter().selectEurekaBrandCheckboxInMoreFilter().clickOnViewButtonInMoreFilter();
+        ratingsFullPage.clickMoreFilterButton()
+                .selectEurekaBrandCheckboxInMoreFilterPopup()
+                .clickViewButtonInMoreFilterPopup();
 
-        ArrayList<String> listOfBrandsAndModels = ratingsFullPage.getListOfBrandsAndModelsFromRatingsChart();
-        assertThat(listOfBrandsAndModels, everyItem(containsString("Eureka")));
+        assertThat(ratingsFullPage.getBrandsAndModelsListFromRatingsChart(), everyItem(containsString("Eureka")));
     }
 
     @AfterMethod

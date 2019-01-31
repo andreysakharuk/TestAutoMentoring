@@ -8,7 +8,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -36,113 +35,131 @@ public class EndToEndTests {
     @Test()
     public void checkFiltersOnRatingsFullPage() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
-        String actualTextOfCtaBanner = ratingsFullPage.open().getCtaBannerRatingsFullPage();
+        String actualTextOfCtaBanner = ratingsFullPage.open()
+                .getCtaBannerText();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
-        LoginPage loginPage = ratingsFullPage.open().clickOnSignInButtonInGlobalNav();
+        LoginPage loginPage = ratingsFullPage.clickSignInButton();
         Assert.assertTrue(loginPage.isSignInButtonDisplayed());
 
-        ratingsFullPage = loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButtonInLoginFormRatingsFullPage();
+        ratingsFullPage = loginPage.enterUsername(USERNAME)
+                .enterPassword(PASSWORD)
+                .clickSignInButtonInLoginFormRatingsFullPage();
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
-        ratingsFullPage.clickOnRecommendedToggle();
-        ArrayList<String> listOfLabels = ratingsFullPage.getListOfLabelsFromRatingsChart();
-        for (String label : listOfLabels) {
+        ratingsFullPage.clickRecommendedToggle();
+        ratingsFullPage.getListOfLabelsFromRatingsChart().forEach(label -> {
             assertThat(label, either(containsString("RECOMMENDED")).or(containsString("BEST BUY")));
-        }
+        });
 
-        String resultCount = ratingsFullPage.clickOnClearAllLink().getResultCount();
+        String resultCount = ratingsFullPage.clickClearAllLink()
+                .getResultCount();
         Assert.assertEquals(resultCount, "12");
 
-        String isCancelButtonDisplayed = ratingsFullPage.clickOnPriceFilter().getCancelButtonInPriceFilter();
+        String isCancelButtonDisplayed = ratingsFullPage.clickPriceFilter()
+                .getCancelButtonTextInPriceFilterPopup();
         Assert.assertEquals(isCancelButtonDisplayed, "CANCEL");
 
-        ratingsFullPage.enterValueInPriceFilter("100").clickOnViewButtonInPriceFilter();
-        ArrayList<Integer> listOfPrices = ratingsFullPage.getListOfPricesFromRatingsChart();
-        assertThat(listOfPrices, everyItem(lessThanOrEqualTo(100)));
+        ratingsFullPage.enterValueInPriceFilter("100")
+                .clickViewButtonInPriceFilterPopup();
+        assertThat(ratingsFullPage.getListOfPricesFromRatingsChart(), everyItem(lessThanOrEqualTo(100)));
 
-        String actualLabelFromRatedBestFilter = ratingsFullPage.clickOnRatedBestFilter().getLabelFromRatedBestFilter();
+        String actualLabelFromRatedBestFilter = ratingsFullPage.clickRatedBestFilterButton()
+                .getLabelInRatedBestFilterPopup();
         Assert.assertEquals(actualLabelFromRatedBestFilter, "Select One or More Filters:");
 
-        ratingsFullPage.selectCheckboxInRatedBestFilter().clickOnViewButtonInRatedBestFilter();
-        Assert.assertEquals(ratingsFullPage.getColorOfRatedBestFilter(), "rgba(0, 174, 77, 1)");
+        ratingsFullPage.selectCheckboxInRatedBestFilterPopup()
+                .clickViewButtonInRatedBestFilterPopup();
+        Assert.assertEquals(ratingsFullPage.getColorOfRatedBestFilterButton(), "rgba(0, 174, 77, 1)");
 
-        ratingsFullPage.clickOnMoreFilter().selectEurekaBrandCheckboxInMoreFilter().clickOnViewButtonInMoreFilter();
+        ratingsFullPage.clickMoreFilterButton()
+                .selectEurekaBrandCheckboxInMoreFilterPopup()
+                .clickViewButtonInMoreFilterpopup();
 
-        ArrayList<String> listOfBrandsAndModels = ratingsFullPage.getListOfBrandsAndModelsFromRatingsChart();
-        assertThat(listOfBrandsAndModels, everyItem(containsString("Eureka")));
+        assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString("Eureka")));
     }
 
     @Test
-    public void navigateFromOverviewToModelPageClickShopButtonLoginOnBuyingGuide(){
+    public void checkShopToAmazon() {
         OverviewPage overviewPage = new OverviewPage(driver);
-        String heroSectionText = overviewPage.open().getHeroSectionText();
+        String heroSectionText = overviewPage.open()
+                .getHeroSectionText();
         assertThat(heroSectionText, containsString(CTA_BANNER_OVERVIEW));
 
-        RatingsCompactPage ratingsCompactPage = overviewPage.clickOnUprightLinkInTypeSection();
-        assertThat(ratingsCompactPage.getCtaBannerRatingsCompactPage(), equalTo(CTA_BANNER_RATINGS));
+        RatingsCompactPage ratingsCompactPage = overviewPage.clickUprightLinkInTypeSection();
+        assertThat(ratingsCompactPage.getCtaBannerText(), equalTo(CTA_BANNER_RATINGS));
 
-        MembershipPage membershipPage = ratingsCompactPage.clickOnBecomeAMemberLink();
-        assertThat(membershipPage.getCtaBannerMembershipPage(), equalToIgnoringWhiteSpace(
+        MembershipPage membershipPage = ratingsCompactPage.clickBecomeMemberLink();
+        assertThat(membershipPage.getCtaBanner(), equalToIgnoringWhiteSpace(
                 "Buying smart is just the start"));
 
         ratingsCompactPage = membershipPage.navigateBack();
         assertThat(ratingsCompactPage.getCounterResult(), equalTo("64"));
 
-        ModelPage modelpage = ratingsCompactPage.clickOnShopButton();
+        ModelPage modelpage = ratingsCompactPage.clickShopButton();
         Assert.assertTrue(modelpage.isPriceAndShopTitleDisplayed());
 
-        AmazonPage amazonPage  = modelpage.clickOnAmazonButton();
+        AmazonPage amazonPage = modelpage.clickAmazonButton();
         assertThat(amazonPage.getUrl(), containsString("amazon.com"));
+    }
 
-        ModelPage modelPage2 = new ModelPage(driver);
-        overviewPage = modelPage2.open().clickOnUprightVacuumsLinkInBreadcrumbs();
+    @Test
+    public void checkLoginOnBuyingGuide() {
+        ModelPage modelPage = new ModelPage(driver);
+        OverviewPage overviewPage = modelPage.open()
+                .clickUprightVacuumsLinkInBreadcrumbs();
         assertThat(overviewPage.getHeroSectionText(), containsString(CTA_BANNER_OVERVIEW));
 
-        BuyingGuidePage buyingGuidePage = overviewPage.clickOnBuyingGuideLink();
-        String labelInHeroSection = buyingGuidePage.getLabelInHeroSection();
+        BuyingGuidePage buyingGuidePage = overviewPage.clickBuyingGuideLink();
+        String labelInHeroSection = buyingGuidePage.getLabelInHeroSectionText();
         assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
 
-        LoginPage loginPage = buyingGuidePage.clickOnSignInLink();
+        LoginPage loginPage = buyingGuidePage.clickSignInLink();
         Assert.assertTrue(loginPage.isSignInButtonDisplayed());
 
-        buyingGuidePage = loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButtonInLoginFormBuyingGuide();
+        buyingGuidePage = loginPage.enterUsername(USERNAME)
+                .enterPassword(PASSWORD)
+                .clickSignInButtonInLoginFormBuyingGuide();
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
     @Test
-    public void searchForModelNavigateToRatingsAddModelsToCompare() {
+    public void checkAddingModelsToComparision() {
         HomePage homePage = new HomePage(driver).open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
-        LoginPage loginPage = homePage.clickOnSignInButtonInGlobalNav();
-        homePage = loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButtonInLoginFormHomePage();
-        Assert.assertEquals(homePage.getAccountInfoSection(), "resault1");
+        LoginPage loginPage = homePage.clickSignInButton();
+        homePage = loginPage.enterUsername(USERNAME)
+                .enterPassword(PASSWORD)
+                .clickSignInButtonInLoginFormHomePage();
+        Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
 
-        SearchResultPage searchResultPage = homePage.enterValueInSearchField(MIELE_MODEL).clickOnSearchButton();
+        SearchResultPage searchResultPage = homePage.enterValueInSearchInput(MIELE_MODEL, "value").clickSearchButton();
         assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
 
-        ModelPage modelPage = searchResultPage.clickOnFirstResult();
+        ModelPage modelPage = searchResultPage.clickFirstResult();
         assertThat(modelPage.getTitle(), equalTo(MIELE_MODEL));
 
-        RatingsCompactPage ratingsCompactPage = modelPage.clickOnRatingsCompactIcon();
-        ratingsCompactPage.clickOnCloseTourButton();
+        RatingsCompactPage ratingsCompactPage = modelPage.clickRatingsCompactIcon();
+        ratingsCompactPage.clickCloseTourButton();
         Assert.assertTrue(ratingsCompactPage.isRatingsListViewDisplayed());
 
-        ratingsCompactPage.clickOnAddToCompareButton();
+        ratingsCompactPage.clickAddToCompareButton();
         assertThat(ratingsCompactPage.getCompareCircleNumber(), equalTo("1"));
 
-        RatingsFullPage ratingsFullPage = ratingsCompactPage.clickOnFullViewIcon();
+        RatingsFullPage ratingsFullPage = ratingsCompactPage.clickFullViewIcon();
         Assert.assertTrue(ratingsFullPage.isRatingsFullViewDisplayed());
 
-        ratingsFullPage.clickOnAddToCompareButton();
+        ratingsFullPage.clickAddToCompareButton();
         assertThat(ratingsFullPage.getCompareCircleNumber(), equalTo("2"));
 
-        ComparePage comparePage = ratingsFullPage.clickOnCompareBucket().clickOnViewCompare();
-        assertThat(comparePage.getListOfModels().get(0), equalTo(MIELE_MODEL));
-        assertThat(comparePage.getListOfModels().get(1), equalTo("Kenmore Elite Pet Friendly 31150"));
+        ComparePage comparePage = ratingsFullPage.clickCompareBucketButton()
+                .clickViewCompareButton();
+        assertThat(comparePage.getModelsList().get(0), equalTo(MIELE_MODEL));
+        assertThat(comparePage.getModelsList().get(1), equalTo("Kenmore Elite Pet Friendly 31150"));
 
-        comparePage.clickOnRemoveButton().clickOnRemoveButton();
+        comparePage.clickRemoveButton()
+                .clickRemoveButton();
         assertThat(comparePage.getLabelFromEmptyPage(), equalTo("Your Compare Chart is Empty!"));
     }
 

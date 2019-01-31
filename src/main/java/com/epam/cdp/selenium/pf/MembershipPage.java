@@ -18,7 +18,7 @@ public class MembershipPage extends AbstractPage {
         return new RatingsCompactPage(driver);
     }
 
-    public String getCtaBannerMembershipPage() {
+    public String getCtaBanner() {
         return ctaBanner.getText();
     }
 }

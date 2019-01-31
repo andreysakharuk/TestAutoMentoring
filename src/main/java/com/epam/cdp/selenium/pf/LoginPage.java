@@ -13,7 +13,7 @@ public class LoginPage extends AbstractPage {
     private WebElement passwordInput;
 
     @FindBy(css = "div.gnav-sign-in__form__submit input")
-    private WebElement signInButtonInLoginForm;
+    private WebElement signInButton;
 
     protected LoginPage(WebDriver driver) {
         super(driver);
@@ -29,23 +29,24 @@ public class LoginPage extends AbstractPage {
         return this;
     }
 
+    public boolean isSignInButtonDisplayed() {
+        waitForElementVisible(signInButton);
+        return isElementDisplayed(signInButton);
+    }
+
     public RatingsFullPage clickSignInButtonInLoginFormRatingsFullPage() {
-        signInButtonInLoginForm.click();
+        signInButton.click();
         return new RatingsFullPage(driver);
     }
 
-    public boolean isSignInButtonDisplayed() {
-        waitForElementVisible(signInButtonInLoginForm);
-        return isElementDisplayed(signInButtonInLoginForm);
-    }
 
     public BuyingGuidePage clickSignInButtonInLoginFormBuyingGuide() {
-        signInButtonInLoginForm.click();
+        signInButton.click();
         return new BuyingGuidePage(driver);
     }
 
     public HomePage clickSignInButtonInLoginFormHomePage() {
-        signInButtonInLoginForm.click();
+        signInButton.click();
         return new HomePage(driver);
     }
 }

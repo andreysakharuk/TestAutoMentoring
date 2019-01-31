@@ -6,11 +6,13 @@ import org.openqa.selenium.support.FindBy;
 
 public class OverviewPage extends AbstractPage {
 
+    private static final String OVERVIEW_PAGE_URL = "https://www.consumerreports.org/cro/vacuum-cleaners.htm";
+
     @FindBy(css = ".text.mobile-text.crux-component-title p")
     private WebElement heroSection;
 
     @FindBy(css = ".crux-product-title a")
-    private WebElement linkInTypeSection;
+    private WebElement typeSectionLink;
 
     @FindBy(css = ".buying-guide a")
     private WebElement buyingGuideLink;
@@ -20,7 +22,7 @@ public class OverviewPage extends AbstractPage {
     }
 
     public OverviewPage open() {
-        driver.get("https://www.consumerreports.org/cro/vacuum-cleaners.htm");
+        driver.get(OVERVIEW_PAGE_URL);
         return new OverviewPage(driver);
     }
 
@@ -29,12 +31,12 @@ public class OverviewPage extends AbstractPage {
         return heroSection.getText();
     }
 
-    public RatingsCompactPage clickOnUprightLinkInTypeSection() {
-        linkInTypeSection.click();
+    public RatingsCompactPage clickUprightLinkInTypeSection() {
+        typeSectionLink.click();
         return new RatingsCompactPage(driver);
     }
 
-    public BuyingGuidePage clickOnBuyingGuideLink() {
+    public BuyingGuidePage clickBuyingGuideLink() {
         waitForElementVisible(buyingGuideLink);
         buyingGuideLink.click();
         return new BuyingGuidePage(driver);
