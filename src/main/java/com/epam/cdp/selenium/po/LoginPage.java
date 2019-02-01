@@ -3,6 +3,8 @@ package com.epam.cdp.selenium.po;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class LoginPage extends AbstractPage {
 
     private final By usernameInputLocator = By.name("userName");
@@ -24,13 +26,17 @@ public class LoginPage extends AbstractPage {
         return this;
     }
 
-    public RatingsFullPage clickSignInButton() {
+    public <T extends AbstractPage> T clickSignInButton(Class<T> pageClass){
         driver.findElement(signInButtonLocator).click();
-        return new RatingsFullPage(driver);
+        try{
+            return pageClass.getDeclaredConstructor(WebDriver.class).newInstance(driver);
+
+        }catch(IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e){
+            throw new RuntimeException("Unable to create page!");
+        }
     }
 
     public boolean isSignInButtonDisplayed() {
-        waitForElementVisible(signInButtonLocator);
         return driver.findElement(signInButtonLocator).isDisplayed();
     }
 }

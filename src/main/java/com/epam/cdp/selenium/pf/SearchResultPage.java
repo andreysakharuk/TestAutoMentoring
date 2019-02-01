@@ -3,11 +3,9 @@ package com.epam.cdp.selenium.pf;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchResultPage extends AbstractPage {
 
@@ -22,14 +20,8 @@ public class SearchResultPage extends AbstractPage {
     }
 
     public List<String> getListOfBrands() {
-        new WebDriverWait(driver, 5)
-                .until(ExpectedConditions.textToBePresentInElement(searchResultLabel,
-                        "Showing results for Miele Dynamic U1 Cat"));
-        List<String> lisOfbrands = new ArrayList<>();
-        for (WebElement element : modelsBrandList) {
-            lisOfbrands.add(element.getText());
-        }
-        return lisOfbrands;
+        waitForTextInElementToAppear(searchResultLabel,"Showing results for Miele Dynamic U1 Cat");
+        return modelsBrandList.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
     public ModelPage clickFirstResult() {

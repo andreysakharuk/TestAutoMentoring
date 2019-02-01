@@ -56,7 +56,7 @@ public class EndToEndTests {
         });
 
         String resultCount = ratingsFullPage.clickClearAllLink()
-                .getResultCount();
+                .getResultCounter();
         Assert.assertEquals(resultCount, "12");
 
         String isCancelButtonDisplayed = ratingsFullPage.clickPriceFilterButton()

@@ -11,9 +11,6 @@ public class HomePage extends AbstractPage {
     @FindBy(css = ".description")
     private WebElement mainArticlesSection;
 
-    @FindBy(className = "gnav-sign-in")
-    private WebElement signInButton;
-
     @FindBy(css = ".account-info")
     private WebElement accountInfoSection;
 
@@ -35,11 +32,6 @@ public class HomePage extends AbstractPage {
     public HomePage open() {
         driver.get(HOME_PAGE_URL);
         return new HomePage(driver);
-    }
-
-    public LoginPage clickSignInButton() {
-        signInButton.click();
-        return new LoginPage(driver);
     }
 
     public String getAccountInfoSectionText() {

@@ -8,7 +8,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
 
-public class ModelPage extends AbstractPage {
+public class ModelPage extends RatingsPage {
 
     private static final String MODEL_PAGE_URL =
             "https://www.consumerreports.org/products/vacuum-cleaners/upright-vacuum/bissell-cleanview-plus-rewind-1332-387595/";
@@ -24,9 +24,6 @@ public class ModelPage extends AbstractPage {
 
     @FindBy(css = "span.crux-page-title")
     private WebElement title;
-
-    @FindBy(xpath = "//*[@alt='view']")
-    private List<WebElement> switcherIcons;
 
     @FindBy(css = ".related-articles__news-header")
     private WebElement relatedArticlesSection;
@@ -46,7 +43,7 @@ public class ModelPage extends AbstractPage {
     }
 
     public AmazonPage clickAmazonButton() {
-        new Actions(driver).moveToElement(amazonButton).click().build().perform();
+        new Actions(driver).moveToElement(amazonButton).pause(2000).click().build().perform();
         String lastWindow = Iterables.getLast(driver.getWindowHandles());
         driver.switchTo().window(lastWindow);
         return new AmazonPage(driver);
@@ -60,10 +57,5 @@ public class ModelPage extends AbstractPage {
     public String getTitle() {
         waitForElementVisible(title);
         return title.getText();
-    }
-
-    public RatingsCompactPage clickRatingsCompactIcon() {
-        switcherIcons.get(1).click();
-        return new RatingsCompactPage(driver);
     }
 }

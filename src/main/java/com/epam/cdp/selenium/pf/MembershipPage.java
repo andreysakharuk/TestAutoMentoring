@@ -13,11 +13,6 @@ public class MembershipPage extends AbstractPage {
         super(driver);
     }
 
-    public RatingsCompactPage navigateBack() {
-        driver.navigate().back();
-        return new RatingsCompactPage(driver);
-    }
-
     public String getCtaBanner() {
         return ctaBanner.getText();
     }

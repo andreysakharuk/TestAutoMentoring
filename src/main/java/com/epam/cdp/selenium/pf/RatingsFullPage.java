@@ -8,15 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class RatingsFullPage extends AbstractPage {
+public class RatingsFullPage extends RatingsPage {
 
     private static final String RATINGS_FULL_PAGE_URL = "https://www.consumerreports.org/products/vacuum-cleaners/handheld-vacuum/view1/";
-
-    @FindBy(className = "cta-top-content__header")
-    private WebElement ctaBanner;
-
-    @FindBy(className = "gnav-sign-in")
-    private WebElement signInButton;
 
     @FindBy(className = "recommended-switcher__value")
     private WebElement recommendedToggle;
@@ -28,7 +22,7 @@ public class RatingsFullPage extends AbstractPage {
     private WebElement clearAllLink;
 
     @FindBy(css = ".spa-page-counter__values >span:nth-child(2)")
-    private WebElement resultCount;
+    private WebElement resultCounter;
 
     @FindBy(xpath = "//*[@data-id='price']")
     private WebElement priceFilterButton;
@@ -76,9 +70,6 @@ public class RatingsFullPage extends AbstractPage {
     private List<WebElement> compareButtons;
 
     @FindBy(xpath = "//*[@data-id='compare-bucket']//*[@data-q-check='shared-crux-number-score']")
-    private WebElement compareCircleNumber;
-
-    @FindBy(xpath = "//*[@data-id='compare-bucket']//*[@data-q-check='shared-crux-number-score']")
     private WebElement compareBucketButton;
 
     @FindBy(xpath = "//*[@data-display='true']//button[@class='crux-btn crux-btn-special--lg']")
@@ -88,22 +79,9 @@ public class RatingsFullPage extends AbstractPage {
         super(driver);
     }
 
-    public String getCtaBannerText() {
-        return ctaBanner.getText();
-    }
-
     public RatingsFullPage open() {
         driver.get(RATINGS_FULL_PAGE_URL);
         return new RatingsFullPage(driver);
-    }
-
-    public LoginPage clickSignInButton() {
-        signInButton.click();
-        return new LoginPage(driver);
-    }
-
-    public boolean isCtaBannerDisplayed() {
-        return isElementDisplayed(ctaBanner);
     }
 
     public RatingsFullPage clickRecommendedToggle() {
@@ -111,7 +89,7 @@ public class RatingsFullPage extends AbstractPage {
         return this;
     }
 
-    public List<String> getListOfLabelsFromRatingsChart() {
+    public List<String> getLabelsListFromRatingsChart() {
         List<String> labelsListFull = labelsList.stream().map(WebElement::getText).collect(Collectors.toList());
         return labelsListFull;
     }
@@ -121,11 +99,11 @@ public class RatingsFullPage extends AbstractPage {
         return this;
     }
 
-    public String getResultCount() {
-        return resultCount.getText();
+    public String getResultCounter() {
+        return resultCounter.getText();
     }
 
-    public RatingsFullPage clickPriceFilter() {
+    public RatingsFullPage clickPriceFilterButton() {
         priceFilterButton.click();
         return this;
     }
@@ -134,7 +112,7 @@ public class RatingsFullPage extends AbstractPage {
         return priceLabelsList.get(2).getText();
     }
 
-    public RatingsFullPage enterValueInPriceFilter(String a) {
+    public RatingsFullPage enterValueInPriceFilterPopup(String a) {
         inputInPriceFilterPopup.clear();
         inputInPriceFilterPopup.sendKeys(a);
         return this;
@@ -145,13 +123,13 @@ public class RatingsFullPage extends AbstractPage {
         return this;
     }
 
-    public List<Integer> getListOfPricesFromRatingsChart() {
-        ArrayList<Integer> listOfPrices = new ArrayList<>();
+    public List<Integer> getPricesListFromRatingsChart() {
+        List<Integer> pricesListFull = new ArrayList<>();
         for (WebElement price : pricesList) {
             String formattedPrice = price.getText().replace("$", "");
-            listOfPrices.add(Integer.parseInt(formattedPrice));
+            pricesListFull.add(Integer.parseInt(formattedPrice));
         }
-        return listOfPrices;
+        return pricesListFull;
     }
 
     public RatingsFullPage clickRatedBestFilterButton() {
@@ -163,8 +141,8 @@ public class RatingsFullPage extends AbstractPage {
         return labelInRatedBestFilterPopup.getText();
     }
 
-    public RatingsFullPage selectCheckboxInRatedBestFilterPopup() {
-        checkBoxInRatedBestFilterPopup.get(0).click();
+    public RatingsFullPage selectCheckboxInRatedBestFilterPopup(Integer checkboxNumber) {
+        checkBoxInRatedBestFilterPopup.get(checkboxNumber).click();
         return this;
     }
 
@@ -187,7 +165,7 @@ public class RatingsFullPage extends AbstractPage {
         return this;
     }
 
-    public RatingsFullPage clickViewButtonInMoreFilterpopup() {
+    public RatingsFullPage clickViewButtonInMoreFilterPopup() {
         viewButtonInMoreFilterPopup.click();
         return this;
     }
@@ -204,11 +182,6 @@ public class RatingsFullPage extends AbstractPage {
     public RatingsFullPage clickAddToCompareButton() {
         compareButtons.get(0).click();
         return this;
-    }
-
-    public String getCompareCircleNumber() {
-        waitForElementVisible(compareCircleNumber);
-        return compareCircleNumber.getText();
     }
 
     public RatingsFullPage clickCompareBucketButton() {

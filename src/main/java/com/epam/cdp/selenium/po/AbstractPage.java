@@ -3,10 +3,10 @@ package com.epam.cdp.selenium.po;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public abstract class AbstractPage {
+
+    private final By signInButton = By.className("gnav-sign-in");
 
     protected WebDriver driver;
 
@@ -22,7 +22,8 @@ public abstract class AbstractPage {
         }
     }
 
-    public void waitForElementVisible(By locator) {
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfElementLocated(locator));
+    public LoginPage clickSignInButton() {
+        driver.findElement(signInButton).click();
+        return new LoginPage(driver);
     }
 }

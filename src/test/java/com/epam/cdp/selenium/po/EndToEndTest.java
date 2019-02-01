@@ -42,7 +42,7 @@ public class EndToEndTest {
 
         ratingsFullPage = loginPage.enterUsername(USERNAME)
                 .enterPassword(PASSWORD)
-                .clickSignInButton();
+                .clickSignInButton(RatingsFullPage.class);
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
         ratingsFullPage.clickRecommendedToggle();

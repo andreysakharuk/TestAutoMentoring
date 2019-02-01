@@ -9,9 +9,6 @@ public class BuyingGuidePage extends AbstractPage {
     @FindBy(css = ".buying-hero__title")
     private WebElement labelInHeroSection;
 
-    @FindBy(css = ".gnav-sign-in__text")
-    private WebElement signInButton;
-
     @FindBy(css = ".subnav-lock-icon")
     private WebElement lockNearRecommendedLink;
 
@@ -25,12 +22,6 @@ public class BuyingGuidePage extends AbstractPage {
     public String getLabelInHeroSectionText() {
         waitForElementVisible(labelInHeroSection);
         return labelInHeroSection.getText();
-    }
-
-    public LoginPage clickSignInLink() {
-        waitForElementVisible(signInButton);
-        signInButton.click();
-        return new LoginPage(driver);
     }
 
     public boolean isLockNearRecommendedLinkDisplayed(){

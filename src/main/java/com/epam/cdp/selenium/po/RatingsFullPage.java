@@ -13,7 +13,6 @@ public class RatingsFullPage extends AbstractPage {
     private static final String RATINGS_FULL_PAGE_URL = "https://www.consumerreports.org/products/vacuum-cleaners/handheld-vacuum/view1/";
 
     private final By ctaButtonLocator = By.className("cta-top-content__header");
-    private final By signInButton = By.className("gnav-sign-in");
     private final By recommendedToggleLocator = By.className("recommended-switcher__value");
     private final By labelsListLocator = By.xpath("//*[@class='clearfix classic-view__body__item classic-view__body__item--fixed']//*[@class='recommendation-label']");
     private final By clearAllLinkLocator = By.className("ratings-spa-filters__clear-filters");
@@ -44,11 +43,6 @@ public class RatingsFullPage extends AbstractPage {
     public RatingsFullPage open() {
         driver.get(RATINGS_FULL_PAGE_URL);
         return new RatingsFullPage(driver);
-    }
-
-    public LoginPage clickSignInButton() {
-        driver.findElement(signInButton).click();
-        return new LoginPage(driver);
     }
 
     public boolean isCtaBannerDisplayed() {

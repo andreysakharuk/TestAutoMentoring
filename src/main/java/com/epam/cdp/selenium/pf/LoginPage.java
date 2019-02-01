@@ -4,6 +4,8 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class LoginPage extends AbstractPage {
 
     @FindBy(name = "userName")
@@ -30,23 +32,16 @@ public class LoginPage extends AbstractPage {
     }
 
     public boolean isSignInButtonDisplayed() {
-        waitForElementVisible(signInButton);
         return isElementDisplayed(signInButton);
     }
 
-    public RatingsFullPage clickSignInButtonInLoginFormRatingsFullPage() {
+    public <T extends AbstractPage> T clickSignInButton(Class<T> pageClass){
         signInButton.click();
-        return new RatingsFullPage(driver);
-    }
+        try{
+            return pageClass.getDeclaredConstructor(WebDriver.class).newInstance(driver);
 
-
-    public BuyingGuidePage clickSignInButtonInLoginFormBuyingGuide() {
-        signInButton.click();
-        return new BuyingGuidePage(driver);
-    }
-
-    public HomePage clickSignInButtonInLoginFormHomePage() {
-        signInButton.click();
-        return new HomePage(driver);
+        }catch(IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e){
+            throw new RuntimeException("Unable to create page!");
+        }
     }
 }
