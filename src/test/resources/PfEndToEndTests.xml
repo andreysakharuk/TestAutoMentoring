@@ -1,11 +1,11 @@
 <?xml version = "1.0" encoding = "UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
-<suite name="testSuite">
+<suite name="pfEndToEndTests">
 
-    <test name="test1">
+    <test name="scenarioTests">
         <classes>
-            <class name="com.epam.cdp.selenium.simple.SeleniumTest"/>
+            <class name="com.epam.cdp.selenium.pf.EndToEndTests"/>
         </classes>
     </test>
 
