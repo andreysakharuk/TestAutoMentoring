@@ -22,6 +22,9 @@ public class EndToEndTests {
     private static final String CTA_BANNER_RATINGS = "Get Ratings & Reviews for the Products You Want";
     private static final String CTA_BANNER_OVERVIEW = "Clear through the clutter when choosing the best vacuums.";
     private static final String MIELE_MODEL = "Miele Dynamic U1 Cat & Dog";
+    private static final Integer COMPACT_VIEW_ICON = 1;
+    private static final Integer FULL_VIEW_ICON = 0;
+    private static final Integer FIRST_CHECKBOX = 0;
 
     @BeforeMethod
     public void setUp() {
@@ -44,11 +47,11 @@ public class EndToEndTests {
 
         ratingsFullPage = loginPage.enterUsername(USERNAME)
                 .enterPassword(PASSWORD)
-                .clickSignInButtonInLoginFormRatingsFullPage();
+                .clickSignInButton(RatingsFullPage.class);
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
         ratingsFullPage.clickRecommendedToggle();
-        ratingsFullPage.getListOfLabelsFromRatingsChart().forEach(label -> {
+        ratingsFullPage.getLabelsListFromRatingsChart().forEach(label -> {
             assertThat(label, either(containsString("RECOMMENDED")).or(containsString("BEST BUY")));
         });
 
@@ -56,25 +59,25 @@ public class EndToEndTests {
                 .getResultCount();
         Assert.assertEquals(resultCount, "12");
 
-        String isCancelButtonDisplayed = ratingsFullPage.clickPriceFilter()
+        String isCancelButtonDisplayed = ratingsFullPage.clickPriceFilterButton()
                 .getCancelButtonTextInPriceFilterPopup();
         Assert.assertEquals(isCancelButtonDisplayed, "CANCEL");
 
-        ratingsFullPage.enterValueInPriceFilter("100")
+        ratingsFullPage.enterValueInPriceFilterPopup("100")
                 .clickViewButtonInPriceFilterPopup();
-        assertThat(ratingsFullPage.getListOfPricesFromRatingsChart(), everyItem(lessThanOrEqualTo(100)));
+        assertThat(ratingsFullPage.getPricesListFromRatingsChart(), everyItem(lessThanOrEqualTo(100)));
 
         String actualLabelFromRatedBestFilter = ratingsFullPage.clickRatedBestFilterButton()
                 .getLabelInRatedBestFilterPopup();
         Assert.assertEquals(actualLabelFromRatedBestFilter, "Select One or More Filters:");
 
-        ratingsFullPage.selectCheckboxInRatedBestFilterPopup()
+        ratingsFullPage.selectCheckboxInRatedBestFilterPopup(FIRST_CHECKBOX)
                 .clickViewButtonInRatedBestFilterPopup();
         Assert.assertEquals(ratingsFullPage.getColorOfRatedBestFilterButton(), "rgba(0, 174, 77, 1)");
 
         ratingsFullPage.clickMoreFilterButton()
                 .selectEurekaBrandCheckboxInMoreFilterPopup()
-                .clickViewButtonInMoreFilterpopup();
+                .clickViewButtonInMoreFilterPopup();
 
         assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString("Eureka")));
     }
@@ -93,7 +96,7 @@ public class EndToEndTests {
         assertThat(membershipPage.getCtaBanner(), equalToIgnoringWhiteSpace(
                 "Buying smart is just the start"));
 
-        ratingsCompactPage = membershipPage.navigateBack();
+        new Browser(driver).navigateBack();
         assertThat(ratingsCompactPage.getCounterResult(), equalTo("64"));
 
         ModelPage modelpage = ratingsCompactPage.clickShopButton();
@@ -114,12 +117,12 @@ public class EndToEndTests {
         String labelInHeroSection = buyingGuidePage.getLabelInHeroSectionText();
         assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
 
-        LoginPage loginPage = buyingGuidePage.clickSignInLink();
+        LoginPage loginPage = buyingGuidePage.clickSignInButton();
         Assert.assertTrue(loginPage.isSignInButtonDisplayed());
 
         buyingGuidePage = loginPage.enterUsername(USERNAME)
                 .enterPassword(PASSWORD)
-                .clickSignInButtonInLoginFormBuyingGuide();
+                .clickSignInButton(BuyingGuidePage.class);
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
@@ -131,23 +134,24 @@ public class EndToEndTests {
         LoginPage loginPage = homePage.clickSignInButton();
         homePage = loginPage.enterUsername(USERNAME)
                 .enterPassword(PASSWORD)
-                .clickSignInButtonInLoginFormHomePage();
+                .clickSignInButton(HomePage.class);
         Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
 
-        SearchResultPage searchResultPage = homePage.enterValueInSearchInput(MIELE_MODEL, "value").clickSearchButton();
+        SearchResultPage searchResultPage = homePage.enterValueInSearchInput(MIELE_MODEL, "value")
+                .clickSearchButton();
         assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
 
         ModelPage modelPage = searchResultPage.clickFirstResult();
         assertThat(modelPage.getTitle(), equalTo(MIELE_MODEL));
 
-        RatingsCompactPage ratingsCompactPage = modelPage.clickRatingsCompactIcon();
+        RatingsCompactPage ratingsCompactPage = modelPage.clickIconInSwitcher(RatingsCompactPage.class, COMPACT_VIEW_ICON);
         ratingsCompactPage.clickCloseTourButton();
         Assert.assertTrue(ratingsCompactPage.isRatingsListViewDisplayed());
 
         ratingsCompactPage.clickAddToCompareButton();
         assertThat(ratingsCompactPage.getCompareCircleNumber(), equalTo("1"));
 
-        RatingsFullPage ratingsFullPage = ratingsCompactPage.clickFullViewIcon();
+        RatingsFullPage ratingsFullPage = ratingsCompactPage.clickIconInSwitcher(RatingsFullPage.class, FULL_VIEW_ICON);
         Assert.assertTrue(ratingsFullPage.isRatingsFullViewDisplayed());
 
         ratingsFullPage.clickAddToCompareButton();
