@@ -35,12 +35,12 @@ public class LoginPage extends AbstractPage {
         return isElementDisplayed(signInButton);
     }
 
-    public <T extends AbstractPage> T clickSignInButton(Class<T> pageClass){
+    public <T extends AbstractPage> T clickSignInButton(Class<T> pageClass) {
         signInButton.click();
-        try{
+        try {
             return pageClass.getDeclaredConstructor(WebDriver.class).newInstance(driver);
 
-        }catch(IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e){
+        } catch (IllegalAccessException | InstantiationException | NoSuchMethodException | InvocationTargetException e) {
             throw new RuntimeException("Unable to create page!");
         }
     }

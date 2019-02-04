@@ -12,9 +12,6 @@ public abstract class AbstractPage {
 
     protected WebDriver driver;
 
-    @FindBy(className = "gnav-sign-in")
-    private WebElement signInButton;
-
     protected AbstractPage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
@@ -43,9 +40,8 @@ public abstract class AbstractPage {
                 .until(ExpectedConditions.textToBePresentInElement(element, text));
     }
 
-    public LoginPage clickSignInButton() {
-        waitForElementVisible(signInButton);
-        signInButton.click();
-        return new LoginPage(driver);
+    public void waitForElementClickable(WebElement element) {
+        new WebDriverWait(driver, 10).until(ExpectedConditions.elementToBeClickable(element));
     }
+
 }

@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class AmazonPage extends AbstractPage{
+public class AmazonPage extends AbstractPage {
 
     @FindBy(id = "productTitle")
     private WebElement productTitle;

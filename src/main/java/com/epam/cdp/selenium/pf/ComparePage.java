@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ComparePage extends AbstractPage {
+public class ComparePage extends BasePage {
 
     @FindBy(css = ".compare-page__model-name")
     private List<WebElement> modelsList;

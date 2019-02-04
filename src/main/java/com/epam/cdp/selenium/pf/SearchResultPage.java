@@ -7,7 +7,7 @@ import org.openqa.selenium.support.FindBy;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SearchResultPage extends AbstractPage {
+public class SearchResultPage extends BasePage {
 
     @FindBy(id = "search-top")
     private WebElement searchResultLabel;
@@ -20,7 +20,7 @@ public class SearchResultPage extends AbstractPage {
     }
 
     public List<String> getListOfBrands() {
-        waitForTextInElementToAppear(searchResultLabel,"Showing results for Miele Dynamic U1 Cat");
+        waitForTextInElementToAppear(searchResultLabel, "Showing results for Miele Dynamic U1 Cat");
         return modelsBrandList.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 

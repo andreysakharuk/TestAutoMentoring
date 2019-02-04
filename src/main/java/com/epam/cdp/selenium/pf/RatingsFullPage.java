@@ -1,7 +1,9 @@
 package com.epam.cdp.selenium.pf;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
@@ -74,6 +76,21 @@ public class RatingsFullPage extends RatingsPage {
 
     @FindBy(xpath = "//*[@data-display='true']//button[@class='crux-btn crux-btn-special--lg']")
     private WebElement viewCompareButton;
+
+    @FindBy(css = "div.vue-slider-dot")
+    private WebElement priceSlider;
+
+    @FindBy(xpath = "//*[@style='border-radius: 0px; background-color: rgb(0, 0, 0); transition-duration: 0s; width: 153.636px; left: 0px;']")
+    private WebElement priceBar;
+
+    @FindBy(css = "input.crux-input")
+    private WebElement priceInput;
+
+    @FindBy(css = ".scroller__bar")
+    private WebElement ratingsSlider;
+
+    @FindBy(css = ".classic-view__header__item :nth-child(2)")
+    private WebElement specsHeader;
 
     public RatingsFullPage(WebDriver driver) {
         super(driver);
@@ -192,5 +209,30 @@ public class RatingsFullPage extends RatingsPage {
     public ComparePage clickViewCompareButton() {
         viewCompareButton.click();
         return new ComparePage(driver);
+    }
+
+    public RatingsFullPage movePriceSlider() {
+        waitForElementVisible(viewButtonInPriceFilterPopup);
+        new Actions(driver).dragAndDropBy(priceSlider, -200, 0).build().perform();
+        return this;
+    }
+
+    public String getPriceInputInFilterPopup() {
+        waitForElementVisible(priceInput);
+        return priceInput.getAttribute("value");
+    }
+
+    public RatingsFullPage moveRatingsSlider() {
+        waitForElementVisible(ratingsSlider);
+        new Actions(driver).dragAndDropBy(ratingsSlider, 300, 0).build().perform();
+        return this;
+    }
+
+    public boolean isSpecsHeaderDisplayedInRatingsChart() {
+        return isElementDisplayed(specsHeader);
+    }
+
+    public void highlightRatingsSlider() {
+        new Browser(driver).highlightElement(ratingsSlider);
     }
 }
