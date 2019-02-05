@@ -1,0 +1,7 @@
+﻿java -jar selenium-server-standalone-3.jar -role hub -hubConfig hubconfig.json
+java -jar selenium-server-standalone-3.jar -role node -nodeConfig nodeСonfig.json
+java -jar selenium-server-standalone-3.jar -role node -nodeConfig nodeFirefoxConfig.json
+java -jar selenium-server-standalone-3.jar -role node -nodeConfig nodeChromeConfig.json
+java -jar selenium-server-standalone-3.jar -role node -nodeConfig nodeIeConfig.json
+
+java -Dwebdriver.gecko.driver=geckodriver.exe -jar selenium-server-standalone-3.13.0.jar -role node -hub http://127.0.0.1:4444/grid/register -browser "browserName=firefox,maxInstances=2,platform=WINDOWS" -port 5556
