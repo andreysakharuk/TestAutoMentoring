@@ -1,7 +1,6 @@
 package com.epam.cdp.selenium.pf;
 
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Platform;
+import com.epam.cdp.selenium.utilities.ConfigProvider;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -9,7 +8,6 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -38,22 +36,45 @@ public class EndToEndTests {
 
     @BeforeMethod
     public void setUp() throws MalformedURLException {
-
-    //    System.setProperty("webdriver.chrome.driver", "libs/chromedriver_win32/chromedriver.exe");
-    //  System.setProperty("webdriver.gecko.driver", "libs/geckodriver_v024/geckodriver.exe");
-    //  System.setProperty("webdriver.ie.driver", "libs/IEDriverServer_3.9.0/IEDriverServer.exe");
-    //    driver = new ChromeDriver(new ChromeOptions());
-    //  driver = new FirefoxDriver(new FirefoxOptions());
-    //  driver = new InternetExplorerDriver(new InternetExplorerOptions());
-
-        driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new ChromeOptions());
-    //  driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new FirefoxOptions());
-    //  driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new InternetExplorerOptions());
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-        driver.manage().window().maximize();
+        ConfigProvider configProvider = new ConfigProvider();
+        configProvider.retrieveValues();
+        if (configProvider.getLocal()){
+            switch (configProvider.getBrowser()){
+                case "chrome":
+                    System.setProperty("webdriver.chrome.driver", "libs/chromedriver_win32/chromedriver.exe");
+                    driver = new ChromeDriver(new ChromeOptions());
+                    break;
+                case "firefox":
+                    System.setProperty("webdriver.gecko.driver", "libs/geckodriver_v024/geckodriver.exe");
+                    driver = new FirefoxDriver(new FirefoxOptions());
+                    break;
+                case "ie":
+                    System.setProperty("webdriver.ie.driver", "libs/IEDriverServer_3.9.0/IEDriverServer.exe");
+                    driver = new InternetExplorerDriver(new InternetExplorerOptions());
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Wrong BROWSER parameter: %s.", configProvider.getBrowser()));
+            }
+        } else {
+            switch (configProvider.getBrowser()) {
+                case "chrome":
+                    driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new ChromeOptions());
+                    break;
+                case "firefox":
+                    driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new FirefoxOptions());
+                    break;
+                case "ie":
+                    driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new InternetExplorerOptions());
+                    break;
+                default:
+                    throw new IllegalArgumentException(String.format("Wrong BROWSER parameter: %s.", configProvider.getBrowser()));
+            }
+        }
+            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            driver.manage().window().maximize();
     }
 
-    @Test()
+    @Test
     public void checkFiltersOnRatingsFullPage() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         String actualTextOfCtaBanner = ratingsFullPage.open()
