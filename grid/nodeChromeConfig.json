@@ -5,7 +5,6 @@
       "browserName": "chrome",
       "maxInstances": 3,
       "seleniumProtocol": "WebDriver"
-	  "wedriver.chrome.driver": "C:/tam/cdp/libs/chromedriver_win32/chromedriver.exe"
     }
   ],
   "proxy": "org.openqa.grid.selenium.proxy.DefaultRemoteProxy",
@@ -13,7 +12,7 @@
   "port": -1,
   "register": true,
   "registerCycle": 5000,
-  "hub": "http://localhost:4444",
+  "hub": "http://10.6.184.206:4444",
   "nodeStatusCheckTimeout": 5000,
   "nodePolling": 5000,
   "role": "node",

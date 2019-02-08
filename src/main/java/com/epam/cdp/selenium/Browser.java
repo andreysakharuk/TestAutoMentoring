@@ -1,9 +1,7 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium;
 
+import com.google.common.collect.Iterables;
 import org.openqa.selenium.*;
-
-import java.io.File;
-import java.io.IOException;
 
 public class Browser {
 
@@ -26,5 +24,11 @@ public class Browser {
         JavascriptExecutor js = ((JavascriptExecutor) driver);
         js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
     }
+
+    public void switchTab(){
+        String lastWindow = Iterables.getLast(driver.getWindowHandles());
+        driver.switchTo().window(lastWindow);
+    }
+
 
 }

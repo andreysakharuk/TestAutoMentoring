@@ -19,8 +19,12 @@ public class SearchResultPage extends BasePage {
         super(driver);
     }
 
+    public waitForLabelAppearance(){
+
+    }
+
+
     public List<String> getListOfBrands() {
-        waitForTextInElementToAppear(searchResultLabel, "Showing results for Miele Dynamic U1 Cat");
         return modelsBrandList.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 

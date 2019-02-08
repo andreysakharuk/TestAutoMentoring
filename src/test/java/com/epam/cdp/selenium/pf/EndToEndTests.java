@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.pf;
 
+import com.epam.cdp.selenium.Browser;
 import com.epam.cdp.selenium.utilities.ConfigProvider;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -37,8 +38,7 @@ public class EndToEndTests {
     @BeforeMethod
     public void setUp() throws MalformedURLException {
         ConfigProvider configProvider = new ConfigProvider();
-        configProvider.retrieveValues();
-        if (configProvider.getLocal()){
+        if (configProvider.isLocal()){
             switch (configProvider.getBrowser()){
                 case "chrome":
                     System.setProperty("webdriver.chrome.driver", "libs/chromedriver_win32/chromedriver.exe");
@@ -70,7 +70,7 @@ public class EndToEndTests {
                     throw new IllegalArgumentException(String.format("Wrong BROWSER parameter: %s.", configProvider.getBrowser()));
             }
         }
-            driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            driver.manage().timeouts().implicitlyWait(configProvider.getTimeout(), TimeUnit.SECONDS);
             driver.manage().window().maximize();
     }
 

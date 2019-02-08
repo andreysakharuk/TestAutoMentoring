@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.pf;
 
-import org.openqa.selenium.By;
+import com.epam.cdp.selenium.Browser;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
