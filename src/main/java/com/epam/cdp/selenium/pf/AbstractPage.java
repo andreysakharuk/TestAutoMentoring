@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.pf;
 
-import com.epam.cdp.selenium.utilities.ConfigProvider;
+import com.epam.cdp.base.ConfigProvider;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

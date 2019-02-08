@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.utilities;
+package com.epam.cdp.base;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,7 +8,6 @@ public class ConfigProvider {
 
     private static final String TEST_PROPERTIES_FILE = "test.properties";
     private Properties properties = new Properties();
-
 
     public ConfigProvider() {
         loadProperties();
@@ -36,4 +35,15 @@ public class ConfigProvider {
         return Integer.parseInt(properties.getProperty("timeout"));
     }
 
+    public String getHub(){
+        return properties.getProperty("hub");
+    }
+
+    public String getUsername() {
+        return properties.getProperty("username");
+    }
+
+    public String getPassword() {
+        return properties.getProperty("password");
+    }
 }

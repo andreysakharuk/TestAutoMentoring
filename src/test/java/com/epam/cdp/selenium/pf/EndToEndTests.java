@@ -1,7 +1,8 @@
 package com.epam.cdp.selenium.pf;
 
 import com.epam.cdp.selenium.Browser;
-import com.epam.cdp.selenium.utilities.ConfigProvider;
+import com.epam.cdp.base.ConfigProvider;
+import org.openqa.selenium.MutableCapabilities;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -25,9 +26,8 @@ import static org.hamcrest.Matchers.*;
 public class EndToEndTests {
 
     private WebDriver driver;
+    private ConfigProvider configProvider;
 
-    private static final String USERNAME = "pwitest";
-    private static final String PASSWORD = "Password1";
     private static final String CTA_BANNER_RATINGS = "Get Ratings & Reviews for the Products You Want";
     private static final String CTA_BANNER_OVERVIEW = "Clear through the clutter when choosing the best vacuums.";
     private static final String MIELE_MODEL = "Miele Dynamic U1 Cat & Dog";
@@ -37,7 +37,7 @@ public class EndToEndTests {
 
     @BeforeMethod
     public void setUp() throws MalformedURLException {
-        ConfigProvider configProvider = new ConfigProvider();
+        this.configProvider = new ConfigProvider();
         if (configProvider.isLocal()){
             switch (configProvider.getBrowser()){
                 case "chrome":
@@ -56,19 +56,21 @@ public class EndToEndTests {
                     throw new IllegalArgumentException(String.format("Wrong BROWSER parameter: %s.", configProvider.getBrowser()));
             }
         } else {
+            MutableCapabilities capabilities;
             switch (configProvider.getBrowser()) {
                 case "chrome":
-                    driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new ChromeOptions());
+                    capabilities =  new ChromeOptions();
                     break;
                 case "firefox":
-                    driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new FirefoxOptions());
+                    capabilities =  new FirefoxOptions();
                     break;
                 case "ie":
-                    driver = new RemoteWebDriver(new URL("http://127.0.0.1:4444/wd/hub"),  new InternetExplorerOptions());
+                   capabilities = new InternetExplorerOptions();
                     break;
                 default:
                     throw new IllegalArgumentException(String.format("Wrong BROWSER parameter: %s.", configProvider.getBrowser()));
             }
+            driver = new RemoteWebDriver(new URL(configProvider.getHub()), capabilities);
         }
             driver.manage().timeouts().implicitlyWait(configProvider.getTimeout(), TimeUnit.SECONDS);
             driver.manage().window().maximize();
@@ -84,8 +86,8 @@ public class EndToEndTests {
         LoginPage loginPage = ratingsFullPage.clickSignInButton();
         Assert.assertTrue(loginPage.isSignInButtonDisplayed());
 
-        ratingsFullPage = loginPage.enterUsername(USERNAME)
-                                   .enterPassword(PASSWORD)
+        ratingsFullPage = loginPage.enterUsername(configProvider.getUsername())
+                                   .enterPassword(configProvider.getPassword())
                                    .clickSignInButton(RatingsFullPage.class);
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
@@ -159,8 +161,8 @@ public class EndToEndTests {
         LoginPage loginPage = buyingGuidePage.clickSignInButton();
         Assert.assertTrue(loginPage.isSignInButtonDisplayed());
 
-        buyingGuidePage = loginPage.enterUsername(USERNAME)
-                                   .enterPassword(PASSWORD)
+        buyingGuidePage = loginPage.enterUsername(configProvider.getUsername())
+                                   .enterPassword(configProvider.getPassword())
                                    .clickSignInButton(BuyingGuidePage.class);
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
@@ -171,13 +173,14 @@ public class EndToEndTests {
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
         LoginPage loginPage = homePage.clickSignInButton();
-        homePage = loginPage.enterUsername(USERNAME)
-                            .enterPassword(PASSWORD)
+        homePage = loginPage.enterUsername(configProvider.getUsername())
+                            .enterPassword(configProvider.getPassword())
                             .clickSignInButton(HomePage.class);
         Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
 
         SearchResultPage searchResultPage = homePage.enterValueInSearchInput(MIELE_MODEL, "value")
                                                     .clickSearchButton();
+        searchResultPage.waitTextToAppearInLabel("Showing results for Miele Dynamic U1 Cat");
         assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
 
         ModelPage modelPage = searchResultPage.clickFirstResult();
@@ -210,7 +213,7 @@ public class EndToEndTests {
     public void checkPriceFilter() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         LoginPage loginPage = ratingsFullPage.open().clickSignInButton();
-        loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButton(RatingsFullPage.class);
+        loginPage.enterUsername(configProvider.getUsername()).enterPassword(configProvider.getPassword()).clickSignInButton(RatingsFullPage.class);
         ratingsFullPage.clickPriceFilterButton();
         String defaultPrice = ratingsFullPage.getPriceInputInFilterPopup();
         ratingsFullPage.movePriceSlider();
@@ -221,7 +224,7 @@ public class EndToEndTests {
     public void checkRatingsSliderScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         LoginPage loginPage = ratingsFullPage.open().clickSignInButton();
-        loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButton(RatingsFullPage.class);
+        loginPage.enterUsername(configProvider.getUsername()).enterPassword(configProvider.getPassword()).clickSignInButton(RatingsFullPage.class);
         ratingsFullPage.moveRatingsSlider().highlightRatingsSlider();
         Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
@@ -230,7 +233,7 @@ public class EndToEndTests {
     public void checkRatingsJsScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         LoginPage loginPage = ratingsFullPage.open().clickSignInButton();
-        loginPage.enterUsername(USERNAME).enterPassword(PASSWORD).clickSignInButton(RatingsFullPage.class);
+        loginPage.enterUsername(configProvider.getUsername()).enterPassword(configProvider.getPassword()).clickSignInButton(RatingsFullPage.class);
         new Browser(driver).scrollToBottomOfPage();
         HomePage homePage = ratingsFullPage.crLogoClick();
         Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");

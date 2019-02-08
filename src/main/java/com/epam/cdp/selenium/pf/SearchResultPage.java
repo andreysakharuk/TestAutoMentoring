@@ -19,10 +19,9 @@ public class SearchResultPage extends BasePage {
         super(driver);
     }
 
-    public waitForLabelAppearance(){
-
+    public void waitTextToAppearInLabel(String text){
+        waitForTextInElementToAppear(searchResultLabel, text);
     }
-
 
     public List<String> getListOfBrands() {
         return modelsBrandList.stream().map(WebElement::getText).collect(Collectors.toList());
