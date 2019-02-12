@@ -16,7 +16,10 @@ dependencies {
     testCompile group: 'org.testng', name: 'testng', version: '6.11'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.14.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.14.0'
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-ie-driver', version: '3.14.0'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.14.0'
+    
 }
 
 task testng(type: Test) {

@@ -1,0 +1,1 @@
+java -jar -Dwebdriver.gecko.driver=..\libs\geckodriver_v024\geckodriver.exe -Dwebdriver.chrome.driver=..\cdp\libs\chromedriver_win32\chromedriver.exe  -Dwebdriver.ie.driver=..\libs\IEDriverServer_3.9.0\IEDriverServer.exe selenium-server-standalone-3.jar -role node -nodeConfig nodeConfig.json

@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.pf;
 
-import com.google.common.collect.Iterables;
+import com.epam.cdp.selenium.Browser;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -43,9 +43,10 @@ public class ModelPage extends RatingsPage {
     }
 
     public AmazonPage clickAmazonButton() {
-        new Actions(driver).moveToElement(amazonButton).pause(2000).click().build().perform();
-        String lastWindow = Iterables.getLast(driver.getWindowHandles());
-        driver.switchTo().window(lastWindow);
+        new Actions(driver).moveToElement(amazonButton).build().perform();
+        waitForElementClickable(amazonButton);
+        amazonButton.click();
+        new Browser(driver).switchTab();
         return new AmazonPage(driver);
     }
 

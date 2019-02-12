@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class BuyingGuidePage extends AbstractPage {
+public class BuyingGuidePage extends BasePage {
 
     @FindBy(css = ".buying-hero__title")
     private WebElement labelInHeroSection;
@@ -24,7 +24,7 @@ public class BuyingGuidePage extends AbstractPage {
         return labelInHeroSection.getText();
     }
 
-    public boolean isLockNearRecommendedLinkDisplayed(){
+    public boolean isLockNearRecommendedLinkDisplayed() {
         waitForElementVisible(searchButton);
         searchButton.click();
         searchButton.click();

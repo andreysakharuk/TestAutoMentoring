@@ -4,7 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-public class HomePage extends AbstractPage {
+public class HomePage extends BasePage {
 
     private static final String HOME_PAGE_URL = "https://www.consumerreports.org/cro/index.htm";
 
