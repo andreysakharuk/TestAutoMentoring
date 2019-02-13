@@ -1,5 +1,7 @@
 package com.epam.cdp.base;
 
+import com.epam.cdp.driver.WebDriverTypes;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -23,8 +25,8 @@ public class ConfigProvider {
         }
     }
 
-    public String getBrowser(){
-        return properties.getProperty("browser");
+    public WebDriverTypes getBrowser(){
+        return WebDriverTypes.valueOf(properties.getProperty("browser"));
     }
 
     public boolean isLocal(){

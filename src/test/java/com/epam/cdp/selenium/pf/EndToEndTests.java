@@ -1,24 +1,18 @@
 package com.epam.cdp.selenium.pf;
 
+import com.epam.cdp.bo.User;
+import com.epam.cdp.driver.Driver;
 import com.epam.cdp.selenium.Browser;
-import com.epam.cdp.base.ConfigProvider;
-import org.openqa.selenium.MutableCapabilities;
+import com.epam.cdp.selenium.steps.FilterServices;
+import com.epam.cdp.selenium.steps.LoginServices;
+import com.epam.cdp.selenium.steps.SearchServices;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.firefox.FirefoxOptions;
-import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.ie.InternetExplorerOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.concurrent.TimeUnit;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -26,69 +20,34 @@ import static org.hamcrest.Matchers.*;
 public class EndToEndTests {
 
     private WebDriver driver;
-    private ConfigProvider configProvider;
+    private User user;
+    private LoginServices loginServices;
+    private SearchServices searchServices;
+    private FilterServices filterServices;
 
     private static final String CTA_BANNER_RATINGS = "Get Ratings & Reviews for the Products You Want";
     private static final String CTA_BANNER_OVERVIEW = "Clear through the clutter when choosing the best vacuums.";
     private static final String MIELE_MODEL = "Miele Dynamic U1 Cat & Dog";
-    private static final Integer COMPACT_VIEW_ICON = 1;
-    private static final Integer FULL_VIEW_ICON = 0;
+    private static final String EUREKA_BRAND = "Eureka";
     private static final Integer FIRST_CHECKBOX = 0;
 
     @BeforeMethod
     public void setUp() throws MalformedURLException {
-        this.configProvider = new ConfigProvider();
-        if (configProvider.isLocal()){
-            switch (configProvider.getBrowser()){
-                case "chrome":
-                    System.setProperty("webdriver.chrome.driver", "libs/chromedriver_win32/chromedriver.exe");
-                    driver = new ChromeDriver(new ChromeOptions());
-                    break;
-                case "firefox":
-                    System.setProperty("webdriver.gecko.driver", "libs/geckodriver_v024/geckodriver.exe");
-                    driver = new FirefoxDriver(new FirefoxOptions());
-                    break;
-                case "ie":
-                    System.setProperty("webdriver.ie.driver", "libs/IEDriverServer_3.9.0/IEDriverServer.exe");
-                    driver = new InternetExplorerDriver(new InternetExplorerOptions());
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("Wrong BROWSER parameter: %s.", configProvider.getBrowser()));
-            }
-        } else {
-            MutableCapabilities capabilities;
-            switch (configProvider.getBrowser()) {
-                case "chrome":
-                    capabilities =  new ChromeOptions();
-                    break;
-                case "firefox":
-                    capabilities =  new FirefoxOptions();
-                    break;
-                case "ie":
-                   capabilities = new InternetExplorerOptions();
-                    break;
-                default:
-                    throw new IllegalArgumentException(String.format("Wrong BROWSER parameter: %s.", configProvider.getBrowser()));
-            }
-            driver = new RemoteWebDriver(new URL(configProvider.getHub()), capabilities);
-        }
-            driver.manage().timeouts().implicitlyWait(configProvider.getTimeout(), TimeUnit.SECONDS);
-            driver.manage().window().maximize();
+        this.driver = new Driver().initDriver();
+        this.user = new User();
+        this.loginServices = new LoginServices();
+        this.searchServices = new SearchServices();
+        this.filterServices = new FilterServices();
     }
 
     @Test
     public void checkFiltersOnRatingsFullPage() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         String actualTextOfCtaBanner = ratingsFullPage.open()
-                                                      .getCtaBannerText();
+                .getCtaBannerText();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
-        LoginPage loginPage = ratingsFullPage.clickSignInButton();
-        Assert.assertTrue(loginPage.isSignInButtonDisplayed());
-
-        ratingsFullPage = loginPage.enterUsername(configProvider.getUsername())
-                                   .enterPassword(configProvider.getPassword())
-                                   .clickSignInButton(RatingsFullPage.class);
+        loginServices.doLogin(driver, user);
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
         ratingsFullPage.clickRecommendedToggle();
@@ -97,37 +56,24 @@ public class EndToEndTests {
         });
 
         String resultCount = ratingsFullPage.clickClearAllLink()
-                                            .getResultCounter();
+                .getResultCounter();
         Assert.assertEquals(resultCount, "12");
 
-        String isCancelButtonDisplayed = ratingsFullPage.clickPriceFilterButton()
-                                                        .getCancelButtonTextInPriceFilterPopup();
-        Assert.assertEquals(isCancelButtonDisplayed, "CANCEL");
-
-        ratingsFullPage.enterValueInPriceFilterPopup("100")
-                       .clickViewButtonInPriceFilterPopup();
+        filterServices.doPriceFiltering(ratingsFullPage, "100");
         assertThat(ratingsFullPage.getPricesListFromRatingsChart(), everyItem(lessThanOrEqualTo(100)));
 
-        String actualLabelFromRatedBestFilter = ratingsFullPage.clickRatedBestFilterButton()
-                                                               .getLabelInRatedBestFilterPopup();
-        Assert.assertEquals(actualLabelFromRatedBestFilter, "Select One or More Filters:");
+        filterServices.doRatedBestFiltering(ratingsFullPage, FIRST_CHECKBOX);
+        assertThat(ratingsFullPage.getColorOfRatedBestFilterButton(), containsString("0, 174, 77"));
 
-        ratingsFullPage.selectCheckboxInRatedBestFilterPopup(FIRST_CHECKBOX)
-                       .clickViewButtonInRatedBestFilterPopup();
-        Assert.assertEquals(ratingsFullPage.getColorOfRatedBestFilterButton(), "rgba(0, 174, 77, 1)");
-
-        ratingsFullPage.clickMoreFilterButton()
-                       .selectEurekaBrandCheckboxInMoreFilterPopup()
-                       .clickViewButtonInMoreFilterPopup();
-
-        assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString("Eureka")));
+        filterServices.doMoreFiltering(ratingsFullPage, EUREKA_BRAND);
+        assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
     }
 
     @Test
     public void checkShopToAmazon() {
         OverviewPage overviewPage = new OverviewPage(driver);
         String heroSectionText = overviewPage.open()
-                                             .getHeroSectionText();
+                .getHeroSectionText();
         assertThat(heroSectionText, containsString(CTA_BANNER_OVERVIEW));
 
         RatingsCompactPage ratingsCompactPage = overviewPage.clickUprightLinkInTypeSection();
@@ -138,7 +84,7 @@ public class EndToEndTests {
                 "Buying smart is just the start"));
 
         new Browser(driver).navigateBack();
-        assertThat(ratingsCompactPage.getCounterResult(), equalTo("64"));
+        assertThat(ratingsCompactPage.getCounterResult(), equalTo("75"));
 
         ModelPage modelpage = ratingsCompactPage.clickShopButton();
         Assert.assertTrue(modelpage.isPriceAndShopTitleDisplayed());
@@ -151,19 +97,14 @@ public class EndToEndTests {
     public void checkLoginOnBuyingGuide() {
         ModelPage modelPage = new ModelPage(driver);
         OverviewPage overviewPage = modelPage.open()
-                                             .clickUprightVacuumsLinkInBreadcrumbs();
+                .clickUprightVacuumsLinkInBreadcrumbs();
         assertThat(overviewPage.getHeroSectionText(), containsString(CTA_BANNER_OVERVIEW));
 
         BuyingGuidePage buyingGuidePage = overviewPage.clickBuyingGuideLink();
         String labelInHeroSection = buyingGuidePage.getLabelInHeroSectionText();
         assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
 
-        LoginPage loginPage = buyingGuidePage.clickSignInButton();
-        Assert.assertTrue(loginPage.isSignInButtonDisplayed());
-
-        buyingGuidePage = loginPage.enterUsername(configProvider.getUsername())
-                                   .enterPassword(configProvider.getPassword())
-                                   .clickSignInButton(BuyingGuidePage.class);
+        loginServices.doLogin(driver, user);
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
@@ -172,48 +113,46 @@ public class EndToEndTests {
         HomePage homePage = new HomePage(driver).open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
-        LoginPage loginPage = homePage.clickSignInButton();
-        homePage = loginPage.enterUsername(configProvider.getUsername())
-                            .enterPassword(configProvider.getPassword())
-                            .clickSignInButton(HomePage.class);
+        loginServices.doLogin(driver, user);
         Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
 
-        SearchResultPage searchResultPage = homePage.enterValueInSearchInput(MIELE_MODEL, "value")
-                                                    .clickSearchButton();
+        searchServices.doSearch(homePage, driver, "value", MIELE_MODEL);
+        SearchResultPage searchResultPage = new SearchResultPage(driver);
         searchResultPage.waitTextToAppearInLabel("Showing results for Miele Dynamic U1 Cat");
         assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
 
         ModelPage modelPage = searchResultPage.clickFirstResult();
         assertThat(modelPage.getTitle(), equalTo(MIELE_MODEL));
 
-        RatingsCompactPage ratingsCompactPage = modelPage.clickIconInSwitcher(RatingsCompactPage.class, COMPACT_VIEW_ICON);
+        RatingsCompactPage ratingsCompactPage = modelPage.clickIconInSwitcher(RatingsCompactPage.class, RatingsView.COMPACT);
         ratingsCompactPage.clickCloseTourButton();
         Assert.assertTrue(ratingsCompactPage.isRatingsListViewDisplayed());
 
         ratingsCompactPage.clickAddToCompareButton();
         assertThat(ratingsCompactPage.getCompareCircleNumber(), equalTo("1"));
 
-        RatingsFullPage ratingsFullPage = ratingsCompactPage.clickIconInSwitcher(RatingsFullPage.class, FULL_VIEW_ICON);
+        RatingsFullPage ratingsFullPage = ratingsCompactPage.clickIconInSwitcher(RatingsFullPage.class, RatingsView.FULL);
         Assert.assertTrue(ratingsFullPage.isRatingsFullViewDisplayed());
 
         ratingsFullPage.clickAddToCompareButton();
         assertThat(ratingsFullPage.getCompareCircleNumber(), equalTo("2"));
 
         ComparePage comparePage = ratingsFullPage.clickCompareBucketButton()
-                                                 .clickViewCompareButton();
-        assertThat(comparePage.getModelsList().get(0), equalTo(MIELE_MODEL));
-        assertThat(comparePage.getModelsList().get(1), equalTo("Kenmore Elite Pet Friendly 31150"));
+                .clickViewCompareButton();
+        assertThat(comparePage.getModelsList().get(1), equalTo("Shark Navigator Powered Lift-Away NV586 (Target)"));
+        assertThat(comparePage.getModelsList().get(0), equalTo("Kenmore Elite Pet Friendly 31150"));
+
 
         comparePage.clickRemoveButton()
-                   .clickRemoveButton();
+                .clickRemoveButton();
         assertThat(comparePage.getLabelFromEmptyPage(), equalTo("Your Compare Chart is Empty!"));
     }
 
     @Test
     public void checkPriceFilter() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
-        LoginPage loginPage = ratingsFullPage.open().clickSignInButton();
-        loginPage.enterUsername(configProvider.getUsername()).enterPassword(configProvider.getPassword()).clickSignInButton(RatingsFullPage.class);
+        ratingsFullPage.open();
+        loginServices.doLogin(driver, user);
         ratingsFullPage.clickPriceFilterButton();
         String defaultPrice = ratingsFullPage.getPriceInputInFilterPopup();
         ratingsFullPage.movePriceSlider();
@@ -221,10 +160,11 @@ public class EndToEndTests {
     }
 
     @Test
-    public void checkRatingsSliderScroll() {
+    public void checkRatingsSliderScroll() throws InterruptedException {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
-        LoginPage loginPage = ratingsFullPage.open().clickSignInButton();
-        loginPage.enterUsername(configProvider.getUsername()).enterPassword(configProvider.getPassword()).clickSignInButton(RatingsFullPage.class);
+        ratingsFullPage.open();
+        loginServices.doLogin(driver, user);
+        Thread.sleep(5000);
         ratingsFullPage.moveRatingsSlider().highlightRatingsSlider();
         Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
@@ -232,8 +172,8 @@ public class EndToEndTests {
     @Test
     public void checkRatingsJsScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
-        LoginPage loginPage = ratingsFullPage.open().clickSignInButton();
-        loginPage.enterUsername(configProvider.getUsername()).enterPassword(configProvider.getPassword()).clickSignInButton(RatingsFullPage.class);
+        ratingsFullPage.open();
+        loginServices.doLogin(driver, user);
         new Browser(driver).scrollToBottomOfPage();
         HomePage homePage = ratingsFullPage.crLogoClick();
         Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");

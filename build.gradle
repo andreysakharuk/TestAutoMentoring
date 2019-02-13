@@ -19,6 +19,7 @@ dependencies {
     compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.14.0'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-ie-driver', version: '3.14.0'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-support', version: '3.14.0'
+    compile group: 'com.codeborne', name: 'selenide', version: '5.0.1'
     
 }
 

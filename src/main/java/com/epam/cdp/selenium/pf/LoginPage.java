@@ -15,7 +15,7 @@ public class LoginPage extends AbstractPage {
     @FindBy(css = "div.gnav-sign-in__form__submit input")
     private WebElement signInButton;
 
-    protected LoginPage(WebDriver driver) {
+    public LoginPage(WebDriver driver) {
         super(driver);
     }
 
@@ -36,5 +36,9 @@ public class LoginPage extends AbstractPage {
     public <T extends BasePage> T clickSignInButton(Class<T> pageClass) {
         signInButton.click();
         return generatePage(pageClass);
+    }
+
+    public void clickSignInButton(){
+        signInButton.click();
     }
 }
