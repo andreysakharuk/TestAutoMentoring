@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.selenium.Browser;
 import org.openqa.selenium.WebDriver;

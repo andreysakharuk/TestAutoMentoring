@@ -1,11 +1,11 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
-import com.epam.cdp.selenium.util.ListGenerator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ComparePage extends BasePage {
 
@@ -23,7 +23,8 @@ public class ComparePage extends BasePage {
     }
 
     public List<String> getModelsList() {
-        return new ListGenerator().getList(modelsList);
+        return modelsList.stream()
+                .map(WebElement::getText).collect(Collectors.toList());
     }
 
     public ComparePage clickRemoveButton() {

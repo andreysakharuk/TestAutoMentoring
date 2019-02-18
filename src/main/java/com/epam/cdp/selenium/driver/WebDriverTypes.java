@@ -1,4 +1,4 @@
-package com.epam.cdp.driver;
+package com.epam.cdp.selenium.driver;
 
 public enum WebDriverTypes {
 

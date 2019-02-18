@@ -1,6 +1,6 @@
 package com.epam.cdp.base;
 
-import com.epam.cdp.driver.WebDriverTypes;
+import com.epam.cdp.selenium.driver.WebDriverTypes;
 
 import java.io.IOException;
 import java.io.InputStream;

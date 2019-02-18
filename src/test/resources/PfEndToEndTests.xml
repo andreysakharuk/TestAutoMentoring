@@ -5,7 +5,7 @@
 
     <test name="scenarioTests">
         <classes>
-            <class name="com.epam.cdp.selenium.pf.EndToEndTests"/>
+            <class name="com.epam.cdp.selenium.pages.EndToEndTests"/>
         </classes>
     </test>
 

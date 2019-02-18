@@ -1,4 +1,4 @@
-package com.epam.cdp.driver;
+package com.epam.cdp.selenium.driver;
 
 import com.epam.cdp.base.ConfigProvider;
 import org.openqa.selenium.MutableCapabilities;
@@ -15,9 +15,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public class Driver {
+public class WevDriverProvider {
 
-    WebDriver driver;
+    private WebDriver driver;
     private ConfigProvider configProvider;
 
     public WebDriver initDriver() throws MalformedURLException {

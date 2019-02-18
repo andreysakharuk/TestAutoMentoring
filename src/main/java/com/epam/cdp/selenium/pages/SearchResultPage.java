@@ -1,11 +1,11 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
-import com.epam.cdp.selenium.util.ListGenerator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SearchResultPage extends BasePage {
 
@@ -24,7 +24,8 @@ public class SearchResultPage extends BasePage {
     }
 
     public List<String> getListOfBrands() {
-        return new ListGenerator().getList(modelsBrandList);
+        return modelsBrandList.stream()
+                .map(WebElement::getText).collect(Collectors.toList());
     }
 
     public ModelPage clickFirstResult() {

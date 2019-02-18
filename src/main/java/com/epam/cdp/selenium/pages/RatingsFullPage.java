@@ -1,7 +1,6 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.selenium.Browser;
-import com.epam.cdp.selenium.util.ListGenerator;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -9,6 +8,7 @@ import org.openqa.selenium.support.FindBy;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RatingsFullPage extends RatingsPage {
 
@@ -74,7 +74,8 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public List<String> getLabelsListFromRatingsChart() {
-        return new ListGenerator().getList(labelsList);
+        return labelsList.stream()
+                .map(WebElement::getText).collect(Collectors.toList());
     }
 
     public RatingsFullPage clickClearAllLink() {
@@ -96,7 +97,8 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public List<String> getBrandsAndModelsListInRatingsChart() {
-        return new ListGenerator().getList(brandsAndModelsList);
+        return brandsAndModelsList.stream()
+                .map(WebElement::getText).collect(Collectors.toList());
     }
 
     public boolean isRatingsFullViewDisplayed() {

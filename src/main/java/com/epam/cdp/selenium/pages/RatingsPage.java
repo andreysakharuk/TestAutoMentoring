@@ -1,6 +1,6 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
-import org.openqa.selenium.By;
+import com.epam.cdp.bo.RatingsView;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -52,12 +52,17 @@ public class RatingsPage extends BasePage {
     @FindBy(css = "div.vue-slider-dot")
     private WebElement priceSlider;
 
+    @FindBy(xpath = "//div[@class='popover-content']/div[3]//input[@type='checkbox']")
+    private List<WebElement> checkboxesInMoreFilterPopup;
+
+
+
     public RatingsPage(WebDriver driver) {
         super(driver);
     }
 
     public <T extends RatingsPage> T clickIconInSwitcher(Class<T> pageClass, RatingsView ratingsView) {
-        switcherIcons.get(ratingsView.ordinal()).click();
+        switcherIcons.get(ratingsView.getPosition()).click();
         return generatePage(pageClass);
     }
 
@@ -119,7 +124,11 @@ public class RatingsPage extends BasePage {
     }
 
     public RatingsPage selectBrandCheckboxInMoreFilterPopup(String brandCheckbox) {
-        driver.findElement(By.xpath("//*[@name='" + brandCheckbox + "-checkbox']/parent::label")).click();
+        for (WebElement names: checkboxesInMoreFilterPopup){
+            if (names.getAttribute("name").contains(brandCheckbox)){
+                System.out.println("found");
+            }
+        }
         return this;
     }
 
