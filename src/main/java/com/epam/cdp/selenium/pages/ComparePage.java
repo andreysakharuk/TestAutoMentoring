@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -23,8 +23,8 @@ public class ComparePage extends BasePage {
     }
 
     public List<String> getModelsList() {
-        List<String> modelsListFull = modelsList.stream().map(WebElement::getText).collect(Collectors.toList());
-        return modelsListFull;
+        return modelsList.stream()
+                .map(WebElement::getText).collect(Collectors.toList());
     }
 
     public ComparePage clickRemoveButton() {

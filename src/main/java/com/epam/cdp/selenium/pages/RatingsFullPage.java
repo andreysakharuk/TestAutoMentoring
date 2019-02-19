@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.selenium.Browser;
 import org.openqa.selenium.WebDriver;
@@ -26,41 +26,11 @@ public class RatingsFullPage extends RatingsPage {
     @FindBy(css = ".spa-page-counter__values >span:nth-child(2)")
     private WebElement resultCounter;
 
-    @FindBy(xpath = "//*[@data-id='price']")
-    private WebElement priceFilterButton;
-
     @FindBy(css = ".price-filter-popover .crux-label-style")
     private List<WebElement> priceLabelsList;
 
-    @FindBy(css = ".price-filter-popover .crux-btn.crux-btn-primary")
-    private WebElement viewButtonInPriceFilterPopup;
-
-    @FindBy(css = ".price-filter-popover .crux-input")
-    private WebElement inputInPriceFilterPopup;
-
     @FindBy(css = ".classic-view__price .crux-green")
     private List<WebElement> pricesList;
-
-    @FindBy(xpath = "//*[@data-id='rated']//button")
-    private WebElement ratedBestFilterButton;
-
-    @FindBy(xpath = "//*[@data-id='rated']//p")
-    private WebElement labelInRatedBestFilterPopup;
-
-    @FindBy(css = ".rated-filter-popover .crux-btn.crux-btn-primary")
-    private WebElement viewButtonInRatedBestFilterPopup;
-
-    @FindBy(css = ".shared-crux-checkbox.crux-checkbox label")
-    private List<WebElement> checkBoxInRatedBestFilterPopup;
-
-    @FindBy(xpath = "//*[@name='Eureka-checkbox']/parent::label")
-    private WebElement eurekaBrandCheckboxInMoreFilterPopup;
-
-    @FindBy(xpath = "//*[@data-id='more-filters']")
-    private WebElement moreFilterButton;
-
-    @FindBy(css = ".more-filters-popover .crux-btn.crux-btn-primary")
-    private WebElement viewButtonInMoreFilterPopup;
 
     @FindBy(xpath = "//*[@class='clearfix classic-view__body__item classic-view__body__item--fixed']")
     private List<WebElement> brandsAndModelsList;
@@ -76,9 +46,6 @@ public class RatingsFullPage extends RatingsPage {
 
     @FindBy(xpath = "//*[@data-display='true']//button[@class='crux-btn crux-btn-special--lg']")
     private WebElement viewCompareButton;
-
-    @FindBy(css = "div.vue-slider-dot")
-    private WebElement priceSlider;
 
     @FindBy(xpath = "//*[@style='border-radius: 0px; background-color: rgb(0, 0, 0); transition-duration: 0s; width: 153.636px; left: 0px;']")
     private WebElement priceBar;
@@ -107,8 +74,8 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public List<String> getLabelsListFromRatingsChart() {
-        List<String> labelsListFull = labelsList.stream().map(WebElement::getText).collect(Collectors.toList());
-        return labelsListFull;
+        return labelsList.stream()
+                .map(WebElement::getText).collect(Collectors.toList());
     }
 
     public RatingsFullPage clickClearAllLink() {
@@ -120,26 +87,6 @@ public class RatingsFullPage extends RatingsPage {
         return resultCounter.getText();
     }
 
-    public RatingsFullPage clickPriceFilterButton() {
-        priceFilterButton.click();
-        return this;
-    }
-
-    public String getCancelButtonTextInPriceFilterPopup() {
-        return priceLabelsList.get(2).getText();
-    }
-
-    public RatingsFullPage enterValueInPriceFilterPopup(String a) {
-        inputInPriceFilterPopup.clear();
-        inputInPriceFilterPopup.sendKeys(a);
-        return this;
-    }
-
-    public RatingsFullPage clickViewButtonInPriceFilterPopup() {
-        viewButtonInPriceFilterPopup.click();
-        return this;
-    }
-
     public List<Integer> getPricesListFromRatingsChart() {
         List<Integer> pricesListFull = new ArrayList<>();
         for (WebElement price : pricesList) {
@@ -149,47 +96,9 @@ public class RatingsFullPage extends RatingsPage {
         return pricesListFull;
     }
 
-    public RatingsFullPage clickRatedBestFilterButton() {
-        ratedBestFilterButton.click();
-        return this;
-    }
-
-    public String getLabelInRatedBestFilterPopup() {
-        return labelInRatedBestFilterPopup.getText();
-    }
-
-    public RatingsFullPage selectCheckboxInRatedBestFilterPopup(Integer checkboxNumber) {
-        checkBoxInRatedBestFilterPopup.get(checkboxNumber).click();
-        return this;
-    }
-
-    public RatingsFullPage clickViewButtonInRatedBestFilterPopup() {
-        viewButtonInRatedBestFilterPopup.click();
-        return this;
-    }
-
-    public String getColorOfRatedBestFilterButton() {
-        return ratedBestFilterButton.getCssValue("background-color");
-    }
-
-    public RatingsFullPage clickMoreFilterButton() {
-        moreFilterButton.click();
-        return this;
-    }
-
-    public RatingsFullPage selectEurekaBrandCheckboxInMoreFilterPopup() {
-        eurekaBrandCheckboxInMoreFilterPopup.click();
-        return this;
-    }
-
-    public RatingsFullPage clickViewButtonInMoreFilterPopup() {
-        viewButtonInMoreFilterPopup.click();
-        return this;
-    }
-
     public List<String> getBrandsAndModelsListInRatingsChart() {
-        List<String> brandsAndModelsListFull = brandsAndModelsList.stream().map(WebElement::getText).collect(Collectors.toList());
-        return brandsAndModelsListFull;
+        return brandsAndModelsList.stream()
+                .map(WebElement::getText).collect(Collectors.toList());
     }
 
     public boolean isRatingsFullViewDisplayed() {
@@ -211,11 +120,6 @@ public class RatingsFullPage extends RatingsPage {
         return new ComparePage(driver);
     }
 
-    public RatingsFullPage movePriceSlider() {
-        waitForElementVisible(viewButtonInPriceFilterPopup);
-        new Actions(driver).dragAndDropBy(priceSlider, -200, 0).build().perform();
-        return this;
-    }
 
     public String getPriceInputInFilterPopup() {
         waitForElementVisible(priceInput);

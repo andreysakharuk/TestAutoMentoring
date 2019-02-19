@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -24,7 +24,8 @@ public class SearchResultPage extends BasePage {
     }
 
     public List<String> getListOfBrands() {
-        return modelsBrandList.stream().map(WebElement::getText).collect(Collectors.toList());
+        return modelsBrandList.stream()
+                .map(WebElement::getText).collect(Collectors.toList());
     }
 
     public ModelPage clickFirstResult() {

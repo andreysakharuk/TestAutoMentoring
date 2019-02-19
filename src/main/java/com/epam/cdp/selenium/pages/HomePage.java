@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pf;
+package com.epam.cdp.selenium.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,12 +13,6 @@ public class HomePage extends BasePage {
 
     @FindBy(css = ".account-info")
     private WebElement accountInfoSection;
-
-    @FindBy(xpath = "//input[@title='Search']")
-    private WebElement searchInput;
-
-    @FindBy(css = ".gnav-typeahead__button")
-    private WebElement searchButton;
 
 
     public HomePage(WebDriver driver) {
@@ -39,14 +33,4 @@ public class HomePage extends BasePage {
         return accountInfoSection.getText();
     }
 
-    public HomePage enterValueInSearchInput(String attributeValue, String attributeName) {
-        searchInput.sendKeys(attributeValue);
-        waitForElementAttributeValue(searchInput, attributeName, attributeValue);
-        return this;
-    }
-
-    public SearchResultPage clickSearchButton() {
-        searchButton.click();
-        return new SearchResultPage(driver);
-    }
 }
