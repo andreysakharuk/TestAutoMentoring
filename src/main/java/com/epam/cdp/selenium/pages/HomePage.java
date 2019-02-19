@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.pages;
 
+import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -29,7 +30,7 @@ public class HomePage extends BasePage {
     }
 
     public String getAccountInfoSectionText() {
-        waitForElementVisible(accountInfoSection);
+        new Waiter().waitForElementVisible(accountInfoSection);
         return accountInfoSection.getText();
     }
 

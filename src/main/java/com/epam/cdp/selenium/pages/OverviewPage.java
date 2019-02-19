@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.pages;
 
+import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -27,7 +28,7 @@ public class OverviewPage extends BasePage {
     }
 
     public String getHeroSectionText() {
-        waitForElementVisible(heroSection);
+        new Waiter().waitForElementVisible(heroSection);
         return heroSection.getText();
     }
 
@@ -37,7 +38,7 @@ public class OverviewPage extends BasePage {
     }
 
     public BuyingGuidePage clickBuyingGuideLink() {
-        waitForElementVisible(buyingGuideLink);
+        new Waiter().waitForElementVisible(buyingGuideLink);
         buyingGuideLink.click();
         return new BuyingGuidePage(driver);
     }

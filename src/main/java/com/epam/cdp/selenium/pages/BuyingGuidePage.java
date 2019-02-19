@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.pages;
 
+import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -20,14 +21,17 @@ public class BuyingGuidePage extends BasePage {
     }
 
     public String getLabelInHeroSectionText() {
-        waitForElementVisible(labelInHeroSection);
+        new Waiter().waitForElementVisible(labelInHeroSection);
         return labelInHeroSection.getText();
     }
 
     public boolean isLockNearRecommendedLinkDisplayed() {
-        waitForElementVisible(searchButton);
+        clickSearchIcon();
+        /*
+        new Waiter().waitForElementVisible(searchButton);
         searchButton.click();
         searchButton.click();
+        */
         return lockNearRecommendedLink.isDisplayed();
     }
 }

@@ -1,13 +1,13 @@
 package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.bo.RatingsView;
-import com.epam.cdp.bo.User;
+import com.epam.cdp.bo.UserFactory;
 import com.epam.cdp.selenium.Browser;
-import com.epam.cdp.selenium.driver.WevDriverProvider;
+import com.epam.cdp.selenium.driver.WebDriverCustomDecorator;
+import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
 import com.epam.cdp.selenium.services.FilterServices;
 import com.epam.cdp.selenium.services.LoginServices;
 import com.epam.cdp.selenium.services.SearchServices;
-import com.epam.cdp.test.TestDataProvider;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -22,7 +22,6 @@ import static org.hamcrest.Matchers.*;
 public class EndToEndTests {
 
     private WebDriver driver;
-    private User user;
     private LoginServices loginServices;
     private SearchServices searchServices;
     private FilterServices filterServices;
@@ -35,8 +34,8 @@ public class EndToEndTests {
 
     @BeforeMethod
     public void setUp() throws MalformedURLException {
-        this.driver = new WevDriverProvider().initDriver();
-        this.user = TestDataProvider.getValidUser();
+        WebDriver driver1 = WebDriverProviderSingleton.initDriver();
+        driver = new WebDriverCustomDecorator(driver1);
         this.loginServices = new LoginServices();
         this.searchServices = new SearchServices();
         this.filterServices = new FilterServices();
@@ -51,7 +50,7 @@ public class EndToEndTests {
                 .getCtaBannerText();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
         ratingsFullPage.clickRecommendedToggle();
@@ -63,14 +62,14 @@ public class EndToEndTests {
                 .getResultCounter();
         Assert.assertEquals(resultCount, "12");
 
-        filterServices.doPriceFiltering(driver, "100");
+        filterServices.doPriceFiltering("100");
         assertThat(ratingsFullPage.getPricesListFromRatingsChart(), everyItem(lessThanOrEqualTo(100)));
 
-        filterServices.doRatedBestFiltering(driver, FIRST_CHECKBOX);
+        filterServices.doRatedBestFiltering(FIRST_CHECKBOX);
         assertThat(ratingsFullPage.getColorOfRatedBestFilterButton(), containsString("0, 174, 77"));
 
-        filterServices.doMoreFiltering(driver, EUREKA_BRAND);
-       // assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
+        filterServices.doMoreFiltering(EUREKA_BRAND);
+        assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
     }
 
     @Test
@@ -87,7 +86,7 @@ public class EndToEndTests {
         assertThat(membershipPage.getCtaBanner(), equalToIgnoringWhiteSpace(
                 "Buying smart is just the start"));
 
-        new Browser(driver).navigateBack();
+        new Browser().navigateBack();
         assertThat(ratingsCompactPage.getCounterResult(), equalTo("75"));
 
         ModelPage modelpage = ratingsCompactPage.clickShopButton();
@@ -108,7 +107,7 @@ public class EndToEndTests {
         String labelInHeroSection = buyingGuidePage.getLabelInHeroSectionText();
         assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
 
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
@@ -117,10 +116,10 @@ public class EndToEndTests {
         HomePage homePage = new HomePage(driver).open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
 
-        searchServices.doSearch(driver, MIELE_MODEL);
+        searchServices.doSearch(MIELE_MODEL);
         SearchResultPage searchResultPage = new SearchResultPage(driver);
         searchResultPage.waitTextToAppearInLabel("Showing results for Miele Dynamic U1 Cat");
         assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
@@ -156,7 +155,7 @@ public class EndToEndTests {
     public void checkPriceFilter() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         ratingsFullPage.open();
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         ratingsFullPage.clickPriceFilterButton();
         String defaultPrice = ratingsFullPage.getPriceInputInFilterPopup();
         ratingsFullPage.movePriceSlider();
@@ -167,7 +166,7 @@ public class EndToEndTests {
     public void checkRatingsSliderScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         ratingsFullPage.open();
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         ratingsFullPage.moveRatingsSlider().highlightRatingsSlider();
         Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
@@ -176,10 +175,17 @@ public class EndToEndTests {
     public void checkRatingsJsScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
         ratingsFullPage.open();
-        loginServices.doLogin(driver, user);
-        new Browser(driver).scrollToBottomOfPage();
+        loginServices.doLogin(UserFactory.getValidUser());
+        new Browser().scrollToBottomOfPage();
         HomePage homePage = ratingsFullPage.crLogoClick();
         Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
+    }
+
+    @Test
+    public void checkUserCanNotLoginWithInvalidPassword() {
+        new HomePage(driver).open();
+        loginServices.doLogin(UserFactory.createUserInvalidPassword());
+        Assert.assertEquals(driver.getCurrentUrl(), "https://secure.consumerreports.org/ec/login?error");
     }
 
     @AfterMethod

@@ -1,6 +1,7 @@
 package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.bo.RatingsView;
+import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -55,6 +56,8 @@ public class RatingsPage extends BasePage {
     @FindBy(xpath = "//div[@class='popover-content']/div[3]//input[@type='checkbox']")
     private List<WebElement> checkboxesInMoreFilterPopup;
 
+    @FindBy(xpath = "//div[@class='popover-content']/div[3]//input[@type='checkbox']/parent::label")
+    private List<WebElement> checkboxesLabelsInMoreFilterPopup;
 
 
     public RatingsPage(WebDriver driver) {
@@ -75,7 +78,7 @@ public class RatingsPage extends BasePage {
     }
 
     public String getCompareCircleNumber() {
-        waitForElementVisible(compareCircleNumber);
+        new Waiter().waitForElementVisible(compareCircleNumber);
         return compareCircleNumber.getText();
     }
 
@@ -124,11 +127,13 @@ public class RatingsPage extends BasePage {
     }
 
     public RatingsPage selectBrandCheckboxInMoreFilterPopup(String brandCheckbox) {
+        int indexOfCheckbox = -1;
         for (WebElement names: checkboxesInMoreFilterPopup){
             if (names.getAttribute("name").contains(brandCheckbox)){
-                System.out.println("found");
+                indexOfCheckbox = checkboxesInMoreFilterPopup.indexOf(names);
             }
         }
+        checkboxesLabelsInMoreFilterPopup.get(indexOfCheckbox).click();
         return this;
     }
 
@@ -138,7 +143,7 @@ public class RatingsPage extends BasePage {
     }
 
     public RatingsPage movePriceSlider() {
-        waitForElementVisible(viewButtonInPriceFilterPopup);
+        new Waiter().waitForElementVisible(viewButtonInPriceFilterPopup);
         new Actions(driver).dragAndDropBy(priceSlider, -200, 0).build().perform();
         return this;
     }

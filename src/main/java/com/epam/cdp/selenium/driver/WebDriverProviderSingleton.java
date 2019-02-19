@@ -15,13 +15,26 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
-public class WevDriverProvider {
+public class WebDriverProviderSingleton {
 
-    private WebDriver driver;
-    private ConfigProvider configProvider;
+    private static WebDriver driver;
 
-    public WebDriver initDriver() throws MalformedURLException {
-        this.configProvider = new ConfigProvider();
+    private WebDriverProviderSingleton() {
+    }
+
+    public static WebDriver getInstance() {
+        if (driver == null) {
+            try {
+                WebDriverProviderSingleton.initDriver();
+            } catch (MalformedURLException e) {
+                System.out.println("MalformedURLException");
+            }
+        }
+        return driver;
+    }
+
+    public static WebDriver initDriver() throws MalformedURLException {
+        ConfigProvider configProvider = new ConfigProvider();
         if (configProvider.isLocal()) {
             switch (configProvider.getBrowser()) {
                 case CHROME:
@@ -59,7 +72,6 @@ public class WevDriverProvider {
         driver.manage().timeouts().implicitlyWait(configProvider.getTimeout(), TimeUnit.SECONDS);
         driver.manage().window().maximize();
         return driver;
-
     }
 
 

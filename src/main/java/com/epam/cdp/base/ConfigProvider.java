@@ -48,4 +48,12 @@ public class ConfigProvider {
     public String getPassword() {
         return properties.getProperty("password");
     }
+
+    public String getInvalidUsername() {
+        return properties.getProperty("invalid_username");
+    }
+
+    public String getInvalidPassword() {
+        return properties.getProperty("invalid_password");
+    }
 }

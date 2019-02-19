@@ -1,6 +1,7 @@
 package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.selenium.Browser;
+import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -122,12 +123,12 @@ public class RatingsFullPage extends RatingsPage {
 
 
     public String getPriceInputInFilterPopup() {
-        waitForElementVisible(priceInput);
+        new Waiter().waitForElementVisible(priceInput);
         return priceInput.getAttribute("value");
     }
 
     public RatingsFullPage moveRatingsSlider() {
-        waitForElementVisible(ratingsSlider);
+        new Waiter().waitForElementVisible(ratingsSlider);
         new Actions(driver).dragAndDropBy(ratingsSlider, 300, 0).build().perform();
         return this;
     }
@@ -137,6 +138,6 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public void highlightRatingsSlider() {
-        new Browser(driver).highlightElement(ratingsSlider);
+        new Browser().highlightElement(ratingsSlider);
     }
 }

@@ -1,6 +1,8 @@
 package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.selenium.Browser;
+import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
+import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -34,19 +36,19 @@ public class ModelPage extends RatingsPage {
 
     public ModelPage open() {
         driver.get(MODEL_PAGE_URL);
-        return new ModelPage(driver);
+        return new ModelPage(WebDriverProviderSingleton.getInstance());
     }
 
     public boolean isPriceAndShopTitleDisplayed() {
-        waitForElementVisible(priceAndShopTitle);
+        new Waiter().waitForElementVisible(priceAndShopTitle);
         return priceAndShopTitle.isDisplayed();
     }
 
     public AmazonPage clickAmazonButton() {
         new Actions(driver).moveToElement(amazonButton).build().perform();
-        waitForElementClickable(amazonButton);
+        new Waiter().waitForElementClickable(amazonButton);
         amazonButton.click();
-        new Browser(driver).switchTab();
+        new Browser().switchTab();
         return new AmazonPage(driver);
     }
 
@@ -56,7 +58,7 @@ public class ModelPage extends RatingsPage {
     }
 
     public String getTitle() {
-        waitForElementVisible(title);
+        new Waiter().waitForElementVisible(title);
         return title.getText();
     }
 }

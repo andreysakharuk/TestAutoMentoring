@@ -29,10 +29,6 @@ public class LoginPage extends AbstractPage {
         return this;
     }
 
-    public boolean isSignInButtonDisplayed() {
-        return isElementDisplayed(signInButton);
-    }
-
     public <T extends BasePage> T clickSignInButton(Class<T> pageClass) {
         signInButton.click();
         return generatePage(pageClass);

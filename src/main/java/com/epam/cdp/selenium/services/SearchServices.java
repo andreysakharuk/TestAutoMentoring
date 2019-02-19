@@ -1,18 +1,18 @@
 package com.epam.cdp.selenium.services;
 
+import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
 import com.epam.cdp.selenium.pages.BasePage;
-import org.openqa.selenium.WebDriver;
 
 public class SearchServices {
 
     /**
      * Allows to search for query with Search input in global header
-     * @param driver WebDriver
-     * @param searchQuery 'Miele Dynamic U1 Cat & Dog' brand model name
+     *
+     * @param searchQuery search query that is placed into Search input
      */
-    public void doSearch(WebDriver driver, String searchQuery){
+    public void doSearch(String searchQuery){
 
-        BasePage page = new BasePage(driver);
+        BasePage page = new BasePage(WebDriverProviderSingleton.getInstance());
         if(!page.isSearchInputVisible()){
             page.clickSearchIcon();
         }
