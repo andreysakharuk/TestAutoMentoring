@@ -56,4 +56,10 @@ public class ConfigProvider {
     public String getInvalidPassword() {
         return properties.getProperty("invalid_password");
     }
+
+    public String getNickname() {
+        return properties.getProperty("nickname");
+    }
+
+
 }

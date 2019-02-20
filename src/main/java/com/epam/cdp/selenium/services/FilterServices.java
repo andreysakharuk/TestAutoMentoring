@@ -1,6 +1,5 @@
 package com.epam.cdp.selenium.services;
 
-import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
 import com.epam.cdp.selenium.pages.RatingsPage;
 
 public class FilterServices {
@@ -11,7 +10,7 @@ public class FilterServices {
      * @param price price used for filtering
      */
     public void doPriceFiltering(String price) {
-        new RatingsPage(WebDriverProviderSingleton.getInstance())
+        new RatingsPage()
                 .clickPriceFilterButton()
                 .enterValueInPriceFilterPopup(price)
                 .clickViewButtonInPriceFilterPopup();
@@ -23,7 +22,7 @@ public class FilterServices {
      * @param checkbox position of needed to select checkbox starting with 0
      */
     public void doRatedBestFiltering(int checkbox) {
-        new RatingsPage(WebDriverProviderSingleton.getInstance())
+        new RatingsPage()
                 .clickRatedBestFilterButton()
                 .selectCheckboxInRatedBestFilterPopup(checkbox)
                 .clickViewButtonInRatedBestFilterPopup();
@@ -35,7 +34,7 @@ public class FilterServices {
      * @param brandCheckbox Name of Brand checkbox
      */
     public void doMoreFiltering(String brandCheckbox){
-        new RatingsPage(WebDriverProviderSingleton.getInstance())
+        new RatingsPage()
                 .clickMoreFilterButton()
                 .selectBrandCheckboxInMoreFilterPopup(brandCheckbox)
                 .clickViewButtonInMoreFilterPopup();

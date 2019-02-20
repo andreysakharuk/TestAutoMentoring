@@ -1,7 +1,6 @@
 package com.epam.cdp.selenium.pages;
 
 import org.openqa.selenium.ElementNotInteractableException;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -28,14 +27,13 @@ public class RatingsCompactPage extends RatingsPage {
     private List<WebElement> compareButtons;
 
 
-    public RatingsCompactPage(WebDriver driver) {
-        super(driver);
+    public RatingsCompactPage() {
+        super();
     }
-
 
     public MembershipPage clickBecomeMemberLink() {
         becomeMemberLink.click();
-        return new MembershipPage(driver);
+        return new MembershipPage();
     }
 
     public String getCounterResult() {
@@ -44,14 +42,14 @@ public class RatingsCompactPage extends RatingsPage {
 
     public ModelPage clickShopButton() {
         shopButtons.get(0).click();
-        return new ModelPage(driver);
+        return new ModelPage();
     }
 
     public RatingsCompactPage clickCloseTourButton() {
         try {
             closeTourButton.click();
         } catch (ElementNotInteractableException e) {
-            System.out.println("Product bug");
+            throw new ElementNotInteractableException("Product bug");
         }
         return this;
     }

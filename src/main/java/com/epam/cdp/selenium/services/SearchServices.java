@@ -1,6 +1,5 @@
 package com.epam.cdp.selenium.services;
 
-import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
 import com.epam.cdp.selenium.pages.BasePage;
 
 public class SearchServices {
@@ -12,7 +11,7 @@ public class SearchServices {
      */
     public void doSearch(String searchQuery){
 
-        BasePage page = new BasePage(WebDriverProviderSingleton.getInstance());
+        BasePage page = new BasePage();
         if(!page.isSearchInputVisible()){
             page.clickSearchIcon();
         }

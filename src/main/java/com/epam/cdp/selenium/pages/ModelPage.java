@@ -1,9 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import com.epam.cdp.selenium.Browser;
-import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
-import com.epam.cdp.selenium.wait.Waiter;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -30,35 +26,35 @@ public class ModelPage extends RatingsPage {
     @FindBy(css = ".related-articles__news-header")
     private WebElement relatedArticlesSection;
 
-    public ModelPage(WebDriver driver) {
-        super(driver);
+    public ModelPage() {
+        super();
     }
 
     public ModelPage open() {
         driver.get(MODEL_PAGE_URL);
-        return new ModelPage(WebDriverProviderSingleton.getInstance());
+        return new ModelPage();
     }
 
     public boolean isPriceAndShopTitleDisplayed() {
-        new Waiter().waitForElementVisible(priceAndShopTitle);
+        waiter.waitForElementVisible(priceAndShopTitle);
         return priceAndShopTitle.isDisplayed();
     }
 
     public AmazonPage clickAmazonButton() {
         new Actions(driver).moveToElement(amazonButton).build().perform();
-        new Waiter().waitForElementClickable(amazonButton);
+        waiter.waitForElementClickable(amazonButton);
         amazonButton.click();
-        new Browser().switchTab();
-        return new AmazonPage(driver);
+        browser.switchTab();
+        return new AmazonPage();
     }
 
     public OverviewPage clickUprightVacuumsLinkInBreadcrumbs() {
         breadcrumbsList.get(2).click();
-        return new OverviewPage(driver);
+        return new OverviewPage();
     }
 
     public String getTitle() {
-        new Waiter().waitForElementVisible(title);
+        waiter.waitForElementVisible(title);
         return title.getText();
     }
 }

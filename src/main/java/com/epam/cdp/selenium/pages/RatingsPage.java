@@ -1,8 +1,6 @@
 package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.bo.RatingsView;
-import com.epam.cdp.selenium.wait.Waiter;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -60,8 +58,8 @@ public class RatingsPage extends BasePage {
     private List<WebElement> checkboxesLabelsInMoreFilterPopup;
 
 
-    public RatingsPage(WebDriver driver) {
-        super(driver);
+    public RatingsPage() {
+        super();
     }
 
     public <T extends RatingsPage> T clickIconInSwitcher(Class<T> pageClass, RatingsView ratingsView) {
@@ -78,7 +76,7 @@ public class RatingsPage extends BasePage {
     }
 
     public String getCompareCircleNumber() {
-        new Waiter().waitForElementVisible(compareCircleNumber);
+        waiter.waitForElementVisible(compareCircleNumber);
         return compareCircleNumber.getText();
     }
 
@@ -127,13 +125,13 @@ public class RatingsPage extends BasePage {
     }
 
     public RatingsPage selectBrandCheckboxInMoreFilterPopup(String brandCheckbox) {
-        int indexOfCheckbox = -1;
-        for (WebElement names: checkboxesInMoreFilterPopup){
-            if (names.getAttribute("name").contains(brandCheckbox)){
-                indexOfCheckbox = checkboxesInMoreFilterPopup.indexOf(names);
+        for (WebElement element: checkboxesInMoreFilterPopup){
+            if (element.getAttribute("name").contains(brandCheckbox)){
+                int indexOfCheckbox = checkboxesInMoreFilterPopup.indexOf(element);
+                checkboxesLabelsInMoreFilterPopup.get(indexOfCheckbox).click();
+                break;
             }
         }
-        checkboxesLabelsInMoreFilterPopup.get(indexOfCheckbox).click();
         return this;
     }
 
@@ -143,7 +141,7 @@ public class RatingsPage extends BasePage {
     }
 
     public RatingsPage movePriceSlider() {
-        new Waiter().waitForElementVisible(viewButtonInPriceFilterPopup);
+        waiter.waitForElementVisible(viewButtonInPriceFilterPopup);
         new Actions(driver).dragAndDropBy(priceSlider, -200, 0).build().perform();
         return this;
     }

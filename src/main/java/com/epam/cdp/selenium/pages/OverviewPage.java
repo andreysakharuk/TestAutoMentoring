@@ -1,7 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import com.epam.cdp.selenium.wait.Waiter;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -18,28 +16,28 @@ public class OverviewPage extends BasePage {
     @FindBy(css = ".buying-guide a")
     private WebElement buyingGuideLink;
 
-    public OverviewPage(WebDriver driver) {
-        super(driver);
+    public OverviewPage( ) {
+        super();
     }
 
     public OverviewPage open() {
         driver.get(OVERVIEW_PAGE_URL);
-        return new OverviewPage(driver);
+        return new OverviewPage();
     }
 
     public String getHeroSectionText() {
-        new Waiter().waitForElementVisible(heroSection);
+        waiter.waitForElementVisible(heroSection);
         return heroSection.getText();
     }
 
     public RatingsCompactPage clickUprightLinkInTypeSection() {
         typeSectionLink.click();
-        return new RatingsCompactPage(driver);
+        return new RatingsCompactPage();
     }
 
     public BuyingGuidePage clickBuyingGuideLink() {
-        new Waiter().waitForElementVisible(buyingGuideLink);
+        waiter.waitForElementVisible(buyingGuideLink);
         buyingGuideLink.click();
-        return new BuyingGuidePage(driver);
+        return new BuyingGuidePage();
     }
 }

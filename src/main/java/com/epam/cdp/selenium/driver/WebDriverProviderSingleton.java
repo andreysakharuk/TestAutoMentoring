@@ -27,13 +27,13 @@ public class WebDriverProviderSingleton {
             try {
                 WebDriverProviderSingleton.initDriver();
             } catch (MalformedURLException e) {
-                System.out.println("MalformedURLException");
+                throw new RuntimeException("Unable to create web driver");
             }
         }
         return driver;
     }
 
-    public static WebDriver initDriver() throws MalformedURLException {
+    private static WebDriver initDriver() throws MalformedURLException {
         ConfigProvider configProvider = new ConfigProvider();
         if (configProvider.isLocal()) {
             switch (configProvider.getBrowser()) {

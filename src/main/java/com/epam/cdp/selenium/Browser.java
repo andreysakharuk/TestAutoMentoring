@@ -6,22 +6,28 @@ import org.openqa.selenium.*;
 
 public class Browser {
 
+    private WebDriver driver;
+
+    public Browser() {
+        this.driver = WebDriverProviderSingleton.getInstance();
+    }
+
     public void navigateBack() {
-        WebDriverProviderSingleton.getInstance().navigate().back();
+        driver.navigate().back();
     }
 
     public void highlightElement(WebElement element) {
-        JavascriptExecutor js = ((JavascriptExecutor) WebDriverProviderSingleton.getInstance());
+        JavascriptExecutor js = ((JavascriptExecutor) driver);
         js.executeScript("arguments[0].style.border='10px solid red'", element);
     }
 
     public void scrollToBottomOfPage() {
-        JavascriptExecutor js = ((JavascriptExecutor) WebDriverProviderSingleton.getInstance());
+        JavascriptExecutor js = ((JavascriptExecutor) driver);
         js.executeScript("window.scrollBy(0,document.body.scrollHeight)");
     }
 
     public void switchTab(){
-        String lastWindow = Iterables.getLast(WebDriverProviderSingleton.getInstance().getWindowHandles());
+        String lastWindow = Iterables.getLast(driver.getWindowHandles());
         WebDriverProviderSingleton.getInstance().switchTo().window(lastWindow);
     }
 
