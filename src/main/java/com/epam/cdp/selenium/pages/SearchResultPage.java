@@ -1,6 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -15,12 +14,12 @@ public class SearchResultPage extends BasePage {
     @FindBy(css = ".product-brand")
     private List<WebElement> modelsBrandList;
 
-    protected SearchResultPage(WebDriver driver) {
-        super(driver);
+    protected SearchResultPage() {
+        super();
     }
 
     public void waitTextToAppearInLabel(String text){
-        waitForTextInElementToAppear(searchResultLabel, text);
+        waiter.waitForTextInElementToAppear(searchResultLabel, text);
     }
 
     public List<String> getListOfBrands() {
@@ -30,6 +29,6 @@ public class SearchResultPage extends BasePage {
 
     public ModelPage clickFirstResult() {
         modelsBrandList.get(0).click();
-        return new ModelPage(driver);
+        return new ModelPage();
     }
 }

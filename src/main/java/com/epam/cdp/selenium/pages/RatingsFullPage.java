@@ -1,7 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import com.epam.cdp.selenium.Browser;
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -59,13 +57,13 @@ public class RatingsFullPage extends RatingsPage {
     @FindBy(css = ".classic-view__header__item :nth-child(2)")
     private WebElement specsHeader;
 
-    public RatingsFullPage(WebDriver driver) {
-        super(driver);
+    public RatingsFullPage() {
+        super();
     }
 
     public RatingsFullPage open() {
         driver.get(RATINGS_FULL_PAGE_URL);
-        return new RatingsFullPage(driver);
+        return this;
     }
 
     public RatingsFullPage clickRecommendedToggle() {
@@ -112,22 +110,22 @@ public class RatingsFullPage extends RatingsPage {
 
     public RatingsFullPage clickCompareBucketButton() {
         compareBucketButton.click();
-        return new RatingsFullPage(driver);
+        return new RatingsFullPage();
     }
 
     public ComparePage clickViewCompareButton() {
         viewCompareButton.click();
-        return new ComparePage(driver);
+        return new ComparePage();
     }
 
 
     public String getPriceInputInFilterPopup() {
-        waitForElementVisible(priceInput);
+        waiter.waitForElementVisible(priceInput);
         return priceInput.getAttribute("value");
     }
 
     public RatingsFullPage moveRatingsSlider() {
-        waitForElementVisible(ratingsSlider);
+        waiter.waitForElementVisible(ratingsSlider);
         new Actions(driver).dragAndDropBy(ratingsSlider, 300, 0).build().perform();
         return this;
     }
@@ -137,6 +135,6 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public void highlightRatingsSlider() {
-        new Browser(driver).highlightElement(ratingsSlider);
+        browser.highlightElement(ratingsSlider);
     }
 }

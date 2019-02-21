@@ -1,6 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -15,8 +14,8 @@ public class LoginPage extends AbstractPage {
     @FindBy(css = "div.gnav-sign-in__form__submit input")
     private WebElement signInButton;
 
-    public LoginPage(WebDriver driver) {
-        super(driver);
+    public LoginPage() {
+        super();
     }
 
     public LoginPage enterUsername(String query) {
@@ -27,10 +26,6 @@ public class LoginPage extends AbstractPage {
     public LoginPage enterPassword(String query) {
         passwordInput.sendKeys(query);
         return this;
-    }
-
-    public boolean isSignInButtonDisplayed() {
-        return isElementDisplayed(signInButton);
     }
 
     public <T extends BasePage> T clickSignInButton(Class<T> pageClass) {

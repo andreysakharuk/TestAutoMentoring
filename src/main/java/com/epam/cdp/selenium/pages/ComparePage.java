@@ -1,6 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -18,8 +17,8 @@ public class ComparePage extends BasePage {
     @FindBy(css = ".crux-call-to-action")
     private WebElement emptyPageLabel;
 
-    public ComparePage(WebDriver driver) {
-        super(driver);
+    public ComparePage() {
+        super();
     }
 
     public List<String> getModelsList() {
@@ -29,7 +28,7 @@ public class ComparePage extends BasePage {
 
     public ComparePage clickRemoveButton() {
         removeCompareButton.click();
-        return new ComparePage(driver);
+        return new ComparePage();
     }
 
     public String getLabelFromEmptyPage() {

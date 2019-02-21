@@ -1,6 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -15,8 +14,8 @@ public class HomePage extends BasePage {
     private WebElement accountInfoSection;
 
 
-    public HomePage(WebDriver driver) {
-        super(driver);
+    public HomePage() {
+        super();
     }
 
     public boolean isMainArticlesSectionDisplayed() {
@@ -25,11 +24,11 @@ public class HomePage extends BasePage {
 
     public HomePage open() {
         driver.get(HOME_PAGE_URL);
-        return new HomePage(driver);
+        return new HomePage();
     }
 
     public String getAccountInfoSectionText() {
-        waitForElementVisible(accountInfoSection);
+        waiter.waitForElementVisible(accountInfoSection);
         return accountInfoSection.getText();
     }
 

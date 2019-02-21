@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium;
 
+import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
 import com.google.common.collect.Iterables;
 import org.openqa.selenium.*;
 
@@ -7,8 +8,8 @@ public class Browser {
 
     private WebDriver driver;
 
-    public Browser(WebDriver driver) {
-        this.driver = driver;
+    public Browser() {
+        this.driver = WebDriverProviderSingleton.getInstance();
     }
 
     public void navigateBack() {
@@ -27,7 +28,7 @@ public class Browser {
 
     public void switchTab(){
         String lastWindow = Iterables.getLast(driver.getWindowHandles());
-        driver.switchTo().window(lastWindow);
+        WebDriverProviderSingleton.getInstance().switchTo().window(lastWindow);
     }
 
 

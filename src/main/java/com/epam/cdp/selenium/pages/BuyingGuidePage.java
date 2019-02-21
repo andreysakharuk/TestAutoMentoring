@@ -1,6 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -15,19 +14,17 @@ public class BuyingGuidePage extends BasePage {
     @FindBy(css = ".gnav-search__button")
     private WebElement searchButton;
 
-    public BuyingGuidePage(WebDriver driver) {
-        super(driver);
+    public BuyingGuidePage() {
+        super();
     }
 
     public String getLabelInHeroSectionText() {
-        waitForElementVisible(labelInHeroSection);
+        waiter.waitForElementVisible(labelInHeroSection);
         return labelInHeroSection.getText();
     }
 
     public boolean isLockNearRecommendedLinkDisplayed() {
-        waitForElementVisible(searchButton);
-        searchButton.click();
-        searchButton.click();
+        clickSearchIcon();
         return lockNearRecommendedLink.isDisplayed();
     }
 }

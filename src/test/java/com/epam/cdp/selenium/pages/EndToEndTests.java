@@ -1,20 +1,18 @@
 package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.bo.RatingsView;
-import com.epam.cdp.bo.User;
+import com.epam.cdp.bo.UserFactory;
 import com.epam.cdp.selenium.Browser;
-import com.epam.cdp.selenium.driver.WevDriverProvider;
+import com.epam.cdp.selenium.driver.WebDriverCustomDecorator;
+import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
 import com.epam.cdp.selenium.services.FilterServices;
 import com.epam.cdp.selenium.services.LoginServices;
 import com.epam.cdp.selenium.services.SearchServices;
-import com.epam.cdp.test.TestDataProvider;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.net.MalformedURLException;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
@@ -22,10 +20,10 @@ import static org.hamcrest.Matchers.*;
 public class EndToEndTests {
 
     private WebDriver driver;
-    private User user;
     private LoginServices loginServices;
     private SearchServices searchServices;
     private FilterServices filterServices;
+    private Browser browser;
 
     private static final String CTA_BANNER_RATINGS = "Get Ratings & Reviews for the Products You Want";
     private static final String CTA_BANNER_OVERVIEW = "Clear through the clutter when choosing the best vacuums.";
@@ -34,24 +32,25 @@ public class EndToEndTests {
     private static final Integer FIRST_CHECKBOX = 0;
 
     @BeforeMethod
-    public void setUp() throws MalformedURLException {
-        this.driver = new WevDriverProvider().initDriver();
-        this.user = TestDataProvider.getValidUser();
+    public void setUp() {
+        WebDriver driver1 = WebDriverProviderSingleton.getInstance();
+        driver = new WebDriverCustomDecorator(driver1);
         this.loginServices = new LoginServices();
         this.searchServices = new SearchServices();
         this.filterServices = new FilterServices();
+        this.browser = new Browser();
     }
 
     @Test
     public void checkFiltersOnRatingsFullPage() {
-        RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
+        RatingsFullPage ratingsFullPage = new RatingsFullPage();
 
         String actualTextOfCtaBanner = ratingsFullPage.open()
 
                 .getCtaBannerText();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
         ratingsFullPage.clickRecommendedToggle();
@@ -63,19 +62,19 @@ public class EndToEndTests {
                 .getResultCounter();
         Assert.assertEquals(resultCount, "12");
 
-        filterServices.doPriceFiltering(driver, "100");
+        filterServices.doPriceFiltering("100");
         assertThat(ratingsFullPage.getPricesListFromRatingsChart(), everyItem(lessThanOrEqualTo(100)));
 
-        filterServices.doRatedBestFiltering(driver, FIRST_CHECKBOX);
+        filterServices.doRatedBestFiltering(FIRST_CHECKBOX);
         assertThat(ratingsFullPage.getColorOfRatedBestFilterButton(), containsString("0, 174, 77"));
 
-        filterServices.doMoreFiltering(driver, EUREKA_BRAND);
-       // assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
+        filterServices.doMoreFiltering(EUREKA_BRAND);
+        assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
     }
 
     @Test
     public void checkShopToAmazon() {
-        OverviewPage overviewPage = new OverviewPage(driver);
+        OverviewPage overviewPage = new OverviewPage();
         String heroSectionText = overviewPage.open()
                 .getHeroSectionText();
         assertThat(heroSectionText, containsString(CTA_BANNER_OVERVIEW));
@@ -87,7 +86,7 @@ public class EndToEndTests {
         assertThat(membershipPage.getCtaBanner(), equalToIgnoringWhiteSpace(
                 "Buying smart is just the start"));
 
-        new Browser(driver).navigateBack();
+        browser.navigateBack();
         assertThat(ratingsCompactPage.getCounterResult(), equalTo("75"));
 
         ModelPage modelpage = ratingsCompactPage.clickShopButton();
@@ -99,7 +98,7 @@ public class EndToEndTests {
 
     @Test
     public void checkLoginOnBuyingGuide() {
-        ModelPage modelPage = new ModelPage(driver);
+        ModelPage modelPage = new ModelPage();
         OverviewPage overviewPage = modelPage.open()
                 .clickUprightVacuumsLinkInBreadcrumbs();
         assertThat(overviewPage.getHeroSectionText(), containsString(CTA_BANNER_OVERVIEW));
@@ -108,20 +107,20 @@ public class EndToEndTests {
         String labelInHeroSection = buyingGuidePage.getLabelInHeroSectionText();
         assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
 
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
     @Test
     public void checkAddingModelsToComparision() {
-        HomePage homePage = new HomePage(driver).open();
+        HomePage homePage = new HomePage().open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
-        loginServices.doLogin(driver, user);
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
+        loginServices.doLogin(UserFactory.getValidUser());
+        Assert.assertEquals(homePage.getAccountInfoSectionText(), UserFactory.getValidUser().getNickname());
 
-        searchServices.doSearch(driver, MIELE_MODEL);
-        SearchResultPage searchResultPage = new SearchResultPage(driver);
+        searchServices.doSearch(MIELE_MODEL);
+        SearchResultPage searchResultPage = new SearchResultPage();
         searchResultPage.waitTextToAppearInLabel("Showing results for Miele Dynamic U1 Cat");
         assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
 
@@ -154,9 +153,9 @@ public class EndToEndTests {
 
     @Test
     public void checkPriceFilter() {
-        RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
+        RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         ratingsFullPage.clickPriceFilterButton();
         String defaultPrice = ratingsFullPage.getPriceInputInFilterPopup();
         ratingsFullPage.movePriceSlider();
@@ -165,26 +164,33 @@ public class EndToEndTests {
 
     @Test
     public void checkRatingsSliderScroll() {
-        RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
+        RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(driver, user);
+        loginServices.doLogin(UserFactory.getValidUser());
         ratingsFullPage.moveRatingsSlider().highlightRatingsSlider();
         Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
 
     @Test
     public void checkRatingsJsScroll() {
-        RatingsFullPage ratingsFullPage = new RatingsFullPage(driver);
+        RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(driver, user);
-        new Browser(driver).scrollToBottomOfPage();
+        loginServices.doLogin(UserFactory.getValidUser());
+        browser.scrollToBottomOfPage();
         HomePage homePage = ratingsFullPage.crLogoClick();
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
+        Assert.assertEquals(homePage.getAccountInfoSectionText(), UserFactory.getValidUser().getNickname());
+    }
+
+    @Test
+    public void checkUserCanNotLoginWithInvalidPassword() {
+        new HomePage().open();
+        loginServices.doLogin(UserFactory.createUserInvalidPassword());
+        Assert.assertEquals(driver.getCurrentUrl(), "https://secure.consumerreports.org/ec/login?error");
     }
 
     @AfterMethod
     public void tearDown() {
-        driver.quit();
+        WebDriverProviderSingleton.quitDriver();
     }
 }
 
