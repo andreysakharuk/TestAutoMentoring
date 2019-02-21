@@ -63,7 +63,7 @@ public class RatingsFullPage extends RatingsPage {
 
     public RatingsFullPage open() {
         driver.get(RATINGS_FULL_PAGE_URL);
-        return new RatingsFullPage();
+        return this;
     }
 
     public RatingsFullPage clickRecommendedToggle() {

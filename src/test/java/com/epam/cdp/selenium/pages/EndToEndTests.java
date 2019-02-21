@@ -117,7 +117,7 @@ public class EndToEndTests {
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
         loginServices.doLogin(UserFactory.getValidUser());
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), "resault1");
+        Assert.assertEquals(homePage.getAccountInfoSectionText(), UserFactory.getValidUser().getNickname());
 
         searchServices.doSearch(MIELE_MODEL);
         SearchResultPage searchResultPage = new SearchResultPage();
@@ -190,7 +190,7 @@ public class EndToEndTests {
 
     @AfterMethod
     public void tearDown() {
-        driver.quit();
+        WebDriverProviderSingleton.quitDriver();
     }
 }
 

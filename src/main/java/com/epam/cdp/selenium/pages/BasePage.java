@@ -1,6 +1,5 @@
 package com.epam.cdp.selenium.pages;
 
-import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -38,7 +37,7 @@ public class BasePage extends AbstractPage {
 
     public void enterValueInSearchInput(String attributeValue, String attributeName) {
         searchInput.sendKeys(attributeValue);
-        new Waiter().waitForElementAttributeValue(searchInput, attributeName, attributeValue);
+        waiter.waitForElementAttributeValue(searchInput, attributeName, attributeValue);
     }
 
     public SearchResultPage clickSearchButton() {

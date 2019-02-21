@@ -74,5 +74,8 @@ public class WebDriverProviderSingleton {
         return driver;
     }
 
-
+    public static void quitDriver(){
+        driver.quit();
+        driver=null;
+    }
 }
