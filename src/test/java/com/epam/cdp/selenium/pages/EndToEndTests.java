@@ -41,12 +41,10 @@ public class EndToEndTests {
         this.browser = new Browser();
     }
 
-    @Test
+    @Test(description= "Filter feature")
     public void checkFiltersOnRatingsFullPage() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
-
         String actualTextOfCtaBanner = ratingsFullPage.open()
-
                 .getCtaBannerText();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
@@ -72,7 +70,7 @@ public class EndToEndTests {
         assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
     }
 
-    @Test
+    @Test (description= "Ratings feature")
     public void checkShopToAmazon() {
         OverviewPage overviewPage = new OverviewPage();
         String heroSectionText = overviewPage.open()
@@ -96,7 +94,7 @@ public class EndToEndTests {
         assertThat(amazonPage.getUrl(), containsString("amazon.com"));
     }
 
-    @Test
+    @Test(description= "Login feature")
     public void checkLoginOnBuyingGuide() {
         ModelPage modelPage = new ModelPage();
         OverviewPage overviewPage = modelPage.open()
@@ -111,7 +109,7 @@ public class EndToEndTests {
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
-    @Test
+    @Test(description= "Ratings feature")
     public void checkAddingModelsToComparision() {
         HomePage homePage = new HomePage().open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
@@ -145,13 +143,12 @@ public class EndToEndTests {
         assertThat(comparePage.getModelsList().get(1), equalTo("Shark Navigator Powered Lift-Away NV586 (Target)"));
         assertThat(comparePage.getModelsList().get(0), equalTo("Kenmore Elite Pet Friendly 31150"));
 
-
         comparePage.clickRemoveButton()
                 .clickRemoveButton();
         assertThat(comparePage.getLabelFromEmptyPage(), equalTo("Your Compare Chart is Empty!"));
     }
 
-    @Test
+    @Test(description= "Filter feature")
     public void checkPriceFilter() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
@@ -162,7 +159,7 @@ public class EndToEndTests {
         Assert.assertNotEquals(ratingsFullPage.getPriceInputInFilterPopup(), defaultPrice);
     }
 
-    @Test
+    @Test(description= "Ratings feature")
     public void checkRatingsSliderScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
@@ -171,7 +168,7 @@ public class EndToEndTests {
         Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
 
-    @Test
+    @Test(description= "Ratings feature")
     public void checkRatingsJsScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
@@ -181,7 +178,7 @@ public class EndToEndTests {
         Assert.assertEquals(homePage.getAccountInfoSectionText(), UserFactory.getValidUser().getNickname());
     }
 
-    @Test
+    @Test(description= "Login feature")
     public void checkUserCanNotLoginWithInvalidPassword() {
         new HomePage().open();
         loginServices.doLogin(UserFactory.createUserInvalidPassword());

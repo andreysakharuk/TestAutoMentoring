@@ -26,6 +26,9 @@ public class ModelPage extends RatingsPage {
     @FindBy(css = ".related-articles__news-header")
     private WebElement relatedArticlesSection;
 
+    @FindBy(css = ".price-and-shop__title")
+    private WebElement priceAndShopHeader;
+
     public ModelPage() {
         super();
     }
@@ -41,6 +44,7 @@ public class ModelPage extends RatingsPage {
     }
 
     public AmazonPage clickAmazonButton() {
+        new Actions(driver).moveToElement(priceAndShopHeader).build().perform();
         new Actions(driver).moveToElement(amazonButton).build().perform();
         waiter.waitForElementClickable(amazonButton);
         amazonButton.click();

@@ -10,6 +10,7 @@ public class LoginServices {
      *
      * @param user credentials for login
      */
+
     public void doLogin(User user){
         new BasePage().clickSignInButton()
                 .enterUsername(user.getUsername())
