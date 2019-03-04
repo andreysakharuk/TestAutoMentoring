@@ -46,9 +46,9 @@ public class RatingsSteps {
         new RatingsFullPage().clickClearAllLink();
     }
 
-    @Then("All models are displayed in Ratings chart")
-    public void allModelsAreDisplayedInRatingsChart() {
-        Assert.assertEquals(new RatingsFullPage().getResultCounter(), "12");
+    @Then("All (.*) models are displayed in Ratings chart")
+    public void allModelsAreDisplayedInRatingsChart(String result) {
+        Assert.assertEquals(new RatingsFullPage().getResultCounter(), result);
     }
 
 

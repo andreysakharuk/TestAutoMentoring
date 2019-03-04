@@ -1,6 +1,7 @@
 package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.bo.RatingsView;
+import com.epam.cdp.bo.User;
 import com.epam.cdp.bo.UserFactory;
 import com.epam.cdp.selenium.Browser;
 import com.epam.cdp.selenium.driver.WebDriverCustomDecorator;
@@ -24,6 +25,7 @@ public class EndToEndTests {
     private SearchServices searchServices;
     private FilterServices filterServices;
     private Browser browser;
+    private User user;
 
     private static final String CTA_BANNER_RATINGS = "Get Ratings & Reviews for the Products You Want";
     private static final String CTA_BANNER_OVERVIEW = "Clear through the clutter when choosing the best vacuums.";
@@ -39,6 +41,7 @@ public class EndToEndTests {
         this.searchServices = new SearchServices();
         this.filterServices = new FilterServices();
         this.browser = new Browser();
+        this.user = UserFactory.getValidUser();
     }
 
     @Test(description= "Filter feature")
@@ -105,7 +108,7 @@ public class EndToEndTests {
         String labelInHeroSection = buyingGuidePage.getLabelInHeroSectionText();
         assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
 
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
@@ -114,8 +117,8 @@ public class EndToEndTests {
         HomePage homePage = new HomePage().open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
-        loginServices.doLogin(UserFactory.getValidUser());
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), UserFactory.getValidUser().getNickname());
+        loginServices.doLogin(user);
+        Assert.assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
 
         searchServices.doSearch(MIELE_MODEL);
         SearchResultPage searchResultPage = new SearchResultPage();
@@ -152,7 +155,7 @@ public class EndToEndTests {
     public void checkPriceFilter() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         ratingsFullPage.clickPriceFilterButton();
         String defaultPrice = ratingsFullPage.getPriceInputInFilterPopup();
         ratingsFullPage.movePriceSlider();
@@ -163,7 +166,7 @@ public class EndToEndTests {
     public void checkRatingsSliderScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         ratingsFullPage.moveRatingsSlider().highlightRatingsSlider();
         Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
@@ -172,10 +175,10 @@ public class EndToEndTests {
     public void checkRatingsJsScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         browser.scrollToBottomOfPage();
         HomePage homePage = ratingsFullPage.crLogoClick();
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), UserFactory.getValidUser().getNickname());
+        Assert.assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
     }
 
     @Test(description= "Login feature")

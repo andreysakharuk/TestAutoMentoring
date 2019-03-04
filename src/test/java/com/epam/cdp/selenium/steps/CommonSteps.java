@@ -16,6 +16,8 @@ import static org.hamcrest.Matchers.*;
 
 public class CommonSteps {
 
+    Browser browser = new Browser();
+
     @And("User log in with valid credentials")
     public void doLogin(){
         new LoginServices().doLogin(UserFactory.getValidUser());
@@ -35,7 +37,7 @@ public class CommonSteps {
     public void ctaBannerAppearsOnMembershipPage() {
         assertThat(new MembershipPage().getCtaBanner(), equalToIgnoringWhiteSpace(
                 "Buying smart is just the start"));
-        new Browser().navigateBack();
+        browser.navigateBack();
     }
 
     @Then("Amazon site is opened")
@@ -50,14 +52,14 @@ public class CommonSteps {
 
     @And("Click CR logo in footer")
     public void clickCRLogoInFooter() {
-        new Browser().scrollToBottomOfPage();
+        browser.scrollToBottomOfPage();
         new RatingsFullPage().crLogoClick();
     }
 
-    @Then("All models are Miele brand")
-    public void allModelsAreMieleBrand() {
-        new SearchResultPage().waitTextToAppearInLabel("Showing results for Miele Dynamic U1 Cat");
-        assertThat( new SearchResultPage().getListOfBrands(), Matchers.everyItem(startsWith("Miele")));
+    @Then("All models are (.*) brand and (.*)")
+    public void allModelsAreProperBrand(String model, String result) {
+        new SearchResultPage().waitTextToAppearInLabel(result);
+        assertThat( new SearchResultPage().getListOfBrands(), Matchers.everyItem(startsWith(model)));
     }
 
     @And("Click first search result")
@@ -65,9 +67,10 @@ public class CommonSteps {
         new SearchResultPage().clickFirstResult();
     }
 
-    @Then("Added models are on Compare page")
-    public void addedModelsAreOnComparePage() {
-        assertThat(new ComparePage().getModelsList().get(1), equalTo("Shark Navigator Powered Lift-Away NV586 (Target)"));
-        assertThat(new ComparePage().getModelsList().get(0), equalTo("Kenmore Elite Pet Friendly 31150"));
+    @Then("Model (.*) is on (.*) position and Model (.*) is on (.*) position on Compare page")
+    public void addedModelsAreOnComparePage(String firstModel,int firstPosition, String secondModel, int secondPosition) {
+        assertThat(new ComparePage().getModelsList().get(firstPosition), equalTo(firstModel));
+        assertThat(new ComparePage().getModelsList().get(secondPosition), equalTo(secondModel));
+
     }
 }

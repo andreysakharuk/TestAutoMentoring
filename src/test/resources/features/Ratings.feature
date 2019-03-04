@@ -28,7 +28,7 @@ Feature: Check Ratings functions
     And User log in with valid credentials
     Then Account Info section appears on Home page
     And Do Search for Miele Dynamic U1 Cat & Dog
-    Then All models are Miele brand
+    Then All models are Miele brand and Showing results for Miele Dynamic U1 Cat
     And Click first search result
     Then Title Miele Dynamic U1 Cat & Dog appears on Model page
     And Click Ratings Compact icon
@@ -40,7 +40,7 @@ Feature: Check Ratings functions
     And Click Add to Compare button on Ratings Full page
     Then 2 Model is added to Compare bucket on Ratings Full page
     And Click View button in Compare bucket
-    Then Added models are on Compare page
+    Then Model Kenmore Elite Pet Friendly 31150 is on 0 position and Model Shark Navigator Powered Lift-Away NV586 (Target) is on 1 position on Compare page
     And Click Remove buttons
     Then Error appears on Empty Compare page
 

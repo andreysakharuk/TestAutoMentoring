@@ -1,6 +1,6 @@
 Feature: Check login with valid and invalid credentials
 
-    Scenario: Use can log in on Buying guide page
+    Scenario: User can log in on Buying guide page
       When Logged out user clicks Upright link in Breadcrumbs on Model page
       Then Hero section appears on Overview page
       And Logged out user clicks Buying Guide link on Overview page

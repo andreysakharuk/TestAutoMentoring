@@ -9,7 +9,7 @@ Feature: Filter models on Ratings page
     And User clicks Recommended Toggle
     Then Recommended models are displayed in Ratings chart
     And User clicks Clear All button
-    Then All models are displayed in Ratings chart
+    Then All 12 models are displayed in Ratings chart
     And Do Price Filtering with <price>
     Then Model's prices are less than <price>
     And Do Rated Best Filtering with <attribute>
