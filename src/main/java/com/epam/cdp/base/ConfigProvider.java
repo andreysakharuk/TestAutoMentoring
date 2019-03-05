@@ -61,5 +61,9 @@ public class ConfigProvider {
         return properties.getProperty("nickname");
     }
 
+    public String getBaseUri(){
+        return properties.getProperty("baseUri");
+    }
+
 
 }
