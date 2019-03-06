@@ -28,7 +28,7 @@ public class WebServiceTests {
         Assert.assertEquals(response.getContentType(), "application/json; charset=utf-8");
     }
 
-    @Test(description = "Check number of users in response body")
+    @Test(description = "Check number of users in response")
     public void checkNumberOfUsers() {
         User[] users = userWsFacade.getUsers();
         Assert.assertEquals(users.length, 10);
