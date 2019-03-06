@@ -155,8 +155,8 @@ public class RatingsSteps {
     }
 
     @Then("(.*) Model is added to Compare bucket on Ratings Full page")
-    public void modelIsAddedToCompareBucketOnRatingsFullPage(String modelName) {
-        assertThat(new RatingsFullPage().getCompareCircleText(), equalTo(modelName));
+    public void modelIsAddedToCompareBucketOnRatingsFullPage(String modelNumber) {
+        assertThat(new RatingsFullPage().getCompareCircleText(), equalTo(modelNumber));
     }
 
     @And("Click View button in Compare bucket")
