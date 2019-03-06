@@ -133,13 +133,13 @@ public class EndToEndTests {
         Assert.assertTrue(ratingsCompactPage.isRatingsListViewDisplayed());
 
         ratingsCompactPage.clickAddToCompareButton();
-        assertThat(ratingsCompactPage.getCompareCircleNumber(), equalTo("1"));
+        assertThat(ratingsCompactPage.getCompareCircleText(), equalTo("1"));
 
         RatingsFullPage ratingsFullPage = ratingsCompactPage.clickIconInSwitcher(RatingsFullPage.class, RatingsView.FULL);
         Assert.assertTrue(ratingsFullPage.isRatingsFullViewDisplayed());
 
         ratingsFullPage.clickAddToCompareButton();
-        assertThat(ratingsFullPage.getCompareCircleNumber(), equalTo("2"));
+        assertThat(ratingsFullPage.getCompareCircleText(), equalTo("2"));
 
         ComparePage comparePage = ratingsFullPage.clickCompareBucketButton()
                                                  .clickViewCompareButton();

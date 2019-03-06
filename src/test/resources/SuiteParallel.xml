@@ -3,7 +3,7 @@
 
 <suite name="SuiteParallel" parallel="methods" thread-count="4">
     <listeners>
-        <listener class-name="com.epam.cdp.Listener"/>
+        <listener class-name="com.epam.cdp.testng.Listener"/>
     </listeners>
     <test name="test1">
         <classes>
