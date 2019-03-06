@@ -1,10 +1,10 @@
 package com.epam.cdp.selenium.steps;
 
 import com.epam.cdp.bo.RatingsView;
-import com.epam.cdp.selenium.pages.ComparePage;
-import com.epam.cdp.selenium.pages.ModelPage;
-import com.epam.cdp.selenium.pages.RatingsCompactPage;
-import com.epam.cdp.selenium.pages.RatingsFullPage;
+import com.epam.cdp.selenium.endtoend.ComparePage;
+import com.epam.cdp.selenium.endtoend.ModelPage;
+import com.epam.cdp.selenium.endtoend.RatingsCompactPage;
+import com.epam.cdp.selenium.endtoend.RatingsFullPage;
 import com.epam.cdp.selenium.services.FilterServices;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -140,8 +140,8 @@ public class RatingsSteps {
     }
 
     @Then("(.*) Model is added to Compare bucket on Ratings Compact page")
-    public void modelIsAddedToCompareBucket(String model) {
-        assertThat(new RatingsCompactPage().getCompareCircleNumber(), equalTo(model));
+    public void modelIsAddedToCompareBucket(String modelName) {
+        assertThat(new RatingsCompactPage().getCompareCircleNumber(), equalTo(modelName));
     }
 
     @And("Click Ratings Full icon")
@@ -155,8 +155,8 @@ public class RatingsSteps {
     }
 
     @Then("(.*) Model is added to Compare bucket on Ratings Full page")
-    public void modelIsAddedToCompareBucketOnRatingsFullPage(String model) {
-        assertThat(new RatingsFullPage().getCompareCircleNumber(), equalTo(model));
+    public void modelIsAddedToCompareBucketOnRatingsFullPage(String modelName) {
+        assertThat(new RatingsFullPage().getCompareCircleNumber(), equalTo(modelName));
     }
 
     @And("Click View button in Compare bucket")

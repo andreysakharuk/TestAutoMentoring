@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pages;
+package com.epam.cdp.selenium.endtoend;
 
 import com.epam.cdp.bo.RatingsView;
 import org.openqa.selenium.WebElement;

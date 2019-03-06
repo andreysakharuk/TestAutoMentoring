@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pages;
+package com.epam.cdp.selenium.endtoend;
 
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;

@@ -1,7 +1,7 @@
 package com.epam.cdp.selenium.steps;
 
 import com.epam.cdp.bo.UserFactory;
-import com.epam.cdp.selenium.pages.HomePage;
+import com.epam.cdp.selenium.endtoend.HomePage;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.junit.Assert;

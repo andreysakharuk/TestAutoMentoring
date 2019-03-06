@@ -1,7 +1,7 @@
 package com.epam.cdp.selenium.services;
 
 import com.epam.cdp.bo.User;
-import com.epam.cdp.selenium.pages.BasePage;
+import com.epam.cdp.selenium.endtoend.BasePage;
 
 public class LoginServices {
 

@@ -40,7 +40,8 @@ Feature: Check Ratings functions
     And Click Add to Compare button on Ratings Full page
     Then 2 Model is added to Compare bucket on Ratings Full page
     And Click View button in Compare bucket
-    Then Model Kenmore Elite Pet Friendly 31150 is on 0 position and Model Shark Navigator Powered Lift-Away NV586 (Target) is on 1 position on Compare page
+    Then Model Kenmore Elite Pet Friendly 31150 is on 0 position on Compare page
+    Then Model Shark Navigator Powered Lift-Away NV586 (Target) is on 1 position on Compare page
     And Click Remove buttons
     Then Error appears on Empty Compare page
 

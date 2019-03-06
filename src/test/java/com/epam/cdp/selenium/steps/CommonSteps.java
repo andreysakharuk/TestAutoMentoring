@@ -3,7 +3,7 @@ package com.epam.cdp.selenium.steps;
 import com.epam.cdp.bo.UserFactory;
 import com.epam.cdp.selenium.Browser;
 import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
-import com.epam.cdp.selenium.pages.*;
+import com.epam.cdp.selenium.endtoend.*;
 import com.epam.cdp.selenium.services.LoginServices;
 import com.epam.cdp.selenium.services.SearchServices;
 import cucumber.api.java.en.And;
@@ -67,10 +67,8 @@ public class CommonSteps {
         new SearchResultPage().clickFirstResult();
     }
 
-    @Then("Model (.*) is on (.*) position and Model (.*) is on (.*) position on Compare page")
-    public void addedModelsAreOnComparePage(String firstModel,int firstPosition, String secondModel, int secondPosition) {
-        assertThat(new ComparePage().getModelsList().get(firstPosition), equalTo(firstModel));
-        assertThat(new ComparePage().getModelsList().get(secondPosition), equalTo(secondModel));
-
+    @Then("Model (.*) is on (.*) position on Compare page")
+    public void addedModelIsOnComparePage(String modelName, int position) {
+        assertThat(new ComparePage().getModelsList().get(position), equalTo(modelName));
     }
 }

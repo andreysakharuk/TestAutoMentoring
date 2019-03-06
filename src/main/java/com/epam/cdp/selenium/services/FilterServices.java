@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.services;
 
-import com.epam.cdp.selenium.pages.RatingsPage;
+import com.epam.cdp.selenium.endtoend.RatingsPage;
 
 public class FilterServices {
 

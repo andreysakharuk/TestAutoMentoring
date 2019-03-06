@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.steps;
 
-import com.epam.cdp.selenium.pages.BuyingGuidePage;
+import com.epam.cdp.selenium.endtoend.BuyingGuidePage;
 import cucumber.api.java.en.Then;
 import org.junit.Assert;
 

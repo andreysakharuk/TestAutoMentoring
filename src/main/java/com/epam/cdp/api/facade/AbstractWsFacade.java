@@ -8,10 +8,10 @@ import static io.restassured.RestAssured.when;
 
 abstract class AbstractWsFacade {
 
-    public Response getResponse(String path){
+    public Response get(String path){
         RestAssured.baseURI = new ConfigProvider().getBaseUri();
-        Response rp = when().get(path).andReturn();
-        return rp;
+        Response response = when().get(path).andReturn();
+        return response;
     }
 
 }
