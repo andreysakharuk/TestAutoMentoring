@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -35,13 +36,17 @@ public class EndToEndTests {
 
     @BeforeClass
     public void setUp() {
-        WebDriver driver1 = WebDriverProviderSingleton.getInstance();
-        driver = new WebDriverCustomDecorator(driver1);
         this.loginServices = new LoginServices();
         this.searchServices = new SearchServices();
         this.filterServices = new FilterServices();
-        this.browser = new Browser();
         this.user = UserFactory.getValidUser();
+    }
+
+    @BeforeMethod
+    public void setUpDriver(){
+        WebDriver driver1 = WebDriverProviderSingleton.getInstance();
+        driver = new WebDriverCustomDecorator(driver1);
+        this.browser = new Browser();
     }
 
     @Test(description = "Filter feature")
