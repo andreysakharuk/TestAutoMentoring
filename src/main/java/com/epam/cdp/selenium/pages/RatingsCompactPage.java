@@ -8,6 +8,8 @@ import java.util.List;
 
 public class RatingsCompactPage extends RatingsPage {
 
+    private static final String RATINGS_COMPACT_PAGE_URL = "https://www.consumerreports.org/products/vacuum-cleaners/handheld-vacuum/view2/";
+
     @FindBy(xpath = "//*[@class='cta-top-content__buttons text-center']")
     private WebElement becomeMemberLink;
 
@@ -29,6 +31,11 @@ public class RatingsCompactPage extends RatingsPage {
 
     public RatingsCompactPage() {
         super();
+    }
+
+    public RatingsCompactPage open() {
+        driver.get(RATINGS_COMPACT_PAGE_URL);
+        return this;
     }
 
     public MembershipPage clickBecomeMemberLink() {

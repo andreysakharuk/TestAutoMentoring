@@ -1,6 +1,7 @@
 package com.epam.cdp.selenium.pages;
 
 import com.epam.cdp.bo.RatingsView;
+import com.epam.cdp.bo.User;
 import com.epam.cdp.bo.UserFactory;
 import com.epam.cdp.selenium.Browser;
 import com.epam.cdp.selenium.driver.WebDriverCustomDecorator;
@@ -24,6 +25,7 @@ public class EndToEndTests {
     private SearchServices searchServices;
     private FilterServices filterServices;
     private Browser browser;
+    private User user;
 
     private static final String CTA_BANNER_RATINGS = "Get Ratings & Reviews for the Products You Want";
     private static final String CTA_BANNER_OVERVIEW = "Clear through the clutter when choosing the best vacuums.";
@@ -39,14 +41,13 @@ public class EndToEndTests {
         this.searchServices = new SearchServices();
         this.filterServices = new FilterServices();
         this.browser = new Browser();
+        this.user = UserFactory.getValidUser();
     }
 
-    @Test
+    @Test(description= "Filter feature")
     public void checkFiltersOnRatingsFullPage() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
-
         String actualTextOfCtaBanner = ratingsFullPage.open()
-
                 .getCtaBannerText();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
@@ -72,7 +73,7 @@ public class EndToEndTests {
         assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
     }
 
-    @Test
+    @Test (description= "Ratings feature")
     public void checkShopToAmazon() {
         OverviewPage overviewPage = new OverviewPage();
         String heroSectionText = overviewPage.open()
@@ -96,7 +97,7 @@ public class EndToEndTests {
         assertThat(amazonPage.getUrl(), containsString("amazon.com"));
     }
 
-    @Test
+    @Test(description= "Login feature")
     public void checkLoginOnBuyingGuide() {
         ModelPage modelPage = new ModelPage();
         OverviewPage overviewPage = modelPage.open()
@@ -107,17 +108,17 @@ public class EndToEndTests {
         String labelInHeroSection = buyingGuidePage.getLabelInHeroSectionText();
         assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
 
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
-    @Test
+    @Test(description= "Ratings feature")
     public void checkAddingModelsToComparision() {
         HomePage homePage = new HomePage().open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
 
-        loginServices.doLogin(UserFactory.getValidUser());
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), UserFactory.getValidUser().getNickname());
+        loginServices.doLogin(user);
+        Assert.assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
 
         searchServices.doSearch(MIELE_MODEL);
         SearchResultPage searchResultPage = new SearchResultPage();
@@ -145,43 +146,42 @@ public class EndToEndTests {
         assertThat(comparePage.getModelsList().get(1), equalTo("Shark Navigator Powered Lift-Away NV586 (Target)"));
         assertThat(comparePage.getModelsList().get(0), equalTo("Kenmore Elite Pet Friendly 31150"));
 
-
         comparePage.clickRemoveButton()
                 .clickRemoveButton();
         assertThat(comparePage.getLabelFromEmptyPage(), equalTo("Your Compare Chart is Empty!"));
     }
 
-    @Test
+    @Test(description= "Filter feature")
     public void checkPriceFilter() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         ratingsFullPage.clickPriceFilterButton();
         String defaultPrice = ratingsFullPage.getPriceInputInFilterPopup();
         ratingsFullPage.movePriceSlider();
         Assert.assertNotEquals(ratingsFullPage.getPriceInputInFilterPopup(), defaultPrice);
     }
 
-    @Test
+    @Test(description= "Ratings feature")
     public void checkRatingsSliderScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         ratingsFullPage.moveRatingsSlider().highlightRatingsSlider();
         Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
 
-    @Test
+    @Test(description= "Ratings feature")
     public void checkRatingsJsScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         browser.scrollToBottomOfPage();
         HomePage homePage = ratingsFullPage.crLogoClick();
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), UserFactory.getValidUser().getNickname());
+        Assert.assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
     }
 
-    @Test
+    @Test(description= "Login feature")
     public void checkUserCanNotLoginWithInvalidPassword() {
         new HomePage().open();
         loginServices.doLogin(UserFactory.createUserInvalidPassword());

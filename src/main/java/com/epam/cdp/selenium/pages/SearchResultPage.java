@@ -14,7 +14,7 @@ public class SearchResultPage extends BasePage {
     @FindBy(css = ".product-brand")
     private List<WebElement> modelsBrandList;
 
-    protected SearchResultPage() {
+    public SearchResultPage() {
         super();
     }
 
