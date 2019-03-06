@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pages;
+package com.epam.cdp.selenium.endtoend;
 
 import com.epam.cdp.bo.RatingsView;
 import org.openqa.selenium.WebElement;
@@ -75,7 +75,7 @@ public class RatingsPage extends BasePage {
         return isElementDisplayed(ctaBanner);
     }
 
-    public String getCompareCircleNumber() {
+    public String getCompareCircleText() {
         waiter.waitForElementVisible(compareCircleNumber);
         return compareCircleNumber.getText();
     }

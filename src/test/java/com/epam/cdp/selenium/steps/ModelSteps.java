@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.steps;
 
-import com.epam.cdp.selenium.pages.ModelPage;
+import com.epam.cdp.selenium.endtoend.ModelPage;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;

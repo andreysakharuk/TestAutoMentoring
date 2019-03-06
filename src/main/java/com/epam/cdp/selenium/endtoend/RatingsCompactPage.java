@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pages;
+package com.epam.cdp.selenium.endtoend;
 
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebElement;

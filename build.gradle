@@ -17,6 +17,7 @@ dependencies {
     testCompile 'io.cucumber:cucumber-java8:4.2.0'
     testCompile 'io.cucumber:cucumber-junit:4.2.0'
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '3.3.0'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-chrome-driver', version: '3.14.0'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-firefox-driver', version: '3.14.0'
     compile group: 'org.seleniumhq.selenium', name: 'selenium-ie-driver', version: '3.14.0'

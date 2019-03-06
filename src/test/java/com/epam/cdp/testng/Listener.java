@@ -1,4 +1,4 @@
-package com.epam.cdp;
+package com.epam.cdp.testng;
 
 import org.testng.ITestContext;
 import org.testng.ITestListener;

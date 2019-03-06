@@ -1,4 +1,4 @@
-package com.epam.cdp.selenium.pages;
+package com.epam.cdp.selenium.endtoend;
 
 import com.epam.cdp.bo.RatingsView;
 import com.epam.cdp.bo.User;
@@ -12,6 +12,7 @@ import com.epam.cdp.selenium.services.SearchServices;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -33,25 +34,29 @@ public class EndToEndTests {
     private static final String EUREKA_BRAND = "Eureka";
     private static final Integer FIRST_CHECKBOX = 0;
 
-    @BeforeMethod
+    @BeforeClass
     public void setUp() {
-        WebDriver driver1 = WebDriverProviderSingleton.getInstance();
-        driver = new WebDriverCustomDecorator(driver1);
         this.loginServices = new LoginServices();
         this.searchServices = new SearchServices();
         this.filterServices = new FilterServices();
-        this.browser = new Browser();
         this.user = UserFactory.getValidUser();
     }
 
-    @Test(description= "Filter feature")
+    @BeforeMethod
+    public void setUpDriver(){
+        WebDriver driver1 = WebDriverProviderSingleton.getInstance();
+        driver = new WebDriverCustomDecorator(driver1);
+        this.browser = new Browser();
+    }
+
+    @Test(description = "Filter feature")
     public void checkFiltersOnRatingsFullPage() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         String actualTextOfCtaBanner = ratingsFullPage.open()
-                .getCtaBannerText();
+                                                      .getCtaBannerText();
         Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
-        loginServices.doLogin(UserFactory.getValidUser());
+        loginServices.doLogin(user);
         Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
         ratingsFullPage.clickRecommendedToggle();
@@ -60,7 +65,7 @@ public class EndToEndTests {
         });
 
         String resultCount = ratingsFullPage.clickClearAllLink()
-                .getResultCounter();
+                                            .getResultCounter();
         Assert.assertEquals(resultCount, "12");
 
         filterServices.doPriceFiltering("100");
@@ -73,11 +78,11 @@ public class EndToEndTests {
         assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
     }
 
-    @Test (description= "Ratings feature")
+    @Test(description = "Ratings feature")
     public void checkShopToAmazon() {
         OverviewPage overviewPage = new OverviewPage();
         String heroSectionText = overviewPage.open()
-                .getHeroSectionText();
+                                             .getHeroSectionText();
         assertThat(heroSectionText, containsString(CTA_BANNER_OVERVIEW));
 
         RatingsCompactPage ratingsCompactPage = overviewPage.clickUprightLinkInTypeSection();
@@ -97,11 +102,11 @@ public class EndToEndTests {
         assertThat(amazonPage.getUrl(), containsString("amazon.com"));
     }
 
-    @Test(description= "Login feature")
+    @Test(description = "Login feature")
     public void checkLoginOnBuyingGuide() {
         ModelPage modelPage = new ModelPage();
         OverviewPage overviewPage = modelPage.open()
-                .clickUprightVacuumsLinkInBreadcrumbs();
+                                             .clickUprightVacuumsLinkInBreadcrumbs();
         assertThat(overviewPage.getHeroSectionText(), containsString(CTA_BANNER_OVERVIEW));
 
         BuyingGuidePage buyingGuidePage = overviewPage.clickBuyingGuideLink();
@@ -112,7 +117,7 @@ public class EndToEndTests {
         Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
-    @Test(description= "Ratings feature")
+    @Test(description = "Ratings feature")
     public void checkAddingModelsToComparision() {
         HomePage homePage = new HomePage().open();
         Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
@@ -133,25 +138,25 @@ public class EndToEndTests {
         Assert.assertTrue(ratingsCompactPage.isRatingsListViewDisplayed());
 
         ratingsCompactPage.clickAddToCompareButton();
-        assertThat(ratingsCompactPage.getCompareCircleNumber(), equalTo("1"));
+        assertThat(ratingsCompactPage.getCompareCircleText(), equalTo("1"));
 
         RatingsFullPage ratingsFullPage = ratingsCompactPage.clickIconInSwitcher(RatingsFullPage.class, RatingsView.FULL);
         Assert.assertTrue(ratingsFullPage.isRatingsFullViewDisplayed());
 
         ratingsFullPage.clickAddToCompareButton();
-        assertThat(ratingsFullPage.getCompareCircleNumber(), equalTo("2"));
+        assertThat(ratingsFullPage.getCompareCircleText(), equalTo("2"));
 
         ComparePage comparePage = ratingsFullPage.clickCompareBucketButton()
-                .clickViewCompareButton();
+                                                 .clickViewCompareButton();
         assertThat(comparePage.getModelsList().get(1), equalTo("Shark Navigator Powered Lift-Away NV586 (Target)"));
         assertThat(comparePage.getModelsList().get(0), equalTo("Kenmore Elite Pet Friendly 31150"));
 
         comparePage.clickRemoveButton()
-                .clickRemoveButton();
+                   .clickRemoveButton();
         assertThat(comparePage.getLabelFromEmptyPage(), equalTo("Your Compare Chart is Empty!"));
     }
 
-    @Test(description= "Filter feature")
+    @Test(description = "Filter feature")
     public void checkPriceFilter() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
@@ -162,7 +167,7 @@ public class EndToEndTests {
         Assert.assertNotEquals(ratingsFullPage.getPriceInputInFilterPopup(), defaultPrice);
     }
 
-    @Test(description= "Ratings feature")
+    @Test(description = "Ratings feature")
     public void checkRatingsSliderScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
@@ -171,7 +176,7 @@ public class EndToEndTests {
         Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
 
-    @Test(description= "Ratings feature")
+    @Test(description = "Ratings feature")
     public void checkRatingsJsScroll() {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         ratingsFullPage.open();
@@ -181,7 +186,7 @@ public class EndToEndTests {
         Assert.assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
     }
 
-    @Test(description= "Login feature")
+    @Test(description = "Login feature")
     public void checkUserCanNotLoginWithInvalidPassword() {
         new HomePage().open();
         loginServices.doLogin(UserFactory.createUserInvalidPassword());
