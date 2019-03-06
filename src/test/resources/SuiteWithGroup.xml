@@ -3,7 +3,7 @@
 
 <suite name="SuiteWithGroup">
     <listeners>
-        <listener class-name="com.epam.cdp.Listener"/>
+        <listener class-name="com.epam.cdp.testng.Listener"/>
     </listeners>
 
     <test name="subTestsGroup">

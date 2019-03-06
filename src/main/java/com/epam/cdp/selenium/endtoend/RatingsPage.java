@@ -75,7 +75,7 @@ public class RatingsPage extends BasePage {
         return isElementDisplayed(ctaBanner);
     }
 
-    public String getCompareCircleNumber() {
+    public String getCompareCircleText() {
         waiter.waitForElementVisible(compareCircleNumber);
         return compareCircleNumber.getText();
     }
