@@ -3,20 +3,21 @@ package com.epam.cdp.selenium.endtoend;
 import com.epam.cdp.bo.RatingsView;
 import com.epam.cdp.bo.User;
 import com.epam.cdp.bo.UserFactory;
+import com.epam.cdp.reporting.CrLogger;
 import com.epam.cdp.selenium.Browser;
 import com.epam.cdp.selenium.driver.WebDriverCustomDecorator;
 import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
 import com.epam.cdp.selenium.services.FilterServices;
 import com.epam.cdp.selenium.services.LoginServices;
 import com.epam.cdp.selenium.services.SearchServices;
+import com.epam.cdp.selenium.util.Screenshoter;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
+import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 public class EndToEndTests {
@@ -47,6 +48,7 @@ public class EndToEndTests {
         WebDriver driver1 = WebDriverProviderSingleton.getInstance();
         driver = new WebDriverCustomDecorator(driver1);
         this.browser = new Browser();
+        CrLogger.info("TEST STARTS");
     }
 
     @Test(description = "Filter feature")
@@ -54,28 +56,32 @@ public class EndToEndTests {
         RatingsFullPage ratingsFullPage = new RatingsFullPage();
         String actualTextOfCtaBanner = ratingsFullPage.open()
                                                       .getCtaBannerText();
-        Assert.assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
+        new CustomAssertion("Checking text of CTA banner").assertEquals(actualTextOfCtaBanner, CTA_BANNER_RATINGS);
 
         loginServices.doLogin(user);
-        Assert.assertFalse(ratingsFullPage.isCtaBannerDisplayed());
+        new CustomAssertion("Checking CTA banner doesn't appear").assertFalse(ratingsFullPage.isCtaBannerDisplayed());
 
         ratingsFullPage.clickRecommendedToggle();
         ratingsFullPage.getLabelsListFromRatingsChart().forEach(label -> {
-            assertThat(label, either(containsString("RECOMMENDED")).or(containsString("BEST BUY")));
+            CustomHamcrestAssertion.assertThat(label, either(containsString("RECOMMENDED")).or(containsString("BEST BUY")),
+                    "Checking that all models are Best Buy or Recommended");
         });
 
         String resultCount = ratingsFullPage.clickClearAllLink()
                                             .getResultCounter();
-        Assert.assertEquals(resultCount, "12");
+        new CustomAssertion("Checking number of models").assertEquals(resultCount, "12");
 
         filterServices.doPriceFiltering("100");
-        assertThat(ratingsFullPage.getPricesListFromRatingsChart(), everyItem(lessThanOrEqualTo(100)));
+        CustomHamcrestAssertion.assertThat(ratingsFullPage.getPricesListFromRatingsChart(), everyItem(lessThanOrEqualTo(100)),
+                "Checking that Price filter applied");
 
         filterServices.doRatedBestFiltering(FIRST_CHECKBOX);
-        assertThat(ratingsFullPage.getColorOfRatedBestFilterButton(), containsString("0, 174, 77"));
+        CustomHamcrestAssertion.assertThat(ratingsFullPage.getColorOfRatedBestFilterButton(), containsString("0, 174, 77"),
+                "Checking that Best filter applied");
 
         filterServices.doMoreFiltering(EUREKA_BRAND);
-        assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)));
+        CustomHamcrestAssertion.assertThat(ratingsFullPage.getBrandsAndModelsListInRatingsChart(), everyItem(containsString(EUREKA_BRAND)),
+                "Checking that More filter applied");
     }
 
     @Test(description = "Ratings feature")
@@ -83,23 +89,28 @@ public class EndToEndTests {
         OverviewPage overviewPage = new OverviewPage();
         String heroSectionText = overviewPage.open()
                                              .getHeroSectionText();
-        assertThat(heroSectionText, containsString(CTA_BANNER_OVERVIEW));
+        CustomHamcrestAssertion.assertThat(heroSectionText, containsString(CTA_BANNER_OVERVIEW),
+                "Checking Hero section contains proper text");
 
         RatingsCompactPage ratingsCompactPage = overviewPage.clickUprightLinkInTypeSection();
-        assertThat(ratingsCompactPage.getCtaBannerText(), equalTo(CTA_BANNER_RATINGS));
+        CustomHamcrestAssertion.assertThat(ratingsCompactPage.getCtaBannerText(), equalTo(CTA_BANNER_RATINGS),
+                "Checking CTA banner contains proper text");
 
         MembershipPage membershipPage = ratingsCompactPage.clickBecomeMemberLink();
-        assertThat(membershipPage.getCtaBanner(), equalToIgnoringWhiteSpace(
-                "Buying smart is just the start"));
+        CustomHamcrestAssertion.assertThat(membershipPage.getCtaBanner(), equalToIgnoringWhiteSpace(
+                "Buying smart is just the start"), "Checking CTA banner contains proper text on membership page");
 
         browser.navigateBack();
-        assertThat(ratingsCompactPage.getCounterResult(), equalTo("75"));
+        CustomHamcrestAssertion.assertThat(ratingsCompactPage.getCounterResult(), equalTo("75"),
+                "Checking Number of models");
 
         ModelPage modelpage = ratingsCompactPage.clickShopButton();
-        Assert.assertTrue(modelpage.isPriceAndShopTitleDisplayed());
+        new CustomAssertion("Checking Price and Shop title appears")
+                .assertTrue(modelpage.isPriceAndShopTitleDisplayed());
 
         AmazonPage amazonPage = modelpage.clickAmazonButton();
-        assertThat(amazonPage.getUrl(), containsString("amazon.com"));
+        CustomHamcrestAssertion.assertThat(amazonPage.getUrl(), containsString("amazon.com"),
+                "Checking that amazon site is opened");
     }
 
     @Test(description = "Login feature")
@@ -107,53 +118,68 @@ public class EndToEndTests {
         ModelPage modelPage = new ModelPage();
         OverviewPage overviewPage = modelPage.open()
                                              .clickUprightVacuumsLinkInBreadcrumbs();
-        assertThat(overviewPage.getHeroSectionText(), containsString(CTA_BANNER_OVERVIEW));
+        CustomHamcrestAssertion.assertThat(overviewPage.getHeroSectionText(), containsString(CTA_BANNER_OVERVIEW),
+                "Checking text in CTA banner");
 
         BuyingGuidePage buyingGuidePage = overviewPage.clickBuyingGuideLink();
         String labelInHeroSection = buyingGuidePage.getLabelInHeroSectionText();
-        assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
+
+        CustomHamcrestAssertion.assertThat(labelInHeroSection, equalTo("Choosing the Best Vacuum Cleaner"),
+                "Checking text in Hero section");
 
         loginServices.doLogin(user);
-        Assert.assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
+        new CustomAssertion("Checking lock disappearance")
+                .assertFalse(buyingGuidePage.isLockNearRecommendedLinkDisplayed());
     }
 
     @Test(description = "Ratings feature")
-    public void checkAddingModelsToComparision() {
+    public void checkAddingModelsToComparision() throws InterruptedException {
         HomePage homePage = new HomePage().open();
-        Assert.assertTrue(homePage.isMainArticlesSectionDisplayed());
+        new CustomAssertion("Checking that Main Articles section appears")
+                .assertTrue(homePage.isMainArticlesSectionDisplayed());
 
         loginServices.doLogin(user);
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
+        new CustomAssertion("Comparing nickname with text in account info section")
+                .assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
 
         searchServices.doSearch(MIELE_MODEL);
         SearchResultPage searchResultPage = new SearchResultPage();
         searchResultPage.waitTextToAppearInLabel("Showing results for Miele Dynamic U1 Cat");
-        assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")));
+        CustomHamcrestAssertion.assertThat(searchResultPage.getListOfBrands(), everyItem(startsWith("Miele")),
+                "Checking that all models starts with Miele");
 
         ModelPage modelPage = searchResultPage.clickFirstResult();
-        assertThat(modelPage.getTitle(), equalTo(MIELE_MODEL));
+        CustomHamcrestAssertion.assertThat(modelPage.getTitle(), equalTo(MIELE_MODEL),
+                "Checking title of opened Model");
 
         RatingsCompactPage ratingsCompactPage = modelPage.clickIconInSwitcher(RatingsCompactPage.class, RatingsView.COMPACT);
         ratingsCompactPage.clickCloseTourButton();
-        Assert.assertTrue(ratingsCompactPage.isRatingsListViewDisplayed());
+        new CustomAssertion("Checking that Ratings List view is opened")
+                .assertTrue(ratingsCompactPage.isRatingsListViewDisplayed());
 
         ratingsCompactPage.clickAddToCompareButton();
-        assertThat(ratingsCompactPage.getCompareCircleText(), equalTo("1"));
+        CustomHamcrestAssertion.assertThat(ratingsCompactPage.getCompareCircleText(), equalTo("1"),
+                "Checking that 1 model is added to Compare");
 
         RatingsFullPage ratingsFullPage = ratingsCompactPage.clickIconInSwitcher(RatingsFullPage.class, RatingsView.FULL);
-        Assert.assertTrue(ratingsFullPage.isRatingsFullViewDisplayed());
+        new CustomAssertion("Checking that Ratings Full view is opened")
+                .assertTrue(ratingsFullPage.isRatingsFullViewDisplayed());
 
         ratingsFullPage.clickAddToCompareButton();
-        assertThat(ratingsFullPage.getCompareCircleText(), equalTo("2"));
+        CustomHamcrestAssertion.assertThat(ratingsFullPage.getCompareCircleText(), equalTo("2"),
+                "Checking that 2 models are added to Compare");
 
         ComparePage comparePage = ratingsFullPage.clickCompareBucketButton()
                                                  .clickViewCompareButton();
-        assertThat(comparePage.getModelsList().get(1), equalTo("Shark Navigator Powered Lift-Away NV586 (Target)"));
-        assertThat(comparePage.getModelsList().get(0), equalTo("Kenmore Elite Pet Friendly 31150"));
+        CustomHamcrestAssertion.assertThat(comparePage.getModelsList().get(1), equalTo("Shark Navigator Powered Lift-Away NV586 (Target)"),
+                "Checking name of added model");
+        CustomHamcrestAssertion.assertThat(comparePage.getModelsList().get(0), equalTo("Kenmore Elite Pet Friendly 31150"),
+                "Checking name of added model");
 
-        comparePage.clickRemoveButton()
-                   .clickRemoveButton();
-        assertThat(comparePage.getLabelFromEmptyPage(), equalTo("Your Compare Chart is Empty!"));
+        comparePage.clickRemoveButton("1");
+        comparePage.clickRemoveButton("0");
+        CustomHamcrestAssertion.assertThat(comparePage.getLabelFromEmptyPage(), equalTo("Your Compare Chart is Empty!"),
+                "Empty Compare page appears");
     }
 
     @Test(description = "Filter feature")
@@ -164,7 +190,8 @@ public class EndToEndTests {
         ratingsFullPage.clickPriceFilterButton();
         String defaultPrice = ratingsFullPage.getPriceInputInFilterPopup();
         ratingsFullPage.movePriceSlider();
-        Assert.assertNotEquals(ratingsFullPage.getPriceInputInFilterPopup(), defaultPrice);
+        new CustomAssertion("Comparing default price with price after moving slider")
+                .assertNotEquals(ratingsFullPage.getPriceInputInFilterPopup(), defaultPrice);
     }
 
     @Test(description = "Ratings feature")
@@ -173,7 +200,8 @@ public class EndToEndTests {
         ratingsFullPage.open();
         loginServices.doLogin(user);
         ratingsFullPage.moveRatingsSlider().highlightRatingsSlider();
-        Assert.assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
+        new CustomAssertion("Checking is Specs header is displayed in ratings chart")
+                .assertTrue(ratingsFullPage.isSpecsHeaderDisplayedInRatingsChart());
     }
 
     @Test(description = "Ratings feature")
@@ -183,18 +211,24 @@ public class EndToEndTests {
         loginServices.doLogin(user);
         browser.scrollToBottomOfPage();
         HomePage homePage = ratingsFullPage.crLogoClick();
-        Assert.assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
+        new CustomAssertion("Comparing nickname with text in account info section")
+                .assertEquals(homePage.getAccountInfoSectionText(), user.getNickname());
     }
 
     @Test(description = "Login feature")
     public void checkUserCanNotLoginWithInvalidPassword() {
         new HomePage().open();
         loginServices.doLogin(UserFactory.createUserInvalidPassword());
-        Assert.assertEquals(driver.getCurrentUrl(), "https://secure.consumerreports.org/ec/login?error");
+        new CustomAssertion("Comparing current url with expected")
+                .assertEquals(driver.getCurrentUrl(), "https://secure.consumerreports.org/ec/login?error");
     }
 
     @AfterMethod
-    public void tearDown() {
+    public void tearDown(ITestResult result) {
+       if(ITestResult.FAILURE==result.getStatus()){
+            Screenshoter.takeScreenshot();
+       }
+        CrLogger.info("TEST FINISHES");
         WebDriverProviderSingleton.quitDriver();
     }
 }

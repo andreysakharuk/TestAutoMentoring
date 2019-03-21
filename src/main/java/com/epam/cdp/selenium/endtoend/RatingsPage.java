@@ -1,6 +1,7 @@
 package com.epam.cdp.selenium.endtoend;
 
 import com.epam.cdp.bo.RatingsView;
+import com.epam.cdp.reporting.CrLogger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -63,6 +64,7 @@ public class RatingsPage extends BasePage {
     }
 
     public <T extends RatingsPage> T clickIconInSwitcher(Class<T> pageClass, RatingsView ratingsView) {
+        CrLogger.info("Clicking icon in switcher");
         switcherIcons.get(ratingsView.getPosition()).click();
         return generatePage(pageClass);
     }
@@ -81,6 +83,7 @@ public class RatingsPage extends BasePage {
     }
 
     public RatingsPage clickPriceFilterButton() {
+        CrLogger.info("Clicking Price Filter button");
         priceFilterButton.click();
         return this;
     }
@@ -141,6 +144,7 @@ public class RatingsPage extends BasePage {
     }
 
     public RatingsPage movePriceSlider() {
+        CrLogger.info("Moving price slider in Price popup");
         waiter.waitForElementVisible(viewButtonInPriceFilterPopup);
         new Actions(driver).dragAndDropBy(priceSlider, -200, 0).build().perform();
         return this;

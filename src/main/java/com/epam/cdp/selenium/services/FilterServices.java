@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.services;
 
+import com.epam.cdp.reporting.CrLogger;
 import com.epam.cdp.selenium.endtoend.RatingsPage;
 
 public class FilterServices {
@@ -10,6 +11,7 @@ public class FilterServices {
      * @param price price used for filtering
      */
     public void doPriceFiltering(String price) {
+        CrLogger.info("Applying Price filtering");
         new RatingsPage()
                 .clickPriceFilterButton()
                 .enterValueInPriceFilterPopup(price)
@@ -22,6 +24,7 @@ public class FilterServices {
      * @param checkbox position of needed to select checkbox starting with 0
      */
     public void doRatedBestFiltering(int checkbox) {
+        CrLogger.info("Applying Best filtering");
         new RatingsPage()
                 .clickRatedBestFilterButton()
                 .selectCheckboxInRatedBestFilterPopup(checkbox)
@@ -34,6 +37,7 @@ public class FilterServices {
      * @param brandCheckbox Name of Brand checkbox
      */
     public void doMoreFiltering(String brandCheckbox){
+        CrLogger.info("Applying More filtering");
         new RatingsPage()
                 .clickMoreFilterButton()
                 .selectBrandCheckboxInMoreFilterPopup(brandCheckbox)

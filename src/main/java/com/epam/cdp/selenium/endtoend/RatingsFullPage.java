@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.endtoend;
 
+import com.epam.cdp.reporting.CrLogger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -62,11 +63,13 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public RatingsFullPage open() {
+        CrLogger.info("Going to Ratings Full page: " + RATINGS_FULL_PAGE_URL);
         driver.get(RATINGS_FULL_PAGE_URL);
         return this;
     }
 
     public RatingsFullPage clickRecommendedToggle() {
+        CrLogger.info("Clicking Recommended toggle");
         recommendedToggle.click();
         return this;
     }
@@ -77,6 +80,7 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public RatingsFullPage clickClearAllLink() {
+        CrLogger.info("Clicking Clear All link");
         clearAllLink.click();
         return this;
     }
@@ -104,16 +108,19 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public RatingsFullPage clickAddToCompareButton() {
+        CrLogger.info("Clicking Add to Compare button");
         compareButtons.get(0).click();
         return this;
     }
 
     public RatingsFullPage clickCompareBucketButton() {
+        CrLogger.info("Clicking Compare Bucket button");
         compareBucketButton.click();
         return new RatingsFullPage();
     }
 
     public ComparePage clickViewCompareButton() {
+        CrLogger.info("Clicking View Compare button in Compare bucket");
         viewCompareButton.click();
         return new ComparePage();
     }
@@ -125,6 +132,7 @@ public class RatingsFullPage extends RatingsPage {
     }
 
     public RatingsFullPage moveRatingsSlider() {
+        CrLogger.info("Moving slider in Ratings chart");
         waiter.waitForElementVisible(ratingsSlider);
         new Actions(driver).dragAndDropBy(ratingsSlider, 300, 0).build().perform();
         return this;

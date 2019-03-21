@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.endtoend;
 
+import com.epam.cdp.reporting.CrLogger;
 import org.openqa.selenium.ElementNotInteractableException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -39,6 +40,7 @@ public class RatingsCompactPage extends RatingsPage {
     }
 
     public MembershipPage clickBecomeMemberLink() {
+        CrLogger.info("Clicking Become Member link");
         becomeMemberLink.click();
         return new MembershipPage();
     }
@@ -53,6 +55,7 @@ public class RatingsCompactPage extends RatingsPage {
     }
 
     public RatingsCompactPage clickCloseTourButton() {
+        CrLogger.info("Clicking Close Tour button");
         try {
             closeTourButton.click();
         } catch (ElementNotInteractableException e) {
@@ -66,6 +69,7 @@ public class RatingsCompactPage extends RatingsPage {
     }
 
     public RatingsCompactPage clickAddToCompareButton() {
+        CrLogger.info("Clicking Add to compare button");
         compareButtons.get(1).click();
         return this;
     }

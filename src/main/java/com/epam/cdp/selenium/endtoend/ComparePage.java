@@ -1,5 +1,7 @@
 package com.epam.cdp.selenium.endtoend;
 
+import com.epam.cdp.reporting.CrLogger;
+import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -17,6 +19,9 @@ public class ComparePage extends BasePage {
     @FindBy(css = ".crux-call-to-action")
     private WebElement emptyPageLabel;
 
+    @FindBy(css = ".compare-page__sub-header__models-number")
+    private WebElement numberOfModels;
+
     public ComparePage() {
         super();
     }
@@ -26,8 +31,10 @@ public class ComparePage extends BasePage {
                 .map(WebElement::getText).collect(Collectors.toList());
     }
 
-    public ComparePage clickRemoveButton() {
+    public ComparePage clickRemoveButton(String number) {
+        CrLogger.info("Clicking Remove button");
         removeCompareButton.click();
+        new Waiter().waitForTextInElementToAppear(numberOfModels, number);
         return new ComparePage();
     }
 

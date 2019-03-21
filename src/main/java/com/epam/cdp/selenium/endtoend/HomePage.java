@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.endtoend;
 
+import com.epam.cdp.reporting.CrLogger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -23,6 +24,7 @@ public class HomePage extends BasePage {
     }
 
     public HomePage open() {
+        CrLogger.info("Going to Home page: " + HOME_PAGE_URL);
         driver.get(HOME_PAGE_URL);
         return new HomePage();
     }

@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.endtoend;
 
+import com.epam.cdp.reporting.CrLogger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
@@ -34,6 +35,7 @@ public class ModelPage extends RatingsPage {
     }
 
     public ModelPage open() {
+        CrLogger.info("Going to Model page:" + MODEL_PAGE_URL);
         driver.get(MODEL_PAGE_URL);
         return new ModelPage();
     }
@@ -44,6 +46,7 @@ public class ModelPage extends RatingsPage {
     }
 
     public AmazonPage clickAmazonButton() {
+        CrLogger.info("Clicking Amazon Shop button");
         new Actions(driver).moveToElement(priceAndShopHeader).build().perform();
         new Actions(driver).moveToElement(amazonButton).build().perform();
         waiter.waitForElementClickable(amazonButton);
@@ -53,6 +56,7 @@ public class ModelPage extends RatingsPage {
     }
 
     public OverviewPage clickUprightVacuumsLinkInBreadcrumbs() {
+        CrLogger.info("Clicking link in Breadcrumbs");
         breadcrumbsList.get(2).click();
         return new OverviewPage();
     }

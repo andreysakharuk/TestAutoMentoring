@@ -165,10 +165,9 @@ public class RatingsSteps {
                 .clickViewCompareButton();
     }
 
-    @And("Click Remove buttons")
-    public void clickRemoveButtons() {
-        new ComparePage().clickRemoveButton()
-                .clickRemoveButton();
+    @And("Click Remove button (.*)")
+    public void clickRemoveButton(String number) {
+        new ComparePage().clickRemoveButton(number);
     }
 
     @Then("Error appears on Empty Compare page")

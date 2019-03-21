@@ -13,7 +13,7 @@ public class BuyingGuideSteps {
     @Then("Label in Hero section appears on Buying Guide page")
     public void labelInHeroSectionAppearsOnBuyingGuidePage() {
         String labelInHeroSection = new BuyingGuidePage().getLabelInHeroSectionText();
-        assertThat(labelInHeroSection, equalTo("Vacuum Buying Guide"));
+        assertThat(labelInHeroSection, equalTo("Choosing the Best Vacuum Cleaner"));
         
     }
 

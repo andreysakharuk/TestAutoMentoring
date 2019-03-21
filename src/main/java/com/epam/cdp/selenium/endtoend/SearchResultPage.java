@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.endtoend;
 
+import com.epam.cdp.reporting.CrLogger;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
@@ -28,6 +29,7 @@ public class SearchResultPage extends BasePage {
     }
 
     public ModelPage clickFirstResult() {
+        CrLogger.info("Clicking First result link");
         modelsBrandList.get(0).click();
         return new ModelPage();
     }

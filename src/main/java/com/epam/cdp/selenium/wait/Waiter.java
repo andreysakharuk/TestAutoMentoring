@@ -33,5 +33,9 @@ public class Waiter {
         new WebDriverWait(WebDriverProviderSingleton.getInstance(), configProvider.getTimeout()).until(ExpectedConditions.elementToBeClickable(element));
     }
 
+    public void waitForElementInvisible(WebElement element) {
+        new WebDriverWait(WebDriverProviderSingleton.getInstance(), configProvider.getTimeout())
+                .until(ExpectedConditions.invisibilityOf(element));
+    }
 
 }

@@ -1,5 +1,6 @@
 package com.epam.cdp.selenium.driver;
 
+import com.epam.cdp.reporting.CrLogger;
 import com.epam.cdp.selenium.util.Screenshoter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -21,7 +22,9 @@ public class WebDriverCustomDecorator implements WebDriver {
     }
 
     public String getCurrentUrl() {
-        return driver.getCurrentUrl();
+        String currentUrl = driver.getCurrentUrl();
+        CrLogger.info("Getting current url: " + currentUrl);
+        return currentUrl;
     }
 
     public String getTitle() {
@@ -47,6 +50,7 @@ public class WebDriverCustomDecorator implements WebDriver {
     public void quit() {
         Screenshoter.takeScreenshot();
         driver.quit();
+        driver=null;
     }
 
     public Set<String> getWindowHandles() {
