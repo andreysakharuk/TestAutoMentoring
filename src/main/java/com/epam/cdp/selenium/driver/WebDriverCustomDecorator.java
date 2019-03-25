@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.driver;
 
-import com.epam.cdp.reporting.CrLogger;
+import com.epam.cdp.logging.CrLogger;
 import com.epam.cdp.selenium.util.Screenshoter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;

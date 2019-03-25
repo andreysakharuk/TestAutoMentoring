@@ -1,9 +1,11 @@
 package com.epam.cdp.selenium.endtoend;
 
+import com.epam.cdp.assertion.CustomAssertion;
+import com.epam.cdp.assertion.CustomHamcrestAssertion;
 import com.epam.cdp.bo.RatingsView;
 import com.epam.cdp.bo.User;
 import com.epam.cdp.bo.UserFactory;
-import com.epam.cdp.reporting.CrLogger;
+import com.epam.cdp.logging.CrLogger;
 import com.epam.cdp.selenium.Browser;
 import com.epam.cdp.selenium.driver.WebDriverCustomDecorator;
 import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
@@ -232,4 +234,3 @@ public class EndToEndTests {
         WebDriverProviderSingleton.quitDriver();
     }
 }
-

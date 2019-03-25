@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.endtoend;
 
-import com.epam.cdp.reporting.CrLogger;
+import com.epam.cdp.logging.CrLogger;
 import com.epam.cdp.selenium.wait.Waiter;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;

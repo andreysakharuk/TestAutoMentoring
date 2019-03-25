@@ -1,4 +1,4 @@
-package com.epam.cdp.reporting;
+package com.epam.cdp.logging;
 
 
 import org.apache.log4j.LogManager;
@@ -34,5 +34,9 @@ public class CrLogger {
 
     public static void log(String message){
         LOGGER.info(message);
+    }
+
+    public static void info(Object o){
+        LOGGER.info(o);
     }
 }

@@ -1,6 +1,6 @@
-package com.epam.cdp.selenium.endtoend;
+package com.epam.cdp.assertion;
 
-import com.epam.cdp.reporting.CrLogger;
+import com.epam.cdp.logging.CrLogger;
 import com.epam.cdp.selenium.util.Screenshoter;
 import org.testng.asserts.Assertion;
 import org.testng.asserts.IAssert;

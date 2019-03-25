@@ -1,6 +1,6 @@
-package com.epam.cdp.selenium.endtoend;
+package com.epam.cdp.assertion;
 
-import com.epam.cdp.reporting.CrLogger;
+import com.epam.cdp.logging.CrLogger;
 import com.epam.cdp.selenium.util.Screenshoter;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -28,14 +28,5 @@ public class CustomHamcrestAssertion extends MatcherAssert {
             throw new AssertionError(description.toString());
         }
         CrLogger.warn("ASSERTION PASSED!");
-    }
-
-    public static void assertThat(String reason, boolean assertion, String loggerInfo) {
-        CrLogger.info(loggerInfo);
-        if (!assertion) {
-            CrLogger.error("ASSERTION FAILED!!!");
-            throw new AssertionError(reason);
-        }
-        CrLogger.warn("ASSERTION PASSED!!!");
     }
 }

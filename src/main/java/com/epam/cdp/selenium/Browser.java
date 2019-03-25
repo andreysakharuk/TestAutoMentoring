@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium;
 
-import com.epam.cdp.reporting.CrLogger;
+import com.epam.cdp.logging.CrLogger;
 import com.epam.cdp.selenium.driver.WebDriverProviderSingleton;
 import com.google.common.collect.Iterables;
 import org.openqa.selenium.*;

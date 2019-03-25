@@ -1,6 +1,6 @@
 package com.epam.cdp.selenium.services;
 
-import com.epam.cdp.reporting.CrLogger;
+import com.epam.cdp.logging.CrLogger;
 import com.epam.cdp.selenium.endtoend.BasePage;
 
 public class SearchServices {
